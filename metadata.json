@@ -1,0 +1,8 @@
+{
+  "name": "Fortex Education",
+  "description": "A professional educational consultancy website for Fortex Wayanad, offering career guidance, admissions support, and program information for Nursing, GNM, MLT, and more.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
