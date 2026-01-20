@@ -55,7 +55,7 @@ const Contact: React.FC = () => {
           </div>
 
           <div className="space-y-12">
-            <div className="grid sm:grid-cols-2 gap-12">
+            <div className="space-y-12">
               <div className="space-y-4">
                 <p className="text-[10px] font-medium text-white/30 uppercase tracking-widest">General Enquiries</p>
                 <div className="space-y-2">
