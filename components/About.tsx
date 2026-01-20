@@ -28,7 +28,7 @@ const About: React.FC = () => {
   ];
 
   return (
-    <div className="relative bg-white py-32 lg:py-48 overflow-hidden">
+    <div className="relative bg-white py-12 md:py-32 lg:py-48 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <div className="grid lg:grid-cols-2 gap-24 items-center">
 

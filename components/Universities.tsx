@@ -61,7 +61,7 @@ const Universities: React.FC<UniversitiesProps> = ({ user, onLoginClick }) => {
 
     if (loading) {
         return (
-            <div className="py-32 grid md:grid-cols-3 gap-8 max-w-7xl mx-auto px-6">
+            <div className="py-12 md:py-32 grid md:grid-cols-3 gap-8 max-w-7xl mx-auto px-6">
                 {[1, 2, 3].map(i => (
                     <div key={i} className="aspect-[4/5] rounded-3xl bg-gray-50 animate-pulse" />
                 ))}
@@ -72,7 +72,7 @@ const Universities: React.FC<UniversitiesProps> = ({ user, onLoginClick }) => {
     if (universities.length === 0) return null;
 
     return (
-        <section className="py-32 bg-white">
+        <section id="universities" className="py-12 md:py-32 bg-white">
             <div className="max-w-7xl mx-auto px-6 lg:px-12">
                 <div className="mb-16">
                     <p className="text-xs font-medium text-accent uppercase tracking-[0.3em] mb-4">Elite Institutions</p>

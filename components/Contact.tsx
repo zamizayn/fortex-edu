@@ -40,10 +40,10 @@ const Contact: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 lg:px-12 py-32">
-      <div className="grid lg:grid-cols-2 gap-32 items-start">
+    <section id="contact" className="max-w-7xl mx-auto px-6 lg:px-12 py-12 md:py-32 bg-gray-900 text-white">
+      <div className="grid lg:grid-cols-2 gap-12 md:gap-32 items-start">
         {/* Left Side: Info */}
-        <div className="space-y-16">
+        <div className="space-y-6 md:space-y-16">
           <div className="space-y-6">
             <p className="text-xs font-medium text-accent uppercase tracking-[0.3em]">Reach Out</p>
             <h2 className="text-5xl md:text-7xl font-semibold text-white leading-tight tracking-tight text-balance">
@@ -148,7 +148,7 @@ const Contact: React.FC = () => {
           </form>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

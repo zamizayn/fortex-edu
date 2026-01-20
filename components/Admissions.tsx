@@ -10,8 +10,8 @@ const Admissions: React.FC = () => {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-6 lg:px-12 py-32">
-      <div className="grid lg:grid-cols-2 gap-32 items-start">
+    <section id="admissions" className="max-w-7xl mx-auto px-6 lg:px-12 py-12 md:py-32 bg-white">
+      <div className="grid lg:grid-cols-2 gap-12 md:gap-32 items-start">
         <div className="space-y-12">
           <div className="space-y-4">
             <p className="text-[10px] font-medium text-accent uppercase tracking-[0.3em]">Pathway to Success</p>
@@ -63,7 +63,7 @@ const Admissions: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

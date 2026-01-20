@@ -128,47 +128,19 @@ const App: React.FC = () => {
           </>
         )}
 
-        {isVisible('universities') && (
-          <section id="universities" className="py-24 bg-white">
-            <Universities />
-          </section>
-        )}
+        {isVisible('universities') && <Universities />}
 
-        {isVisible('programs') && (
-          <section id="programs" className="py-24 bg-gray-50">
-            <Programs />
-          </section>
-        )}
+        {isVisible('programs') && <Programs />}
 
-        {isVisible('booking') && (
-          <section id="booking" className="py-24 bg-white">
-            <ConsultationBooking />
-          </section>
-        )}
+        {isVisible('booking') && <ConsultationBooking />}
 
-        {isVisible('media') && (
-          <section id="media" className="py-24 bg-gray-50">
-            <VideoGallery />
-          </section>
-        )}
+        {isVisible('media') && <VideoGallery />}
 
-        {isVisible('admissions') && (
-          <section id="admissions" className="py-24 bg-white">
-            <Admissions />
-          </section>
-        )}
-        {isVisible('events') && (
-          <section id="events" className="py-24 bg-white">
-            <Events />
-          </section>
-        )}
+        {isVisible('admissions') && <Admissions />}
+        {isVisible('events') && <Events />}
 
 
-        {isVisible('contact') && (
-          <section id="contact" className="py-24 bg-gray-900 text-white">
-            <Contact />
-          </section>
-        )}
+        {isVisible('contact') && <Contact />}
       </main>
 
       <Footer />

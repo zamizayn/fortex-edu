@@ -66,7 +66,7 @@ const DEFAULT_MEMBERS: TeamMember[] = [
 
 const Team: React.FC<{ members?: TeamMember[] }> = ({ members = DEFAULT_MEMBERS }) => {
     return (
-        <section id="team" className="py-24 bg-white relative overflow-hidden">
+        <section id="team" className="py-8 md:py-24 bg-white relative overflow-hidden">
             {/* Decorative Blobs */}
             <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-96 h-96 bg-blue-50 rounded-full blur-3xl opacity-50 pointer-events-none" />
             <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-96 h-96 bg-indigo-50 rounded-full blur-3xl opacity-50 pointer-events-none" />

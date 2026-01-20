@@ -43,14 +43,14 @@ const VideoGallery: React.FC = () => {
     return (match && match[2].length === 11) ? match[2] : null;
   };
 
-  if (loading) return <div className="py-32 grid md:grid-cols-3 gap-8 max-w-7xl mx-auto px-6">
+  if (loading) return <div className="py-12 md:py-32 grid md:grid-cols-3 gap-8 max-w-7xl mx-auto px-6">
     {[1, 2, 3].map(i => <div key={i} className="aspect-video rounded-[2.5rem] bg-gray-50 animate-pulse" />)}
   </div>;
   if (insights.length === 0) return null;
 
   return (
-    <div className="max-w-7xl mx-auto px-6 lg:px-12 py-32">
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+    <section id="media" className="max-w-7xl mx-auto px-6 lg:px-12 py-12 md:py-32 bg-gray-50">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-20 gap-8">
         <div className="space-y-4">
           <p className="text-[10px] font-medium text-accent uppercase tracking-[0.3em]">Insights & Media</p>
           <h3 className="text-4xl md:text-6xl font-semibold text-charcoal tracking-tight">Curated Knowledge.</h3>
@@ -117,7 +117,7 @@ const VideoGallery: React.FC = () => {
           </div>
         </div>
       )}
-    </div>
+    </section>
   );
 };
 

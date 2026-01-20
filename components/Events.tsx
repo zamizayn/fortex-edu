@@ -30,8 +30,8 @@ const Events: React.FC = () => {
   if (events.length === 0) return null;
 
   return (
-    <div className="max-w-7xl mx-auto px-6 lg:px-12 py-32">
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+    <section id="events" className="max-w-7xl mx-auto px-6 lg:px-12 py-12 md:py-32 bg-white">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-20 gap-8">
         <div className="space-y-4">
           <p className="text-[10px] font-medium text-accent uppercase tracking-[0.3em]">Institutional Pulse</p>
           <h3 className="text-4xl md:text-6xl font-semibold text-charcoal tracking-tight">Upcoming Events.</h3>
@@ -99,7 +99,7 @@ const Events: React.FC = () => {
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 
