@@ -92,7 +92,7 @@ const App: React.FC = () => {
   const isVisible = (sectionId: string) => siteSettings?.visibleSections?.[sectionId] !== false;
 
   return (
-    <div className="relative min-h-screen font-sans selection:bg-blue-100 selection:text-blue-900">
+    <div className="relative min-h-screen font-sans selection:bg-blue-100 selection:text-blue-900 overflow-x-hidden">
       <Navbar
         activeSection={activeSection}
         user={user}

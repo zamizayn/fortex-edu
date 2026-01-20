@@ -53,13 +53,13 @@ const ConsultationBooking: React.FC = () => {
   };
 
   return (
-    <section id="booking" className="py-8 md:py-24 bg-white">
+    <section id="booking" className="py-8 md:py-24 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <div className="bg-charcoal rounded-[3rem] overflow-hidden shadow-3xl relative animate-in fade-in slide-in-from-bottom duration-1000">
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-[120px]"></div>
           <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-accent/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-[120px]"></div>
 
-          <div className="relative grid lg:grid-cols-2 gap-20 items-center p-8 md:p-24">
+          <div className="relative grid lg:grid-cols-2 gap-20 items-center p-6 md:p-24 overflow-hidden">
             <div className="text-white space-y-10">
               <div className="space-y-4">
                 <span className="inline-block py-2 px-6 rounded-full bg-white/5 border border-white/10 text-accent text-[10px] font-medium uppercase tracking-[0.3em]">
@@ -96,7 +96,7 @@ const ConsultationBooking: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-[2.5rem] p-12 shadow-3xl">
+            <div className="bg-white rounded-[2.5rem] p-6 md:p-12 shadow-3xl">
               {isBooked ? (
                 <div className="py-20 text-center space-y-6 animate-in fade-in zoom-in-95 duration-700">
                   <div className="w-24 h-24 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-8 shadow-inner">
@@ -106,9 +106,9 @@ const ConsultationBooking: React.FC = () => {
                   <p className="text-charcoal/40 font-medium uppercase tracking-widest text-[10px]">Our office will contact you shortly.</p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-8">
-                  <div className="grid md:grid-cols-2 gap-8">
-                    <div className="space-y-3">
+                <form onSubmit={handleSubmit} className="space-y-4 md:space-y-8">
+                  <div className="grid md:grid-cols-2 gap-4 md:gap-8">
+                    <div className="space-y-1.5 md:space-y-3">
                       <label className="text-[10px] font-medium text-charcoal/40 uppercase tracking-widest ml-1">Full Name</label>
                       <input
                         required
@@ -119,7 +119,7 @@ const ConsultationBooking: React.FC = () => {
                         onChange={e => setFormData({ ...formData, name: e.target.value })}
                       />
                     </div>
-                    <div className="space-y-3">
+                    <div className="space-y-1.5 md:space-y-3">
                       <label className="text-[10px] font-medium text-charcoal/40 uppercase tracking-widest ml-1">Mobile Number</label>
                       <input
                         required
@@ -132,8 +132,8 @@ const ConsultationBooking: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-8">
-                    <div className="space-y-3">
+                  <div className="grid md:grid-cols-2 gap-4 md:gap-8">
+                    <div className="space-y-1.5 md:space-y-3">
                       <label className="text-[10px] font-medium text-charcoal/40 uppercase tracking-widest ml-1">Last Exam</label>
                       <input
                         type="text"
@@ -143,7 +143,7 @@ const ConsultationBooking: React.FC = () => {
                         onChange={e => setFormData({ ...formData, lastAttendedCourse: e.target.value })}
                       />
                     </div>
-                    <div className="space-y-3">
+                    <div className="space-y-1.5 md:space-y-3">
                       <label className="text-[10px] font-medium text-charcoal/40 uppercase tracking-widest ml-1">Percentage</label>
                       <input
                         type="text"
@@ -155,8 +155,8 @@ const ConsultationBooking: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-8">
-                    <div className="space-y-3">
+                  <div className="grid md:grid-cols-2 gap-4 md:gap-8">
+                    <div className="space-y-1.5 md:space-y-3">
                       <label className="text-[10px] font-medium text-charcoal/40 uppercase tracking-widest ml-1">Preferred Date</label>
                       <input
                         required
@@ -166,7 +166,7 @@ const ConsultationBooking: React.FC = () => {
                         onChange={e => setFormData({ ...formData, date: e.target.value })}
                       />
                     </div>
-                    <div className="space-y-3">
+                    <div className="space-y-1.5 md:space-y-3">
                       <label className="text-[10px] font-medium text-charcoal/40 uppercase tracking-widest ml-1">Aspiration</label>
                       <select
                         className="w-full bg-gray-50 border-none rounded-2xl px-6 py-5 text-charcoal font-medium focus:ring-2 focus:ring-accent transition-all appearance-none cursor-pointer"
