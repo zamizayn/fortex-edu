@@ -25,10 +25,10 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, user, onLogout, onLoginC
 
   const navLinks = [
     { name: 'Home', href: '#home', id: 'home' },
-    { name: 'About', href: '#about', id: 'about' },
-    { name: 'Programs', href: '#programs', id: 'programs' },
-    { name: 'Universities', href: '#universities', id: 'universities' },
-    { name: 'Consultation', href: '#booking', id: 'booking' },
+    { name: 'Courses', href: '#programs', id: 'programs' },
+    { name: 'Top Colleges', href: '#universities', id: 'universities' },
+    { name: 'Free Counseling', href: '#booking', id: 'booking' },
+    { name: 'About Us', href: '#about', id: 'about' },
     { name: 'Contact', href: '#contact', id: 'contact' },
   ];
 
@@ -46,10 +46,10 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, user, onLogout, onLoginC
             <img
               src={siteSettings.logoUrl}
               alt="Logo"
-              className={`h-8 w-auto object-contain transition-all duration-300 ${scrolled ? 'invert-0' : 'brightness-0 invert'}`}
+              className={`h-12 w-auto object-contain transition-all duration-300 ${scrolled ? 'invert-0' : 'brightness-0 invert'}`}
             />
           ) : (
-            <span className={`text-2xl font-semibold tracking-tighter ${scrolled ? 'text-charcoal' : 'text-white'}`}>
+            <span className={`text-4xl font-semibold tracking-tighter ${scrolled ? 'text-charcoal' : 'text-white'}`}>
               FORTEX<span className="text-accent">EDU</span>
             </span>
           )}

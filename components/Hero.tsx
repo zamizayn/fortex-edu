@@ -36,17 +36,17 @@ const Hero: React.FC = () => {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-medium tracking-wider uppercase">
             <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-            Empowering Your Educational Journey
+            Trusted Guidance For a Bright Future
           </div>
 
           {/* Hero Heading */}
           <h1 className="text-6xl md:text-8xl font-semibold text-white leading-tight tracking-tight text-balance">
-            Your Future <br />
-            STarts <span className="text-white/80">Everywhere.</span>
+            Clear Guidance <br />
+            for a <span className="text-white/80">Bright Future.</span>
           </h1>
 
           <p className="text-xl md:text-2xl text-white/90 font-normal max-w-2xl mx-auto text-balance">
-            Expert guidance for admissions to world-class universities. We help you navigate your global education path with ease.
+            Expert guidance for admissions to India’s top universities & colleges. We help you navigate your educational path with ease.
           </p>
 
           {/* Glassmorphic CTA Bar */}
@@ -54,12 +54,12 @@ const Hero: React.FC = () => {
             <div className="w-full md:flex-1 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-2 flex flex-col md:flex-row items-center gap-2 shadow-2xl">
               <div className="flex-1 px-4 py-3 text-left">
                 <p className="text-xs text-white/60 font-medium uppercase tracking-widest mb-1">Explore</p>
-                <p className="text-white font-medium">What's your dream destination?</p>
+                <p className="text-white font-medium">Find the right university/college for you or Find Your Ideal Campus </p>
               </div>
               <div className="w-px h-10 bg-white/10 hidden md:block" />
               <div className="flex-1 px-4 py-3 text-left">
                 <p className="text-xs text-white/60 font-medium uppercase tracking-widest mb-1">Programs</p>
-                <p className="text-white font-medium">Choose Your Path</p>
+                <p className="text-white font-medium">Explore Career Streams</p>
               </div>
               <button className="w-full md:w-auto px-8 py-4 bg-accent text-white font-medium rounded-xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/40">
                 Get Started
