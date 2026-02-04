@@ -56,7 +56,7 @@ const HomePage: React.FC<HomePageProps> = ({ user, onLoginClick, siteSettings, s
 
             {isVisible('media') && <VideoGallery />}
 
-            {isVisible('admissions') && <Admissions />}
+            {/* {isVisible('admissions') && <Admissions />} */}
             {isVisible('events') && <Events />}
         </main>
     );

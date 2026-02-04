@@ -41,13 +41,13 @@ const Programs: React.FC = () => {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-8">
             {[1, 2, 3].map(i => (
               <div key={i} className="aspect-[4/5] rounded-3xl bg-gray-100 animate-pulse" />
             ))}
           </div>
         ) : (
-          <div className="flex md:grid overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none gap-4 md:gap-8 pb-8 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0 [-ms-overflow-style:'none'] [scrollbar-width:'none'] [&::-webkit-scrollbar]:hidden">
+          <div className="flex md:grid grid-cols-2 md:grid-cols-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none gap-4 md:gap-8 pb-8 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0 [-ms-overflow-style:'none'] [scrollbar-width:'none'] [&::-webkit-scrollbar]:hidden">
             {services.map((service) => (
               <motion.div
                 layoutId={service.id}
@@ -65,7 +65,7 @@ const Programs: React.FC = () => {
                 {/* Glass Details */}
                 <div className="absolute bottom-6 left-6 right-6 p-6 md:p-8 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl md:rounded-2xl transform transition-transform group-hover:-translate-y-2">
                   <h4 className="text-2xl md:text-2xl font-semibold text-white mb-2 leading-tight">{service.title}</h4>
-                  <p className="text-base md:text-base text-white/60 font-normal line-clamp-2">{service.description}</p>
+                  <p className="text-base md:text-base text-white/60 font-normal line-clamp-2 md:hidden">{service.description}</p>
                 </div>
 
                 {/* View Arrow */}
