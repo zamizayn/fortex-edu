@@ -87,8 +87,8 @@ const EventPopup: React.FC = () => {
                                 {event.type}
                             </span>
                         </div>
-                        <h3 className="text-white text-3xl md:text-4xl font-semibold leading-tight drop-shadow-2xl mb-2">{event.title}</h3>
-                        <p className="text-white/70 text-base font-medium italic">Don't miss this opportunity</p>
+                        <h3 className="text-white text-2xl md:text-3xl font-medium leading-tight drop-shadow-2xl mb-2">{event.title}</h3>
+                        <p className="text-white/70 text-sm font-normal italic">Don't miss this opportunity</p>
                     </div>
                 </div>
 
@@ -110,8 +110,8 @@ const EventPopup: React.FC = () => {
                                 </div>
                                 <div>
                                     <p className="text-[10px] text-slate-400 uppercase font-medium tracking-widest mb-1">Schedule</p>
-                                    <p className="text-lg font-semibold text-slate-900 leading-tight">{event.date}</p>
-                                    <p className="text-slate-500 font-medium">{event.time}</p>
+                                    <p className="text-base font-medium text-slate-900 leading-tight">{event.date}</p>
+                                    <p className="text-slate-500 font-normal text-sm">{event.time}</p>
                                 </div>
                             </div>
 
@@ -121,18 +121,18 @@ const EventPopup: React.FC = () => {
                                 </div>
                                 <div>
                                     <p className="text-[10px] text-slate-400 uppercase font-medium tracking-widest mb-1">Location</p>
-                                    <p className="text-lg font-semibold text-slate-900 leading-tight">{event.location}</p>
+                                    <p className="text-base font-medium text-slate-900 leading-tight">{event.location}</p>
                                 </div>
                             </div>
                         </div>
 
                         {/* Description Section */}
                         <div className="mb-12 bg-slate-50 p-8 rounded-[2rem] border border-slate-100">
-                            <h5 className="text-slate-900 font-semibold mb-4 flex items-center gap-2">
+                            <h5 className="text-slate-900 font-medium mb-4 flex items-center gap-2">
                                 <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"></path></svg>
                                 Details
                             </h5>
-                            <p className="text-slate-600 leading-relaxed text-base font-medium">
+                            <p className="text-slate-600 leading-relaxed text-sm font-normal">
                                 {event.description || "Join us for an insightful session where we explore global career opportunities and guidance."}
                             </p>
                         </div>
@@ -144,7 +144,7 @@ const EventPopup: React.FC = () => {
                                 href={event.registrationLink}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex-1 group relative overflow-hidden bg-blue-600 text-white font-semibold py-5 rounded-[1.25rem] transition-all shadow-[0_20px_50px_-15px_rgba(37,99,235,0.4)] hover:shadow-[0_25px_60px_-15px_rgba(37,99,235,0.6)] hover:-translate-y-1 active:scale-[0.98] text-center text-lg flex items-center justify-center gap-3"
+                                className="flex-1 group relative overflow-hidden bg-blue-600 text-white font-medium py-4 rounded-[1.25rem] transition-all shadow-[0_20px_50px_-15px_rgba(37,99,235,0.4)] hover:shadow-[0_25px_60px_-15px_rgba(37,99,235,0.6)] hover:-translate-y-1 active:scale-[0.98] text-center text-base flex items-center justify-center gap-3"
                             >
                                 Register Now
                                 <svg className="w-5 h-5 transition-transform group-hover:translate-x-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
@@ -157,7 +157,7 @@ const EventPopup: React.FC = () => {
                         )}
                         <button
                             onClick={handleClose}
-                            className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-5 rounded-[1.25rem] transition-all active:scale-[0.98] text-center text-lg border-2 border-slate-200 shadow-sm"
+                            className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-4 rounded-[1.25rem] transition-all active:scale-[0.98] text-center text-base border-2 border-slate-200 shadow-sm"
                         >
                             Close
                         </button>

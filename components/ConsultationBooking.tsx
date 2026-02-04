@@ -62,35 +62,35 @@ const ConsultationBooking: React.FC = () => {
           <div className="relative grid lg:grid-cols-2 gap-20 items-center p-6 md:p-24 overflow-hidden">
             <div className="text-white space-y-10">
               <div className="space-y-4">
-                <span className="inline-block py-2 px-6 rounded-full bg-white/5 border border-white/10 text-accent text-[10px] font-medium uppercase tracking-[0.3em]">
+                <span className="inline-block py-3 px-7 rounded-full bg-white/5 border border-white/10 text-accent text-sm md:text-base font-medium uppercase tracking-[0.3em]">
                   Priority Access
                 </span>
-                <h2 className="text-5xl md:text-7xl font-semibold leading-tight tracking-tight text-balance">
+                <h2 className="text-4xl md:text-8xl font-semibold leading-tight tracking-tight text-balance">
                   Master Your <br /> Global Path.
                 </h2>
               </div>
 
-              <p className="text-white/50 text-xl font-medium max-w-sm leading-relaxed">
+              <p className="text-white/50 text-2xl md:text-3xl font-medium max-w-md leading-relaxed">
                 Secure an exclusive session with our leading strategists to curate your educational roadmap.
               </p>
 
               <div className="space-y-6 pt-6 border-t border-white/5">
                 <div className="flex items-center gap-6 group">
-                  <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-accent group-hover:border-accent transition-all duration-500">
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" /></svg>
+                  <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-accent group-hover:border-accent transition-all duration-500">
+                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" /></svg>
                   </div>
                   <div className="space-y-1">
-                    <p className="font-medium text-white tracking-tight">Elite Strategic Guidance</p>
-                    <p className="text-sm text-white/30 font-normal">Personalized 1:1 sessions with industry veterans.</p>
+                    <p className="font-semibold text-white tracking-tight text-lg md:text-xl">Elite Strategic Guidance</p>
+                    <p className="text-base md:text-lg text-white/30 font-normal">Personalized 1:1 sessions with industry veterans.</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-6 group">
-                  <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-accent group-hover:border-accent transition-all duration-500">
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" /></svg>
+                  <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-accent group-hover:border-accent transition-all duration-500">
+                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" /></svg>
                   </div>
                   <div className="space-y-1">
-                    <p className="font-medium text-white tracking-tight">Verification Assistance</p>
-                    <p className="text-sm text-white/30 font-normal">Concierge-level support for global credentials.</p>
+                    <p className="font-semibold text-white tracking-tight text-lg md:text-xl">Verification Assistance</p>
+                    <p className="text-base md:text-lg text-white/30 font-normal">Concierge-level support for global credentials.</p>
                   </div>
                 </div>
               </div>
@@ -99,32 +99,32 @@ const ConsultationBooking: React.FC = () => {
             <div className="bg-white rounded-[2.5rem] p-6 md:p-12 shadow-3xl">
               {isBooked ? (
                 <div className="py-20 text-center space-y-6 animate-in fade-in zoom-in-95 duration-700">
-                  <div className="w-24 h-24 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-8 shadow-inner">
-                    <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>
+                  <div className="w-28 h-28 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-8 shadow-inner">
+                    <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>
                   </div>
-                  <h4 className="text-3xl font-semibold text-charcoal tracking-tight">Strategy Confirmed</h4>
-                  <p className="text-charcoal/40 font-medium uppercase tracking-widest text-[10px]">Our office will contact you shortly.</p>
+                  <h4 className="text-4xl md:text-5xl font-semibold text-charcoal tracking-tight">Strategy Confirmed</h4>
+                  <p className="text-charcoal/40 font-medium uppercase tracking-widest text-sm md:text-base">Our office will contact you shortly.</p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4 md:space-y-8">
                   <div className="grid md:grid-cols-2 gap-4 md:gap-8">
-                    <div className="space-y-1.5 md:space-y-3">
-                      <label className="text-[10px] font-medium text-charcoal/40 uppercase tracking-widest ml-1">Full Name</label>
+                    <div className="space-y-4">
+                      <label className="text-sm md:text-base font-medium text-charcoal/40 uppercase tracking-widest ml-1">Full Name</label>
                       <input
                         required
                         type="text"
-                        className="w-full bg-gray-50 border-none rounded-2xl px-6 py-5 text-charcoal font-medium focus:ring-2 focus:ring-accent transition-all"
+                        className="w-full bg-gray-50 border-none rounded-2xl px-6 py-6 text-charcoal font-medium focus:ring-2 focus:ring-accent transition-all text-base md:text-lg min-h-[56px]"
                         placeholder="Jane Doe"
                         value={formData.name}
                         onChange={e => setFormData({ ...formData, name: e.target.value })}
                       />
                     </div>
-                    <div className="space-y-1.5 md:space-y-3">
-                      <label className="text-[10px] font-medium text-charcoal/40 uppercase tracking-widest ml-1">Mobile Number</label>
+                    <div className="space-y-4">
+                      <label className="text-sm md:text-base font-medium text-charcoal/40 uppercase tracking-widest ml-1">Mobile Number</label>
                       <input
                         required
                         type="tel"
-                        className="w-full bg-gray-50 border-none rounded-2xl px-6 py-5 text-charcoal font-medium focus:ring-2 focus:ring-accent transition-all"
+                        className="w-full bg-gray-50 border-none rounded-2xl px-6 py-6 text-charcoal font-medium focus:ring-2 focus:ring-accent transition-all text-base md:text-lg min-h-[56px]"
                         placeholder="+91"
                         value={formData.phone}
                         onChange={e => setFormData({ ...formData, phone: e.target.value })}
@@ -183,13 +183,13 @@ const ConsultationBooking: React.FC = () => {
 
                   <button
                     type="submit"
-                    className="w-full bg-charcoal text-white font-semibold py-6 rounded-2xl shadow-3xl hover:bg-black transition-all mt-4 transform active:scale-[0.98]"
+                    className="w-full bg-charcoal text-white font-bold py-7 rounded-2xl shadow-3xl hover:bg-black transition-all mt-6 transform active:scale-[0.98] text-lg md:text-xl min-h-[64px]"
                   >
                     Reserve Exclusive Slot
                   </button>
                   <div className="flex items-center justify-center gap-2 pt-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                    <p className="text-[9px] text-charcoal/30 font-medium uppercase tracking-widest">Counselors currently active</p>
+                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                    <p className="text-xs md:text-sm text-charcoal/30 font-medium uppercase tracking-widest">Counselors currently active</p>
                   </div>
                 </form>
               )}

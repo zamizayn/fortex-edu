@@ -15,7 +15,7 @@ const Hero: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white">
+    <div className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-white pt-20 md:pt-28">
       {/* Immersive Background Image */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-black/40 z-10" />
@@ -33,35 +33,29 @@ const Hero: React.FC = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="space-y-8"
         >
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-medium tracking-wider uppercase">
-            <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-            Trusted Guidance For a Bright Future
-          </div>
-
           {/* Hero Heading */}
-          <h1 className="text-6xl md:text-8xl font-semibold text-white leading-tight tracking-tight text-balance">
+          <h1 className="mt-[60px] md:mt-[80px] text-3xl md:text-5xl font-semibold text-white leading-tight tracking-tight text-balance">
             Clear Guidance <br />
             for a <span className="text-white/80">Bright Future.</span>
           </h1>
 
-          <p className="text-xl md:text-2xl text-white/90 font-normal max-w-2xl mx-auto text-balance">
-            Expert guidance for admissions to India’s top universities & colleges. We help you navigate your educational path with ease.
+          <p className="text-sm md:text-lg text-white/90 font-normal max-w-2xl mx-auto text-balance leading-relaxed">
+            Expert guidance for admissions to India's top universities & colleges. We help you navigate your educational path with ease.
           </p>
 
           {/* Glassmorphic CTA Bar */}
-          <div className="pt-10 flex flex-col md:flex-row items-center justify-center gap-4 max-w-3xl mx-auto">
-            <div className="w-full md:flex-1 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-2 flex flex-col md:flex-row items-center gap-2 shadow-2xl">
-              <div className="flex-1 px-4 py-3 text-left">
-                <p className="text-xs text-white/60 font-medium uppercase tracking-widest mb-1">Explore</p>
-                <p className="text-white font-medium">Find the right university/college for you or Find Your Ideal Campus </p>
+          <div className="pt-12 flex flex-col md:flex-row items-center justify-center gap-6 max-w-4xl mx-auto">
+            <div className="w-full md:flex-1 bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-3 flex flex-col md:flex-row items-center gap-3 shadow-2xl">
+              <div className="flex-1 px-6 py-4 text-left w-full">
+                <p className="text-xs text-white/60 font-medium uppercase tracking-widest mb-2">Explore</p>
+                <p className="text-white font-medium text-base">Find the right university/college for you or Find Your Ideal Campus </p>
               </div>
               <div className="w-px h-10 bg-white/10 hidden md:block" />
-              <div className="flex-1 px-4 py-3 text-left">
-                <p className="text-xs text-white/60 font-medium uppercase tracking-widest mb-1">Programs</p>
-                <p className="text-white font-medium">Explore Career Streams</p>
+              <div className="flex-1 px-6 py-4 text-left w-full">
+                <p className="text-xs text-white/60 font-medium uppercase tracking-widest mb-2">Programs</p>
+                <p className="text-white font-medium text-base">Explore Career Streams</p>
               </div>
-              <button className="w-full md:w-auto px-8 py-4 bg-accent text-white font-medium rounded-xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/40">
+              <button className="w-full md:w-auto px-10 py-5 bg-accent text-white font-semibold text-sm md:text-base rounded-2xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/40 min-h-[56px]">
                 Get Started
               </button>
             </div>

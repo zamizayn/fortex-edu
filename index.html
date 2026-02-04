@@ -20,6 +20,15 @@
       background-color: #ffffff;
       color: var(--charcoal);
       overflow-x: hidden;
+      font-size: 15px;
+      /* Ensure minimum 16px for mobile to prevent zoom on input focus */
+    }
+
+    @media (max-width: 768px) {
+      body {
+        font-size: 14px;
+        /* Standard base font for mobile */
+      }
     }
 
     /* Viewport glow effect similar to entry.com */

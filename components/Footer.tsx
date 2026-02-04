@@ -18,13 +18,13 @@ const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
 
 
-        <div className="mt-32 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-[10px] font-medium text-white/20 uppercase tracking-widest">
+        <div className="mt-32 pt-8 pb-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+          <p className="text-xs md:text-base font-medium text-white/20 uppercase tracking-widest">
             © {new Date().getFullYear()} Fortex Education Consultancy.
           </p>
           <div className="flex gap-8">
-            <a href="#" className="text-[10px] font-medium text-white/20 uppercase tracking-widest hover:text-white transition-all">Privacy Policy</a>
-            <a href="#" className="text-[10px] font-medium text-white/20 uppercase tracking-widest hover:text-white transition-all">Terms of Service</a>
+            <a href="#" className="text-xs md:text-base font-medium text-white/20 uppercase tracking-widest hover:text-white transition-all">Privacy Policy</a>
+            <a href="#" className="text-xs md:text-base font-medium text-white/20 uppercase tracking-widest hover:text-white transition-all">Terms of Service</a>
           </div>
         </div>
       </div>

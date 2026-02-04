@@ -1,0 +1,55 @@
+import React from 'react';
+import Hero from '../components/Hero';
+import Programs from '../components/Programs';
+import Admissions from '../components/Admissions';
+import SocialFeed from '../components/SocialFeed';
+import ConsultationBooking from '../components/ConsultationBooking';
+import VideoGallery from '../components/VideoGallery';
+import AffiliatedColleges from '../components/AffiliatedColleges';
+import Universities from '../components/Universities';
+import Events from '../components/Events';
+import Team from '../components/Team';
+import { User, SiteSettings } from '../types';
+
+interface HomePageProps {
+    user: User | null;
+    onLoginClick: () => void;
+    siteSettings: SiteSettings | null;
+}
+
+const HomePage: React.FC<HomePageProps> = ({ user, onLoginClick, siteSettings }) => {
+    const isVisible = (sectionId: string) => siteSettings?.visibleSections?.[sectionId] !== false;
+
+    return (
+        <main>
+            {isVisible('hero') && (
+                <section id="home">
+                    <Hero />
+                </section>
+            )}
+
+            {isVisible('team') && (
+                <Team members={siteSettings?.teamMembers} />
+            )}
+
+            {isVisible('colleges') && (
+                <>
+                    <AffiliatedColleges user={user} onLoginClick={onLoginClick} />
+                </>
+            )}
+
+            {isVisible('universities') && <Universities />}
+
+            {isVisible('programs') && <Programs />}
+
+            {isVisible('booking') && <ConsultationBooking />}
+
+            {isVisible('media') && <VideoGallery />}
+
+            {isVisible('admissions') && <Admissions />}
+            {isVisible('events') && <Events />}
+        </main>
+    );
+};
+
+export default HomePage;

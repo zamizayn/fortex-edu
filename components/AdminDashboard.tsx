@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { User, Service, College, University, Lead, SiteSettings, Consultation, EducationInsight, Inquiry, Event } from '../types';
-import { db, collection, getDocs, addDoc, deleteDoc, updateDoc, doc, storage, query, orderBy, limit, startAfter, getCountFromServer, QueryDocumentSnapshot, DocumentData } from '../firebase';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { db, collection, getDocs, addDoc, deleteDoc, updateDoc, doc, query, orderBy, limit, startAfter, getCountFromServer, QueryDocumentSnapshot, DocumentData } from '../firebase';
 import { getSiteSettings, saveSiteSettings } from '../services/db';
+import { seedCourses } from '../seedCourses';
 import * as XLSX from 'xlsx';
 
 interface AdminDashboardProps {
@@ -352,16 +352,36 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
     const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
+
+            // Validate file size (max 2MB for base64)
+            if (file.size > 2 * 1024 * 1024) {
+                alert('File size should be less than 2MB');
+                return;
+            }
+
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                alert('Please upload an image file');
+                return;
+            }
+
             setLoading(true);
             try {
-                const storageRef = ref(storage, `logos / ${Date.now()}_${file.name} `);
-                await uploadBytes(storageRef, file);
-                const url = await getDownloadURL(storageRef);
-                setSiteSettings(prev => ({ ...prev, logoUrl: url }));
+                // Convert to base64
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const base64String = reader.result as string;
+                    setSiteSettings(prev => ({ ...prev, logoUrl: base64String }));
+                    setLoading(false);
+                };
+                reader.onerror = () => {
+                    alert('Failed to read file');
+                    setLoading(false);
+                };
+                reader.readAsDataURL(file);
             } catch (error) {
                 console.error("Error uploading logo:", error);
                 alert("Failed to upload logo.");
-            } finally {
                 setLoading(false);
             }
         }
@@ -633,12 +653,30 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                     <div className="space-y-6">
                         <div className="flex justify-between items-center">
                             <h2 className="text-xl font-bold text-gray-800">Manage Services</h2>
-                            <button
-                                onClick={() => { setIsAdding(!isAdding); setFormData({}); setEditingId(null); }}
-                                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition flex items-center gap-2"
-                            >
-                                {isAdding ? 'Cancel' : '+ Add Service'}
-                            </button>
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={async () => {
+                                        if (confirm('This will add 12 courses to your services. Continue?')) {
+                                            setLoading(true);
+                                            await seedCourses();
+                                            // Refresh services list
+                                            await fetchPaginatedData('services', 1);
+                                            setLoading(false);
+                                            alert('Courses added successfully!');
+                                        }
+                                    }}
+                                    className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition flex items-center gap-2"
+                                >
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+                                    Seed Courses
+                                </button>
+                                <button
+                                    onClick={() => { setIsAdding(!isAdding); setFormData({}); setEditingId(null); }}
+                                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition flex items-center gap-2"
+                                >
+                                    {isAdding ? 'Cancel' : '+ Add Service'}
+                                </button>
+                            </div>
                         </div>
 
                         {isAdding && (
@@ -862,21 +900,37 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                     <h3 className="text-lg font-medium text-gray-900 border-b pb-2">Theme & Branding</h3>
                                     <div className="grid grid-cols-1 gap-6">
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Website Logo URL</label>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Website Logo</label>
                                             <div className="flex items-center gap-4">
                                                 {siteSettings.logoUrl && (
                                                     <img src={siteSettings.logoUrl} alt="Logo Preview" className="h-10 w-10 object-contain rounded border border-gray-200 bg-gray-50" />
                                                 )}
-                                                <input
-                                                    type="url"
-                                                    placeholder="https://example.com/logo.png"
-                                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
-                                                    value={siteSettings.logoUrl || ''}
-                                                    onChange={e => setSiteSettings({ ...siteSettings, logoUrl: e.target.value })}
-                                                />
+                                                <div className="flex-1 flex gap-2">
+                                                    <input
+                                                        type="url"
+                                                        placeholder="https://example.com/logo.png"
+                                                        className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                                                        value={siteSettings.logoUrl || ''}
+                                                        onChange={e => setSiteSettings({ ...siteSettings, logoUrl: e.target.value })}
+                                                    />
+                                                    <label className="cursor-pointer">
+                                                        <input
+                                                            type="file"
+                                                            accept="image/*"
+                                                            onChange={handleLogoUpload}
+                                                            className="hidden"
+                                                        />
+                                                        <span className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium">
+                                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                                            </svg>
+                                                            Upload
+                                                        </span>
+                                                    </label>
+                                                </div>
                                             </div>
                                             <p className="text-xs text-gray-500 mt-2">
-                                                Tip: Since file uploads require cloud storage, you can host your logo on a free service like Imgur or use a direct link from your existing website.
+                                                Upload a logo from your computer or paste a URL. Recommended size: 200x200px or larger.
                                             </p>
                                         </div>
                                     </div>
