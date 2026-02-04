@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { User, Service, College, University, Lead, SiteSettings, Consultation, EducationInsight, Inquiry, Event } from '../types';
+import { User, Service, College, University, Lead, SiteSettings, Consultation, EducationInsight, Inquiry, Event, Review } from '../types';
 import { db, collection, getDocs, addDoc, deleteDoc, updateDoc, doc, query, orderBy, limit, startAfter, getCountFromServer, QueryDocumentSnapshot, DocumentData } from '../firebase';
 import { getSiteSettings, saveSiteSettings } from '../services/db';
 import { seedCourses } from '../seedCourses';
@@ -24,12 +24,14 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
     const [educationInsights, setEducationInsights] = useState<EducationInsight[]>([]);
     const [inquiries, setInquiries] = useState<Inquiry[]>([]);
     const [events, setEvents] = useState<Event[]>([]);
+    const [reviews, setReviews] = useState<Review[]>([]);
 
     // Form State
     const [isAdding, setIsAdding] = useState(false);
     const [formData, setFormData] = useState<any>({});
     const [siteSettings, setSiteSettings] = useState<SiteSettings | null>(null);
     const [editingId, setEditingId] = useState<string | null>(null);
+    const [selectedConsultation, setSelectedConsultation] = useState<Consultation | null>(null);
 
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(5);
@@ -103,6 +105,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                 case 'consultations': setConsultations(data.map(d => ({ ...d, createdAt: d.createdAt?.toDate ? d.createdAt.toDate() : new Date() } as Consultation))); break;
                 case 'inquiries': setInquiries(data as Inquiry[]); break;
                 case 'events': setEvents(data as Event[]); break;
+                case 'reviews': setReviews(data.map(d => ({ ...d, createdAt: d.createdAt?.toDate ? d.createdAt.toDate() : new Date() } as Review))); break;
             }
 
         } catch (error: any) {
@@ -139,7 +142,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
             'education-insights': 'education-insights',
             'consultation': 'consultations',
             'inquiries': 'inquiries',
-            'events': 'events'
+            'events': 'events',
+            'reviews': 'reviews'
         };
         const collName = collectionMap[activeTab];
         if (collName) {
@@ -197,7 +201,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                     'education-insights': 'education-insights',
                     'consultation': 'consultations',
                     'inquiries': 'inquiries',
-                    'events': 'events'
+                    'events': 'events',
+                    'reviews': 'reviews'
                 };
 
                 const targetColl = collectionMap[activeTab];
@@ -336,6 +341,14 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                 } else {
                     const docRef = await addDoc(collection(db, 'events'), dataToSave);
                     setEvents(prev => [{ ...dataToSave, id: docRef.id } as Event, ...prev]);
+                }
+            } else if (activeTab === 'reviews') {
+                if (editingId) {
+                    await updateDoc(doc(db, 'reviews', editingId), dataToSave);
+                    setReviews(prev => prev.map(item => item.id === editingId ? { ...item, ...dataToSave } : item));
+                } else {
+                    const docRef = await addDoc(collection(db, 'reviews'), dataToSave);
+                    setReviews(prev => [{ ...dataToSave, id: docRef.id } as Review, ...prev]);
                 }
             }
             setIsAdding(false);
@@ -1482,9 +1495,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                         <th className="p-4 text-xs font-bold text-gray-500 uppercase">Student Name</th>
                                         <th className="p-4 text-xs font-bold text-gray-500 uppercase">Contact</th>
                                         <th className="p-4 text-xs font-bold text-gray-500 uppercase">Interest</th>
+                                        <th className="p-4 text-xs font-bold text-gray-500 uppercase">Program</th>
+                                        <th className="p-4 text-xs font-bold text-gray-500 uppercase">Comments</th>
                                         <th className="p-4 text-xs font-bold text-gray-500 uppercase">Last Course</th>
                                         <th className="p-4 text-xs font-bold text-gray-500 uppercase">Score</th>
-                                        <th className="p-4 text-xs font-bold text-gray-500 uppercase">Preferred Date</th>
                                         <th className="p-4 text-xs font-bold text-gray-500 uppercase">Actions</th>
                                     </tr>
                                 </thead>
@@ -1506,15 +1520,26 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                                 </span>
                                             </td>
                                             <td className="p-4">
+                                                <p className="text-sm font-medium text-charcoal">{consultation.selectedProgram || ''}</p>
+                                            </td>
+                                            <td className="p-4">
+                                                <p className="text-sm text-gray-500 line-clamp-1 max-w-[200px]">
+                                                    {consultation.comment || ''}
+                                                </p>
+                                            </td>
+                                            <td className="p-4">
                                                 <p className="text-sm text-gray-600">{consultation.lastAttendedCourse || '-'}</p>
                                             </td>
                                             <td className="p-4">
                                                 <p className="text-sm text-gray-600">{consultation.percentage ? `${consultation.percentage}` : '-'}</p>
                                             </td>
-                                            <td className="p-4 text-sm text-gray-500">
-                                                {consultation.date}
-                                            </td>
                                             <td className="p-4 flex gap-2">
+                                                <button
+                                                    onClick={() => setSelectedConsultation(consultation)}
+                                                    className="text-blue-500 hover:text-blue-700 text-xs font-bold uppercase tracking-wider"
+                                                >
+                                                    View
+                                                </button>
                                                 <button
                                                     onClick={() => handleDelete('consultations', consultation.id!)}
                                                     className="text-red-500 hover:text-red-700 text-xs font-bold uppercase tracking-wider"
@@ -1877,6 +1902,154 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                     </div>
                 );
 
+            case 'reviews':
+                return (
+                    <div className="space-y-6">
+                        <div className="flex justify-between items-center">
+                            <h2 className="text-xl font-semibold text-gray-800">Student Reviews</h2>
+                            <button
+                                onClick={() => { setIsAdding(!isAdding); setFormData({ rating: 5 }); }}
+                                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition flex items-center gap-2"
+                            >
+                                {isAdding ? 'Cancel' : '+ Add Review'}
+                            </button>
+                        </div>
+
+                        {isAdding && (
+                            <form onSubmit={(e) => {
+                                e.preventDefault();
+                                handleAddSubmit(e);
+                            }} className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 animate-in slide-in-from-top-4 duration-300">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Student Name</label>
+                                        <input
+                                            required
+                                            type="text"
+                                            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="e.g. Sarah Johnson"
+                                            value={formData.studentName || ''}
+                                            onChange={e => setFormData({ ...formData, studentName: e.target.value })}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Program</label>
+                                        <input
+                                            required
+                                            type="text"
+                                            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="e.g. BSc Nursing"
+                                            value={formData.program || ''}
+                                            onChange={e => setFormData({ ...formData, program: e.target.value })}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Rating (1-5)</label>
+                                        <select
+                                            required
+                                            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            value={formData.rating || 5}
+                                            onChange={e => setFormData({ ...formData, rating: Number(e.target.value) })}
+                                        >
+                                            <option value="5">5 - Excellent</option>
+                                            <option value="4">4 - Very Good</option>
+                                            <option value="3">3 - Good</option>
+                                            <option value="2">2 - Fair</option>
+                                            <option value="1">1 - Poor</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Student Image URL (Optional)</label>
+                                        <input
+                                            type="url"
+                                            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="https://example.com/photo.jpg"
+                                            value={formData.imageUrl || ''}
+                                            onChange={e => setFormData({ ...formData, imageUrl: e.target.value })}
+                                        />
+                                    </div>
+                                    <div className="md:col-span-2">
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Testimonial</label>
+                                        <textarea
+                                            required
+                                            rows={4}
+                                            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="What did the student say about their experience?"
+                                            value={formData.content || ''}
+                                            onChange={e => setFormData({ ...formData, content: e.target.value })}
+                                        ></textarea>
+                                    </div>
+                                </div>
+                                <div className="mt-4 flex justify-end">
+                                    <button type="submit" className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 font-medium">
+                                        Save Review
+                                    </button>
+                                </div>
+                            </form>
+                        )}
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {reviews.map(review => (
+                                <div key={review.id} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-md transition p-6 flex flex-col h-full">
+                                    <div className="flex items-start justify-between mb-4">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-12 h-12 rounded-full bg-gray-100 overflow-hidden flex-shrink-0">
+                                                {review.imageUrl ? (
+                                                    <img src={review.imageUrl} alt={review.studentName} className="w-full h-full object-cover" />
+                                                ) : (
+                                                    <div className="w-full h-full flex items-center justify-center text-gray-400 font-bold text-xl">
+                                                        {review.studentName.charAt(0)}
+                                                    </div>
+                                                )}
+                                            </div>
+                                            <div>
+                                                <h3 className="font-bold text-gray-900">{review.studentName}</h3>
+                                                <p className="text-xs text-blue-600 font-medium">{review.program}</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex gap-0.5">
+                                            {[...Array(5)].map((_, i) => (
+                                                <svg key={i} className={`w-4 h-4 ${i < review.rating ? 'text-yellow-400' : 'text-gray-200'}`} fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                </svg>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div className="flex-grow">
+                                        <p className="text-gray-600 text-sm italic leading-relaxed line-clamp-4">"{review.content}"</p>
+                                    </div>
+
+                                    <div className="flex mt-6 px-4 pt-4 border-t border-gray-100 -mx-6 mb-[-24px] pb-6 bg-gray-50/50">
+                                        <button
+                                            onClick={() => handleDelete('reviews', review.id!)}
+                                            className="w-full text-center py-2 text-red-600 text-sm font-medium hover:bg-red-50 rounded-lg transition"
+                                        >
+                                            Delete Review
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                            {!isAdding && reviews.length === 0 && (
+                                <div className="col-span-full py-16 text-center text-gray-500 bg-gray-50 rounded-xl border-dashed border-2 border-gray-200">
+                                    <div className="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4 text-gray-400">
+                                        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+                                    </div>
+                                    <h3 className="text-lg font-medium text-gray-900">No reviews yet</h3>
+                                    <p className="text-gray-500 mt-1 mb-4">Add your first student testimonial to showcase success stories.</p>
+                                    <button
+                                        onClick={() => { setIsAdding(true); setFormData({}); }}
+                                        className="text-blue-600 font-medium hover:text-blue-800"
+                                    >
+                                        + Add Review
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                        <PaginationControls />
+                    </div>
+                );
+
             default:
                 return null;
         }
@@ -1923,7 +2096,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                 </div>
             )
         },
-
         {
             id: 'education-insights', label: 'Education Insights', icon: (
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
@@ -1940,6 +2112,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
         {
             id: 'events', label: 'Events', icon: (
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+            )
+        },
+        {
+            id: 'reviews', label: 'Student Reviews', icon: (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
             )
         },
         {
@@ -2023,6 +2200,103 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
 
                 {renderContent()}
             </main>
+
+            {/* Consultation Detail Modal */}
+            {selectedConsultation && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-charcoal/40 backdrop-blur-md animate-in fade-in duration-300">
+                    <div
+                        className="bg-white w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl animate-in zoom-in-95 slide-in-from-bottom-4 duration-500"
+                        onClick={e => e.stopPropagation()}
+                    >
+                        {/* Header */}
+                        <div className="p-6 md:p-8 bg-slate-50 border-b border-slate-100 flex justify-between items-start">
+                            <div className="space-y-1">
+                                <h3 className="text-xl md:text-2xl font-bold text-charcoal">{selectedConsultation.name}</h3>
+                                <p className="text-sm text-charcoal/40 font-medium tracking-wide uppercase">Enquiry Details</p>
+                            </div>
+                            <button
+                                onClick={() => setSelectedConsultation(null)}
+                                className="p-2 hover:bg-slate-200 rounded-full transition-colors text-charcoal/40"
+                            >
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
+                        </div>
+
+                        {/* Body */}
+                        <div className="p-6 md:p-8 space-y-8 max-h-[70vh] overflow-y-auto">
+                            {/* Academic Interest & Program */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-bold text-charcoal/30 uppercase tracking-widest block">Academic Interest</label>
+                                    <p className="text-base font-semibold text-charcoal bg-blue-50 px-3 py-1 rounded-lg inline-block">{selectedConsultation.interest}</p>
+                                </div>
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-bold text-charcoal/30 uppercase tracking-widest block">Selected Program</label>
+                                    <p className="text-base font-semibold text-charcoal">{selectedConsultation.selectedProgram || 'Standard Consultancy'}</p>
+                                </div>
+                            </div>
+
+                            {/* Contact & Date */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-slate-50">
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-bold text-charcoal/30 uppercase tracking-widest block">Phone Number</label>
+                                    <a href={`tel:${selectedConsultation.phone}`} className="text-base font-semibold text-accent hover:underline flex items-center gap-2">
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+                                        {selectedConsultation.phone}
+                                    </a>
+                                </div>
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-bold text-charcoal/30 uppercase tracking-widest block">Submitted On</label>
+                                    <p className="text-base font-semibold text-charcoal">
+                                        {selectedConsultation.createdAt instanceof Date
+                                            ? selectedConsultation.createdAt.toLocaleDateString('en-US', {
+                                                year: 'numeric',
+                                                month: 'long',
+                                                day: 'numeric',
+                                                hour: 'numeric',
+                                                minute: '2-digit',
+                                                hour12: true
+                                            })
+                                            : 'Just now'}
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* Academic History */}
+                            {(selectedConsultation.lastAttendedCourse || selectedConsultation.percentage) && (
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-slate-50">
+                                    <div className="space-y-1">
+                                        <label className="text-[10px] font-bold text-charcoal/30 uppercase tracking-widest block">Last Attended Course</label>
+                                        <p className="text-base font-semibold text-charcoal">{selectedConsultation.lastAttendedCourse || '-'}</p>
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-[10px] font-bold text-charcoal/30 uppercase tracking-widest block">Score/Percentage</label>
+                                        <p className="text-base font-semibold text-charcoal">{selectedConsultation.percentage || '-'}</p>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Comments */}
+                            <div className="space-y-3 pt-6 border-t border-slate-50">
+                                <label className="text-[10px] font-bold text-charcoal/30 uppercase tracking-widest block">Personalized Message</label>
+                                <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100 italic text-charcoal/70 text-base leading-relaxed">
+                                    "{selectedConsultation.comment || 'No specific comment provided.'}"
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Footer */}
+                        <div className="p-6 md:p-8 bg-slate-50 border-t border-slate-100 flex justify-center items-center">
+                            <button
+                                onClick={() => setSelectedConsultation(null)}
+                                className="px-12 py-3 bg-charcoal text-white rounded-xl text-sm font-bold uppercase tracking-widest shadow-lg shadow-black/10 hover:scale-[1.02] active:scale-98 transition-all"
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

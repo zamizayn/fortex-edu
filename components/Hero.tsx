@@ -16,7 +16,7 @@ const HERO_SLIDES = [
     title: "Global Education, Within Your Reach.",
     description: "Connect with world-class institutions and unlock international opportunities that align with your ambitions.",
     subtitle: "GLOBAL PATHWAYS",
-    image: "/hero-2.png"
+    image: "/banner.JPG"
   },
   {
     id: 3,
@@ -47,7 +47,7 @@ const Hero: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-white pt-24 md:pt-32">
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentSlide}
@@ -79,38 +79,56 @@ const Hero: React.FC = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="space-y-6 md:space-y-8"
           >
-            <span className="text-accent-blue text-[10px] md:text-xs font-semibold uppercase tracking-[0.3em] bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full text-white inline-block">
-              {HERO_SLIDES[currentSlide].subtitle}
-            </span>
-            <h1 className="text-3xl md:text-6xl font-semibold text-white leading-[1.15] tracking-tight text-balance">
-              {HERO_SLIDES[currentSlide].title.split('.').map((part, i) => (
-                <React.Fragment key={i}>
-                  {part}{i === 0 && part && '.'}
-                  {i === 0 && <br />}
-                </React.Fragment>
-              ))}
-            </h1>
+            {/* Show subtitle only if it's NOT the second slide (index 1) */}
+            {currentSlide !== 1 && (
+              <span className="text-accent-blue text-[10px] md:text-xs font-semibold uppercase tracking-[0.3em] bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full text-white inline-block">
+                {HERO_SLIDES[currentSlide].subtitle}
+              </span>
+            )}
 
-            <p className="text-sm md:text-lg text-white/80 font-normal max-w-2xl mx-auto text-balance leading-relaxed">
-              {HERO_SLIDES[currentSlide].description}
-            </p>
+            {/* Show title only if it's NOT the second slide (index 1) */}
+            {currentSlide !== 1 && (
+              <h1 className="text-3xl md:text-6xl font-semibold text-white leading-[1.15] tracking-tight text-balance">
+                {HERO_SLIDES[currentSlide].title.split('.').map((part, i) => (
+                  <React.Fragment key={i}>
+                    {part}{i === 0 && part && '.'}
+                    {i === 0 && <br />}
+                  </React.Fragment>
+                ))}
+              </h1>
+            )}
 
-            <div className="pt-8 flex flex-col md:flex-row items-center justify-center gap-6 max-w-4xl mx-auto">
-              <div className="w-full md:flex-1 bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-2 md:p-3 flex flex-col md:flex-row items-center gap-2 md:gap-3 shadow-2xl">
-                <div className="flex-1 px-4 py-3 md:px-6 md:py-4 text-left w-full">
-                  <p className="text-[10px] text-white/50 font-medium uppercase tracking-widest mb-1">Explore</p>
-                  <p className="text-white font-medium text-xs md:text-sm">Find Your Ideal Campus</p>
+            {/* Show description only if it's NOT the second slide (index 1) */}
+            {currentSlide !== 1 && (
+              <p className="text-sm md:text-lg text-white/80 font-normal max-w-2xl mx-auto text-balance leading-relaxed">
+                {HERO_SLIDES[currentSlide].description}
+              </p>
+            )}
+
+            {/* Show Action Buttons only if it's NOT the second slide (index 1) */}
+            {currentSlide !== 1 && (
+              <div className="pt-8 flex flex-col md:flex-row items-center justify-center gap-6 max-w-4xl mx-auto">
+                <div className="w-full md:flex-1 bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-2 md:p-3 flex flex-col md:flex-row items-center gap-2 md:gap-3 shadow-2xl">
+                  {/* <div className="flex-1 px-4 py-3 md:px-6 md:py-4 text-left w-full group">
+                    <p className="text-[10px] text-white/50 font-medium uppercase tracking-widest mb-1">Stay Updated</p>
+                    <p className="text-white font-medium text-xs md:text-sm">Latest Career News</p>
+                  </div> */}
+                  {/* <div className="w-px h-8 bg-white/10 hidden md:block" /> */}
+                  <div className="flex-1 px-4 py-3 md:px-6 md:py-4 text-left w-full">
+                    <p className="text-[10px] text-white/50 font-medium uppercase tracking-widest mb-1">WhatsApp</p>
+                    <p className="text-white font-medium text-xs md:text-sm">Stay Updated With Career Updates</p>
+                  </div>
+                  <a
+                    href="https://whatsapp.com/channel/0029VaCJF15BKfhxqGkzuc2M"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full md:w-auto px-8 py-4 bg-accent text-white font-semibold text-xs md:text-sm rounded-2xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/40 min-h-[48px] flex items-center justify-center whitespace-nowrap"
+                  >
+                    Join Our WhatsApp
+                  </a>
                 </div>
-                <div className="w-px h-8 bg-white/10 hidden md:block" />
-                <div className="flex-1 px-4 py-3 md:px-6 md:py-4 text-left w-full">
-                  <p className="text-[10px] text-white/50 font-medium uppercase tracking-widest mb-1">Programs</p>
-                  <p className="text-white font-medium text-xs md:text-sm">Career Streams</p>
-                </div>
-                <button className="w-full md:w-auto px-8 py-4 bg-accent text-white font-semibold text-xs md:text-sm rounded-2xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/40 min-h-[48px]">
-                  Get Started
-                </button>
               </div>
-            </div>
+            )}
           </motion.div>
         </AnimatePresence>
       </div>

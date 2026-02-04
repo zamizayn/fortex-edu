@@ -27,9 +27,9 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, user, onLogout, onLoginC
 
   const navLinks = [
     { name: 'Home', href: '/', id: 'home', isRoute: true },
-    { name: 'Courses', href: '#programs', id: 'programs', isRoute: false },
-    { name: 'Top Colleges', href: '#universities', id: 'universities', isRoute: false },
-    { name: 'Free Counseling', href: '#booking', id: 'booking', isRoute: false },
+    { name: 'Courses', href: '/courses', id: 'programs', isRoute: true },
+    { name: 'Top Colleges', href: '/#universities', id: 'universities', isRoute: false },
+    { name: 'Free Counseling', href: '/#booking', id: 'booking', isRoute: false },
   ];
 
   const fortexDropdownLinks = [
@@ -48,7 +48,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, user, onLogout, onLoginC
             <img
               src={siteSettings.logoUrl}
               alt="Logo"
-              className="h-20 md:h-28 w-auto object-contain transition-all duration-300"
+              className="h-24 md:h-36 w-auto object-contain transition-all duration-300"
             />
           )}
         </Link>
@@ -135,6 +135,16 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, user, onLogout, onLoginC
                     <p className="text-xs font-medium text-charcoal truncate">{user.name}</p>
                     <p className="text-[10px] text-charcoal/40 uppercase tracking-widest">{user.role}</p>
                   </div>
+                  {user.role === 'admin' && (
+                    <Link
+                      to="/admin"
+                      className="block w-full text-left px-4 py-3 text-sm text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                      onClick={() => setShowProfileMenu(false)}
+                    >
+                      Dashboard
+                    </Link>
+                  )}
+
                   <button
                     onClick={() => { onLogout(); setShowProfileMenu(false); }}
                     className="w-full text-left px-4 py-3 text-sm text-red-500 font-medium hover:bg-red-50 rounded-xl transition-colors"

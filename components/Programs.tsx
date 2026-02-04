@@ -1,10 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { collection, getDocs, db } from '../firebase';
 import { Service } from '../types';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Programs: React.FC = () => {
+  const navigate = useNavigate();
   const [services, setServices] = useState<Service[]>([]);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [loading, setLoading] = useState(true);
@@ -50,7 +52,7 @@ const Programs: React.FC = () => {
               <motion.div
                 layoutId={service.id}
                 key={service.id}
-                onClick={() => setSelectedService(service)}
+                onClick={() => navigate(`/courses?category=${service.id}`)}
                 className="relative aspect-[4/5] rounded-xl md:rounded-3xl overflow-hidden cursor-pointer group shadow-2xl shadow-black/5"
               >
                 <img
@@ -67,7 +69,7 @@ const Programs: React.FC = () => {
                 </div>
 
                 {/* View Arrow */}
-                <div className="absolute top-2 right-2 md:top-6 md:right-6 w-8 h-8 md:w-14 md:h-14 bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-4 group-hover:translate-y-0 duration-300">
+                <div className="absolute top-2 right-2 md:top-6 md:right-6 w-8 h-8 md:w-14 md:h-14 bg-white rounded-full flex items-center justify-center opacity-100 translate-y-0 md:opacity-0 md:translate-y-4 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition-all duration-300 shadow-lg">
                   <svg className="w-4 h-4 md:w-7 md:h-7 text-charcoal" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                 </div>
               </motion.div>
@@ -107,9 +109,23 @@ const Programs: React.FC = () => {
                 </div>
                 <div className="p-12">
                   <h3 className="text-2xl md:text-4xl font-semibold text-charcoal mb-8">{selectedService.title}</h3>
-                  <p className="text-base md:text-xl text-charcoal/60 font-normal leading-relaxed mb-10">
+                  <p className="text-base md:text-xl text-charcoal/60 font-normal leading-relaxed mb-6">
                     {selectedService.description}
                   </p>
+
+                  {selectedService.programs && selectedService.programs.length > 0 && (
+                    <div className="mb-8">
+                      <p className="text-xs font-bold text-charcoal uppercase tracking-widest mb-4">Included Programs</p>
+                      <div className="grid grid-cols-2 gap-x-4 gap-y-2 max-h-48 overflow-y-auto pr-4 custom-scrollbar">
+                        {selectedService.programs.map((program, idx) => (
+                          <div key={idx} className="flex items-center gap-2 text-sm text-charcoal/70">
+                            <div className="w-1.5 h-1.5 rounded-full bg-accent" />
+                            {program}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                   <div className="flex gap-4">
                     <a
                       href="#contact"

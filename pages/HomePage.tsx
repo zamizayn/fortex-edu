@@ -9,16 +9,24 @@ import AffiliatedColleges from '../components/AffiliatedColleges';
 import Universities from '../components/Universities';
 import Events from '../components/Events';
 import Team from '../components/Team';
+import Reviews from '../components/Reviews';
 import { User, SiteSettings } from '../types';
 
 interface HomePageProps {
     user: User | null;
     onLoginClick: () => void;
     siteSettings: SiteSettings | null;
+    shouldOpenLogin?: boolean;
 }
 
-const HomePage: React.FC<HomePageProps> = ({ user, onLoginClick, siteSettings }) => {
+const HomePage: React.FC<HomePageProps> = ({ user, onLoginClick, siteSettings, shouldOpenLogin }) => {
     const isVisible = (sectionId: string) => siteSettings?.visibleSections?.[sectionId] !== false;
+
+    React.useEffect(() => {
+        if (shouldOpenLogin && !user) {
+            onLoginClick();
+        }
+    }, [shouldOpenLogin, user, onLoginClick]);
 
     return (
         <main>
@@ -42,7 +50,9 @@ const HomePage: React.FC<HomePageProps> = ({ user, onLoginClick, siteSettings })
 
             {isVisible('programs') && <Programs />}
 
-            {isVisible('booking') && <ConsultationBooking />}
+            {isVisible('reviews') && <Reviews />}
+
+            {/* {isVisible('booking') && <ConsultationBooking />} */}
 
             {isVisible('media') && <VideoGallery />}
 

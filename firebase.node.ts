@@ -25,6 +25,8 @@ export {
     collection,
     addDoc,
     getDocs,
+    deleteDoc,
+    doc,
     query,
     where
 } from 'firebase/firestore';

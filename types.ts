@@ -53,6 +53,7 @@ export interface Service {
   title: string;
   description: string;
   imageUrl: string;
+  programs?: string[];
   createdAt?: any;
 }
 
@@ -132,11 +133,13 @@ export interface Consultation {
   id?: string;
   name: string;
   phone: string;
-  date: string;
+  date?: string;
   interest: string;
+  selectedProgram?: string;
   lastAttendedCourse?: string;
   percentage?: string;
   createdAt: any;
+  comment?: string;
   read?: boolean;
 }
 
@@ -156,4 +159,14 @@ export interface EducationInsight {
   serviceTag: string;
   youtubeLink: string;
   createdAt?: any;
+}
+
+export interface Review {
+  id?: string;
+  studentName: string;
+  program: string;
+  rating: number; // 1-5 stars
+  content: string;
+  imageUrl?: string;
+  createdAt: any;
 }

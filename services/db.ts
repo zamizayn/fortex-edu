@@ -178,6 +178,48 @@ export const seedContent = async () => {
         console.error("Error seeding content:", e);
     }
 
+    // Seed Reviews
+    try {
+        const reviewsQuery = query(collection(db, 'reviews'));
+        const reviewsSnapshot = await getDocs(reviewsQuery);
+
+        if (reviewsSnapshot.empty) {
+            const initialReviews = [
+                {
+                    studentName: "Sarah Johnson",
+                    program: "BSc Nursing",
+                    rating: 5,
+                    content: "Fortex Education guided me through every step of the nursing admission process. Their team is incredibly supportive and knowledgeable!",
+                    imageUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80",
+                    createdAt: serverTimestamp()
+                },
+                {
+                    studentName: "Michael Chen",
+                    program: "MBA International",
+                    rating: 5,
+                    content: "I got into my dream university thanks to the personalized counseling. Highly recommend their services for study abroad aspirants.",
+                    imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80",
+                    createdAt: serverTimestamp()
+                },
+                {
+                    studentName: "Priya Patel",
+                    program: "Computer Science",
+                    rating: 4,
+                    content: "Professional, transparent, and always available to answer my queries. Made the visa process seamless.",
+                    imageUrl: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80",
+                    createdAt: serverTimestamp()
+                }
+            ];
+
+            for (const review of initialReviews) {
+                await addDoc(collection(db, 'reviews'), review);
+            }
+            console.log("Seeded initial reviews.");
+        }
+    } catch (e) {
+        console.error("Error seeding reviews:", e);
+    }
+
     // Seeding disabled for other content for now to preserve state
     return;
 };

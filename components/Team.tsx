@@ -50,17 +50,6 @@ const DEFAULT_MEMBERS: TeamMember[] = [
             linkedin: '#',
             instagram: '#'
         }
-    },
-    {
-        id: '4',
-        name: 'David Rodriguez',
-        role: 'Student Support Manager',
-        image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=400&h=400',
-        bio: 'Ensuring every student has a smooth and successful journey.',
-        socials: {
-            linkedin: '#',
-            twitter: '#'
-        }
     }
 ];
 
@@ -68,8 +57,8 @@ const Team: React.FC<{ members?: TeamMember[] }> = ({ members = DEFAULT_MEMBERS 
     return (
         <section id="team" className="py-8 md:py-24 bg-white relative overflow-hidden">
             {/* Decorative Blobs */}
-            <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-96 h-96 bg-blue-50 rounded-full blur-3xl opacity-50 pointer-events-none" />
-            <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-96 h-96 bg-indigo-50 rounded-full blur-3xl opacity-50 pointer-events-none" />
+            <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-96 h-96 bg-gray-100 rounded-full blur-3xl opacity-50 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-96 h-96 bg-gray-100 rounded-full blur-3xl opacity-50 pointer-events-none" />
 
             <div className="container mx-auto px-4 relative z-10">
                 <div className="text-center mb-16">
@@ -77,7 +66,7 @@ const Team: React.FC<{ members?: TeamMember[] }> = ({ members = DEFAULT_MEMBERS 
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-blue-600 font-semibold tracking-wider uppercase text-sm"
+                        className="text-charcoal font-semibold tracking-wider uppercase text-sm"
                     >
                         Experts Behind Fortex
                     </motion.span>
@@ -95,11 +84,11 @@ const Team: React.FC<{ members?: TeamMember[] }> = ({ members = DEFAULT_MEMBERS 
                         whileInView={{ scaleX: 1 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.2, duration: 0.8 }}
-                        className="h-1 w-24 bg-blue-600 mx-auto mt-6 rounded-full origin-center"
+                        className="h-1 w-24 bg-charcoal mx-auto mt-6 rounded-full origin-center"
                     />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-12 max-w-6xl mx-auto">
                     {members.map((member, index) => (
                         <motion.div
                             key={member.id}
@@ -150,10 +139,10 @@ const Team: React.FC<{ members?: TeamMember[] }> = ({ members = DEFAULT_MEMBERS 
 
                                 {/* Content */}
                                 <div className="p-6 flex-grow flex flex-col items-center text-center">
-                                    <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors">
+                                    <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-charcoal transition-colors">
                                         {member.name}
                                     </h3>
-                                    <p className="text-blue-600 font-medium text-sm mb-4">
+                                    <p className="text-charcoal font-medium text-sm mb-4">
                                         {member.role}
                                     </p>
                                     <p className="text-gray-600 text-sm italic">
@@ -162,7 +151,7 @@ const Team: React.FC<{ members?: TeamMember[] }> = ({ members = DEFAULT_MEMBERS 
                                 </div>
 
                                 {/* Bottom Bar Gradient on Hover */}
-                                <div className="h-1.5 w-full bg-transparent group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-indigo-600 transition-all duration-500" />
+                                <div className="h-1.5 w-full bg-transparent group-hover:bg-gradient-to-r group-hover:from-charcoal group-hover:to-gray-800 transition-all duration-500" />
                             </div>
                         </motion.div>
                     ))}
