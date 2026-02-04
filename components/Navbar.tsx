@@ -47,7 +47,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, user, onLogout, onLoginC
             <img
               src={siteSettings.logoUrl}
               alt="Logo"
-              className="h-24 md:h-36 w-auto object-contain transition-all duration-300"
+              className="h-8 md:h-12 w-auto max-w-[120px] md:max-w-[160px] object-contain transition-all duration-300"
             />
           )}
         </Link>
