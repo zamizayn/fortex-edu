@@ -203,22 +203,22 @@ const CoursesPage: React.FC<CoursesPageProps> = ({ user, onLogout, onLoginClick,
                                             exit={{ opacity: 0, scale: 0.95 }}
                                             transition={{ duration: 0.3, delay: Math.min(idx * 0.03, 0.3) }}
                                             key={`${prog.categoryId}-${prog.name}`}
-                                            className="group p-6 md:p-10 bg-white border border-slate-100/50 rounded-[2.5rem] md:rounded-[3rem] hover:border-accent/10 hover:shadow-3xl hover:shadow-accent/[0.03] transition-all flex flex-col justify-between"
+                                            className="group p-5 md:p-10 bg-white border border-slate-200 rounded-[2rem] md:rounded-[3rem] hover:border-accent/10 hover:shadow-3xl hover:shadow-accent/[0.03] transition-all flex flex-col justify-between"
                                         >
                                             <div>
-                                                <div className="flex items-center justify-between mb-8">
-                                                    <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center group-hover:bg-accent/5 transition-colors">
-                                                        <div className="w-2 h-2 rounded-full bg-slate-200 group-hover:bg-accent transition-all group-hover:scale-150" />
+                                                <div className="flex items-center justify-between mb-4 md:mb-8">
+                                                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-slate-50 flex items-center justify-center group-hover:bg-accent/5 transition-colors">
+                                                        <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-slate-200 group-hover:bg-accent transition-all group-hover:scale-150" />
                                                     </div>
-                                                    <span className="text-[9px] font-bold text-slate-300 uppercase tracking-widest group-hover:text-accent/30 transition-colors bg-slate-50/50 px-3 py-1 rounded-full">
+                                                    <span className="text-[8px] md:text-[9px] font-bold text-slate-300 uppercase tracking-widest group-hover:text-accent/30 transition-colors bg-slate-50/50 px-2 py-1 md:px-3 md:py-1 rounded-full">
                                                         {prog.category}
                                                     </span>
                                                 </div>
-                                                <h4 className="text-lg md:text-xl font-semibold text-charcoal leading-tight group-hover:text-accent transition-colors">
+                                                <h4 className="text-base md:text-xl font-semibold text-charcoal leading-tight group-hover:text-accent transition-colors">
                                                     {prog.name}
                                                 </h4>
                                             </div>
-                                            <div className="mt-10 pt-8 border-t border-slate-50 flex items-center justify-between">
+                                            <div className="mt-6 md:mt-10 pt-5 md:pt-8 border-t border-slate-50 flex items-center justify-between">
                                                 <button
                                                     onClick={() => onBookCourse?.(prog.name, prog.category)}
                                                     className="px-4 py-2 rounded-xl bg-slate-50 text-accent font-bold text-[10px] uppercase tracking-widest hover:bg-accent hover:text-white transition-all opacity-100 translate-x-0 md:opacity-0 md:-translate-x-2 md:group-hover:opacity-100 md:group-hover:translate-x-0"

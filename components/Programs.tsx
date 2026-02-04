@@ -41,13 +41,13 @@ const Programs: React.FC = () => {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-3 gap-3 md:gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-8">
             {[1, 2, 3].map(i => (
               <div key={i} className="aspect-[4/5] rounded-3xl bg-gray-100 animate-pulse" />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-3 gap-3 md:gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-8">
             {services.map((service) => (
               <motion.div
                 layoutId={service.id}
