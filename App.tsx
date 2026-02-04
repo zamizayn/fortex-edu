@@ -92,6 +92,26 @@ const App: React.FC = () => {
     setIsBookingOpen(true);
   };
 
+  // Scroll visibility for sticky widget
+  const [showWidget, setShowWidget] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // On mobile, show after 75vh (hero height). On desktop, always show.
+      const shouldShow = window.innerWidth >= 768 || window.scrollY > (window.innerHeight * 0.75);
+      setShowWidget(shouldShow);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleScroll);
+    handleScroll(); // Initial check
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, []);
+
   return (
     <Router>
       <ScrollToTop />
@@ -183,6 +203,19 @@ const App: React.FC = () => {
             initialCategory={preFilledCategory}
           />
         )}
+
+        {/* Free Counselling Sticky Widget */}
+        <button
+          onClick={() => setIsBookingOpen(true)}
+          style={{ writingMode: 'vertical-rl' }}
+          className={`fixed right-0 top-1/2 -translate-y-1/2 z-50 bg-charcoal text-white px-2.5 py-5 rounded-r-xl shadow-2xl hover:bg-black transition-all duration-500 ease-out flex items-center gap-3 border-l border-y border-white/20 rotate-180 ${showWidget ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10 pointer-events-none'}`}
+        >
+          <span className="relative flex h-2.5 w-2.5 rotate-90">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent"></span>
+          </span>
+          <span className="font-bold text-sm tracking-widest uppercase whitespace-nowrap">Free Counselling</span>
+        </button>
 
         <a
           href={`tel:${siteSettings?.contactPhone || '+917025337762'}`}

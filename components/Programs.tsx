@@ -47,13 +47,13 @@ const Programs: React.FC = () => {
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-8">
+          <div className="flex md:grid overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none gap-4 md:gap-8 pb-8 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0 [-ms-overflow-style:'none'] [scrollbar-width:'none'] [&::-webkit-scrollbar]:hidden">
             {services.map((service) => (
               <motion.div
                 layoutId={service.id}
                 key={service.id}
                 onClick={() => navigate(`/courses?category=${service.id}`)}
-                className="relative aspect-[4/5] rounded-xl md:rounded-3xl overflow-hidden cursor-pointer group shadow-2xl shadow-black/5"
+                className="relative min-w-[75vw] md:min-w-0 snap-center aspect-[4/5] rounded-3xl md:rounded-3xl overflow-hidden cursor-pointer group shadow-2xl shadow-black/5"
               >
                 <img
                   src={service.imageUrl}
@@ -63,17 +63,29 @@ const Programs: React.FC = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
 
                 {/* Glass Details */}
-                <div className="absolute bottom-2 left-2 right-2 md:bottom-6 md:left-6 md:right-6 p-3 md:p-8 bg-white/10 backdrop-blur-xl border border-white/20 rounded-lg md:rounded-2xl transform transition-transform group-hover:-translate-y-2">
-                  <h4 className="text-[10px] md:text-2xl font-semibold text-white mb-1 md:mb-2 leading-tight">{service.title}</h4>
-                  <p className="text-[8px] md:text-base text-white/60 font-normal line-clamp-1 md:line-clamp-2 hidden sm:block">{service.description}</p>
+                <div className="absolute bottom-6 left-6 right-6 p-6 md:p-8 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl md:rounded-2xl transform transition-transform group-hover:-translate-y-2">
+                  <h4 className="text-2xl md:text-2xl font-semibold text-white mb-2 leading-tight">{service.title}</h4>
+                  <p className="text-base md:text-base text-white/60 font-normal line-clamp-2">{service.description}</p>
                 </div>
 
                 {/* View Arrow */}
-                <div className="absolute top-2 right-2 md:top-6 md:right-6 w-8 h-8 md:w-14 md:h-14 bg-white rounded-full flex items-center justify-center opacity-100 translate-y-0 md:opacity-0 md:translate-y-4 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition-all duration-300 shadow-lg">
-                  <svg className="w-4 h-4 md:w-7 md:h-7 text-charcoal" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                <div className="absolute top-6 right-6 w-14 h-14 bg-white rounded-full flex items-center justify-center opacity-100 md:opacity-0 md:translate-y-4 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition-all duration-300 shadow-lg">
+                  <svg className="w-7 h-7 text-charcoal" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                 </div>
               </motion.div>
             ))}
+
+            {/* View All Card - Mobile Only */}
+            <motion.div
+              onClick={() => navigate('/courses')}
+              className="relative min-w-[75vw] md:hidden snap-center aspect-[4/5] rounded-3xl overflow-hidden cursor-pointer group shadow-2xl shadow-accent/20 bg-accent flex flex-col items-center justify-center text-center p-8"
+            >
+              <div className="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+              </div>
+              <h4 className="text-3xl font-bold text-white mb-2">View All<br />Programs</h4>
+              <p className="text-white/60 text-sm">Explore our complete catalog.</p>
+            </motion.div>
           </div>
         )}
 
@@ -147,7 +159,7 @@ const Programs: React.FC = () => {
           )}
         </AnimatePresence>
       </div>
-    </section>
+    </section >
   );
 };
 

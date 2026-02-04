@@ -29,7 +29,6 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, user, onLogout, onLoginC
     { name: 'Home', href: '/', id: 'home', isRoute: true },
     { name: 'Courses', href: '/courses', id: 'programs', isRoute: true },
     { name: 'Top Colleges', href: '/#universities', id: 'universities', isRoute: false },
-    { name: 'Free Counseling', href: '/#booking', id: 'booking', isRoute: false },
   ];
 
   const fortexDropdownLinks = [
@@ -154,17 +153,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, user, onLogout, onLoginC
                 </div>
               )}
             </div>
-          ) : (
-            <button
-              onClick={onLoginClick}
-              className={`px-5 py-2 rounded-full text-xs md:text-sm font-semibold transition-all min-h-[40px] ${scrolled
-                ? 'bg-charcoal text-white hover:bg-black shadow-xl shadow-black/10'
-                : 'bg-white text-charcoal hover:bg-white/90 shadow-xl shadow-white/10'
-                }`}
-            >
-              Sign In
-            </button>
-          )}
+          ) : null}
         </div>
 
         {/* Mobile Toggle */}
@@ -232,14 +221,14 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, user, onLogout, onLoginC
               Download Brochure
             </a>
 
-            {!user && (
+            {/* {!user && (
               <button
                 onClick={() => { onLoginClick(); setIsOpen(false); }}
                 className="w-full py-5 bg-accent text-white rounded-2xl font-bold text-lg text-center uppercase tracking-widest shadow-xl shadow-accent/20 mt-4 min-h-[56px]"
               >
                 Sign In
               </button>
-            )}
+            )} */}
           </div>
         </div>
       )}

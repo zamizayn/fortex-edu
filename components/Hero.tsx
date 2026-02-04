@@ -47,7 +47,7 @@ const Hero: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white">
+    <div className="relative h-[75vh] md:min-h-screen flex items-center justify-center overflow-hidden bg-white">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentSlide}
