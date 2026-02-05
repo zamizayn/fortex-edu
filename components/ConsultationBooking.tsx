@@ -134,7 +134,7 @@ const ConsultationBooking: React.FC = () => {
 
                   <div className="grid md:grid-cols-2 gap-4 md:gap-8">
                     <div className="space-y-1.5 md:space-y-3">
-                      <label className="text-[10px] font-medium text-charcoal/40 uppercase tracking-widest ml-1">Last Exam</label>
+                      <label className="text-[10px] font-medium text-charcoal/40 uppercase tracking-widest ml-1">Highest Qualification</label>
                       <input
                         type="text"
                         className="w-full bg-gray-50 border-none rounded-2xl px-6 py-5 text-charcoal font-medium focus:ring-2 focus:ring-accent transition-all"

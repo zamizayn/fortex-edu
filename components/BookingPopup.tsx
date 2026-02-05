@@ -133,8 +133,8 @@ const BookingPopup: React.FC<BookingPopupProps> = ({ externalIsOpen, onExternalC
                             <div className="w-24 h-24 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
                                 <svg className="w-14 h-14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>
                             </div>
-                            <h4 className="text-xl md:text-2xl font-normal text-charcoal tracking-tight">Strategy Confirmed</h4>
-                            <p className="text-charcoal/40 font-normal uppercase tracking-widest text-[10px]">An expert will contact you shortly.</p>
+                            <h4 className="text-xl md:text-2xl font-normal text-charcoal tracking-tight">Submission Successfull</h4>
+                            <p className="text-charcoal/40 font-normal uppercase tracking-widest text-[10px]">Thank you for your submission! Our team will contact you shortly.</p>
                         </div>
                     ) : (
                         <div className="space-y-8">
@@ -204,7 +204,7 @@ const BookingPopup: React.FC<BookingPopupProps> = ({ externalIsOpen, onExternalC
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                                     <div className="space-y-1 text-charcoal">
-                                        <label className="text-[10px] md:text-base font-normal text-charcoal/40 uppercase tracking-widest ml-1">Last Exam</label>
+                                        <label className="text-[10px] md:text-base font-normal text-charcoal/40 uppercase tracking-widest ml-1">Highest Qualification</label>
                                         <input
                                             type="text"
                                             className="w-full bg-slate-50 border-none rounded-xl px-4 py-2 text-charcoal font-normal focus:ring-2 focus:ring-accent transition-all text-xs md:text-base min-h-[38px]"
@@ -225,7 +225,7 @@ const BookingPopup: React.FC<BookingPopupProps> = ({ externalIsOpen, onExternalC
                                     </div>
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="text-[10px] md:text-base font-normal text-charcoal/40 uppercase tracking-widest ml-1">Additional Comments (Optional)</label>
+                                    <label className="text-[10px] md:text-base font-normal text-charcoal/40 uppercase tracking-widest ml-1">Additional Information (Optional)</label>
                                     <textarea
                                         rows={3}
                                         className="w-full bg-slate-50 border-none rounded-xl px-4 py-2 text-charcoal font-normal focus:ring-2 focus:ring-accent transition-all text-xs md:text-base resize-none"

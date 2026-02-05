@@ -81,7 +81,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, user, onLogout, onLoginC
               onBlur={() => setTimeout(() => setShowFortexDropdown(false), 200)}
               className={`flex items-center gap-1 text-xs md:text-base font-medium tracking-wide transition-all ${scrolled ? 'text-gray-800 hover:text-blue-600' : 'text-white hover:text-blue-300 drop-shadow-lg'}`}
             >
-              Fortex
+              Company
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>

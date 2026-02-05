@@ -112,7 +112,7 @@ const Hero: React.FC<HeroProps> = ({ siteSettings }) => {
                   {/* <div className="w-px h-8 bg-white/10 hidden md:block" /> */}
                   <div className="flex-1 px-4 py-3 md:px-6 md:py-4 text-left w-full">
                     <p className="text-[10px] text-white/50 font-medium uppercase tracking-widest mb-1">WhatsApp</p>
-                    <p className="text-white font-medium text-xs md:text-sm">Stay Updated With Career Updates</p>
+                    <p className="text-white font-medium text-xs md:text-sm">Stay Updated on the latest career updates - Join our WhatsApp Channel. Join Now</p>
                   </div>
                   <a
                     href={`https://wa.me/${siteSettings?.whatsappNumber || '917025337762'}?text=Hi, I am interested in joining your updates channel.`}
@@ -144,9 +144,9 @@ const Hero: React.FC<HeroProps> = ({ siteSettings }) => {
       {/* Side Label */}
       <div className="absolute bottom-10 left-10 z-20 hidden lg:block">
         <div className="flex items-center gap-4 text-white/60 text-sm">
-          <span className="font-medium">0{currentSlide + 1}</span>
-          <div className="w-8 h-px bg-white/20" />
-          <span className="uppercase tracking-widest text-[10px]">Active Session</span>
+          {/* <span className="font-medium">0{currentSlide + 1}</span> */}
+          {/* <div className="w-8 h-px bg-white/20" /> */}
+          {/* <span className="uppercase tracking-widest text-[10px]">Active Session</span> */}
         </div>
       </div>
     </div>
