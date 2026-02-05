@@ -103,7 +103,7 @@ const CollegesPage: React.FC<CollegesPageProps> = ({ user, onLogout, onLoginClic
                             Excellence in <br /> <span className="text-white/80 italic font-light">Affiliate Education.</span>
                         </h1>
                         <p className="text-sm md:text-xl text-white/70 font-normal max-w-2xl mx-auto text-balance leading-relaxed">
-                            A comprehensive directory of our partner colleges dedicated to excellence in nursing and allied health education.
+                            A comprehensive directory of our partner colleges dedicated to excellence in diverse academic and professional education.
                         </p>
                     </motion.div>
                 </div>

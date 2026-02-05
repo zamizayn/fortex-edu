@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { SocialPost, SiteSettings } from '../types';
 
 const posts: SocialPost[] = [
-  { id: '1', imageUrl: 'https://picsum.photos/id/11/400/400', caption: 'Dreaming of a nursing career? Check our latest roadmap!', likes: 245 },
+  { id: '1', imageUrl: 'https://picsum.photos/id/11/400/400', caption: 'Dreaming of a successful career? Check our latest roadmap!', likes: 245 },
   { id: '2', imageUrl: 'https://picsum.photos/id/12/400/400', caption: 'Success story: Rahul joined MLT through Fortex. Proud!', likes: 189 },
   { id: '3', imageUrl: 'https://picsum.photos/id/13/400/400', caption: 'Meet us at Wayanad office for free career mapping.', likes: 120 },
   { id: '4', imageUrl: 'https://picsum.photos/id/14/400/400', caption: 'Motivational Monday: Your future self will thank you.', likes: 310 },

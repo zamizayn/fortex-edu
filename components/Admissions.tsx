@@ -51,7 +51,7 @@ const Admissions: React.FC<AdmissionsProps> = ({ siteSettings }) => {
             <p className="text-[10px] font-medium text-accent uppercase tracking-widest mb-4">Fortex Learning Hub</p>
             <h4 className="text-3xl font-semibold mb-6 leading-tight">Elevate Your Knowledge. <br /> On WhatsApp.</h4>
             <p className="mb-10 text-white/50 font-normal leading-relaxed">
-              Join our exclusive learning circles for real-time updates on nursing, allied health, and global educational trends.
+              Join our exclusive learning circles for real-time updates on diverse educational paths and global academic trends.
             </p>
             <a
               href={`https://wa.me/${siteSettings?.whatsappNumber || '917025337762'}?text=Hi, I would like to join the Fortex Learning Hub circle.`}

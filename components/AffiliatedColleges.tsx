@@ -83,7 +83,7 @@ const AffiliatedColleges: React.FC<AffiliatedCollegesProps> = ({ user, onLoginCl
                         </h2>
                         <div className="flex flex-col md:items-end gap-4">
                             <p className="text-base md:text-xl text-charcoal/50 font-normal max-w-md md:text-right">
-                                Discover premier colleges dedicated to shaping the future of nursing and allied health.
+                                Discover premier colleges dedicated to shaping your future across diverse academic disciplines.
                             </p>
                             <button
                                 onClick={() => navigate('/colleges')}
