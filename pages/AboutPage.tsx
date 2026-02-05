@@ -24,7 +24,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ user, onLogout, onLoginClick, sit
             <div>
                 <About />
             </div>
-            <Footer />
+            <Footer siteSettings={siteSettings} />
         </div>
     );
 };

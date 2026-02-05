@@ -24,7 +24,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ user, onLogout, onLoginClick,
             <div>
                 <Contact />
             </div>
-            <Footer />
+            <Footer siteSettings={siteSettings} />
         </div>
     );
 };

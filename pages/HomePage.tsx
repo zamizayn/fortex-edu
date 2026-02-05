@@ -32,7 +32,7 @@ const HomePage: React.FC<HomePageProps> = ({ user, onLoginClick, siteSettings, s
         <main>
             {isVisible('hero') && (
                 <section id="home">
-                    <Hero />
+                    <Hero siteSettings={siteSettings} />
                 </section>
             )}
 
@@ -42,7 +42,7 @@ const HomePage: React.FC<HomePageProps> = ({ user, onLoginClick, siteSettings, s
 
             {isVisible('colleges') && (
                 <>
-                    <AffiliatedColleges user={user} onLoginClick={onLoginClick} />
+                    <AffiliatedColleges user={user} onLoginClick={onLoginClick} siteSettings={siteSettings} />
                 </>
             )}
 
@@ -56,7 +56,8 @@ const HomePage: React.FC<HomePageProps> = ({ user, onLoginClick, siteSettings, s
 
             {isVisible('media') && <VideoGallery />}
 
-            {/* {isVisible('admissions') && <Admissions />} */}
+            {/* {isVisible('admissions') && <Admissions siteSettings={siteSettings} />} */}
+            {/* {isVisible('social') && <SocialFeed siteSettings={siteSettings} />} */}
             {isVisible('events') && <Events />}
         </main>
     );

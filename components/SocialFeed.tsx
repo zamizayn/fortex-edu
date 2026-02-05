@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { SocialPost, SiteSettings } from '../types';
-import { getSiteSettings } from '../services/db';
 
 const posts: SocialPost[] = [
   { id: '1', imageUrl: 'https://picsum.photos/id/11/400/400', caption: 'Dreaming of a nursing career? Check our latest roadmap!', likes: 245 },
@@ -9,16 +8,12 @@ const posts: SocialPost[] = [
   { id: '4', imageUrl: 'https://picsum.photos/id/14/400/400', caption: 'Motivational Monday: Your future self will thank you.', likes: 310 },
 ];
 
-const SocialFeed: React.FC = () => {
-  const [settings, setSettings] = useState<SiteSettings | null>(null);
+interface SocialFeedProps {
+  siteSettings: SiteSettings | null;
+}
 
-  useEffect(() => {
-    const fetchSettings = async () => {
-      const data = await getSiteSettings();
-      if (data) setSettings(data);
-    };
-    fetchSettings();
-  }, []);
+const SocialFeed: React.FC<SocialFeedProps> = ({ siteSettings }) => {
+
 
   return (
     <div className="max-w-7xl mx-auto px-6 lg:px-12 py-32">
@@ -44,10 +39,10 @@ const SocialFeed: React.FC = () => {
         ))}
       </div>
 
-      {settings?.instagram && (
+      {siteSettings?.instagram && (
         <div className="mt-20 text-center">
           <a
-            href={settings.instagram}
+            href={siteSettings.instagram}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 px-10 py-5 bg-charcoal text-white rounded-2xl font-medium shadow-2xl hover:bg-black transition-all group"

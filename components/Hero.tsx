@@ -27,17 +27,13 @@ const HERO_SLIDES = [
   }
 ];
 
-const Hero: React.FC = () => {
-  const [settings, setSettings] = useState<SiteSettings | null>(null);
+interface HeroProps {
+  siteSettings: SiteSettings | null;
+}
+
+const Hero: React.FC<HeroProps> = ({ siteSettings }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  useEffect(() => {
-    const fetchSettings = async () => {
-      const data = await getSiteSettings();
-      setSettings(data);
-    };
-    fetchSettings();
-  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -119,7 +115,7 @@ const Hero: React.FC = () => {
                     <p className="text-white font-medium text-xs md:text-sm">Stay Updated With Career Updates</p>
                   </div>
                   <a
-                    href="https://whatsapp.com/channel/0029VaCJF15BKfhxqGkzuc2M"
+                    href={`https://wa.me/${siteSettings?.whatsappNumber || '917025337762'}?text=Hi, I am interested in joining your updates channel.`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full md:w-auto px-8 py-4 bg-accent text-white font-semibold text-xs md:text-sm rounded-2xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/40 min-h-[48px] flex items-center justify-center whitespace-nowrap"

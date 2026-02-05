@@ -366,9 +366,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
 
-            // Validate file size (max 2MB for base64)
-            if (file.size > 2 * 1024 * 1024) {
-                alert('File size should be less than 2MB');
+            // Validate file size (max 750KB for base64 in Firestore)
+            if (file.size > 750 * 1024) {
+                alert('File size should be less than 750KB to ensure storage stability');
                 return;
             }
 
@@ -395,6 +395,64 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
             } catch (error) {
                 console.error("Error uploading logo:", error);
                 alert("Failed to upload logo.");
+                setLoading(false);
+            }
+        }
+    };
+
+    const handleCollegeImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            if (file.size > 750 * 1024) {
+                alert('File size should be less than 750KB to ensure storage stability');
+                return;
+            }
+            if (!file.type.startsWith('image/')) {
+                alert('Please upload an image file');
+                return;
+            }
+
+            setLoading(true);
+            try {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const base64String = reader.result as string;
+                    setFormData(prev => ({ ...prev, imageUrl: base64String }));
+                    setLoading(false);
+                };
+                reader.readAsDataURL(file);
+            } catch (error) {
+                console.error("Error uploading image:", error);
+                alert("Failed to upload image.");
+                setLoading(false);
+            }
+        }
+    };
+
+    const handleUniversityImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            if (file.size > 750 * 1024) {
+                alert('File size should be less than 750KB to ensure storage stability');
+                return;
+            }
+            if (!file.type.startsWith('image/')) {
+                alert('Please upload an image file');
+                return;
+            }
+
+            setLoading(true);
+            try {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const base64String = reader.result as string;
+                    setFormData(prev => ({ ...prev, imageUrl: base64String }));
+                    setLoading(false);
+                };
+                reader.readAsDataURL(file);
+            } catch (error) {
+                console.error("Error uploading image:", error);
+                alert("Failed to upload image.");
                 setLoading(false);
             }
         }
@@ -833,14 +891,35 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
-                                        <input
-                                            required
-                                            type="url"
-                                            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                            placeholder="https://example.com/campus.jpg"
-                                            value={formData.imageUrl || ''}
-                                            onChange={e => setFormData({ ...formData, imageUrl: e.target.value })}
-                                        />
+                                        <div className="flex items-center gap-2">
+                                            <input
+                                                required
+                                                type="url"
+                                                className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                placeholder="https://example.com/campus.jpg"
+                                                value={formData.imageUrl || ''}
+                                                onChange={e => setFormData({ ...formData, imageUrl: e.target.value })}
+                                            />
+                                            <label className="cursor-pointer">
+                                                <input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    onChange={handleCollegeImageUpload}
+                                                    className="hidden"
+                                                />
+                                                <span className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm">
+                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                                    </svg>
+                                                    Upload
+                                                </span>
+                                            </label>
+                                        </div>
+                                        {formData.imageUrl && (
+                                            <div className="mt-2">
+                                                <img src={formData.imageUrl} alt="Preview" className="h-20 w-32 object-cover rounded border border-gray-200" />
+                                            </div>
+                                        )}
                                     </div>
                                     <div className="md:col-span-2">
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
@@ -1182,14 +1261,35 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
-                                        <input
-                                            required
-                                            type="url"
-                                            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                            placeholder="https://example.com/university.jpg"
-                                            value={formData.imageUrl || ''}
-                                            onChange={e => setFormData({ ...formData, imageUrl: e.target.value })}
-                                        />
+                                        <div className="flex items-center gap-2">
+                                            <input
+                                                required
+                                                type="url"
+                                                className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                placeholder="https://example.com/university.jpg"
+                                                value={formData.imageUrl || ''}
+                                                onChange={e => setFormData({ ...formData, imageUrl: e.target.value })}
+                                            />
+                                            <label className="cursor-pointer">
+                                                <input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    onChange={handleUniversityImageUpload}
+                                                    className="hidden"
+                                                />
+                                                <span className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm">
+                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                                    </svg>
+                                                    Upload
+                                                </span>
+                                            </label>
+                                        </div>
+                                        {formData.imageUrl && (
+                                            <div className="mt-2">
+                                                <img src={formData.imageUrl} alt="Preview" className="h-20 w-32 object-cover rounded border border-gray-200" />
+                                            </div>
+                                        )}
                                     </div>
                                     <div className="md:col-span-2">
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>

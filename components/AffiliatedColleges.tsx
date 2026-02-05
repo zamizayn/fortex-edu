@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { collection, getDocs, db } from '../firebase';
-import { College, User } from '../types';
+import { College, User, SiteSettings } from '../types';
 import { saveLead } from '../services/db';
+import { useNavigate } from 'react-router-dom';
 
 interface AffiliatedCollegesProps {
     user: User | null;
     onLoginClick: () => void;
+    siteSettings: SiteSettings | null;
 }
 
-const AffiliatedColleges: React.FC<AffiliatedCollegesProps> = ({ user, onLoginClick }) => {
+const AffiliatedColleges: React.FC<AffiliatedCollegesProps> = ({ user, onLoginClick, siteSettings }) => {
+    const navigate = useNavigate();
     const [colleges, setColleges] = useState<College[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedCollege, setSelectedCollege] = useState<College | null>(null);
@@ -75,12 +78,21 @@ const AffiliatedColleges: React.FC<AffiliatedCollegesProps> = ({ user, onLoginCl
                 <div className="mb-16">
                     <p className="text-xs font-medium text-accent uppercase tracking-[0.3em] mb-4">Our Network</p>
                     <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                        <h2 className="text-5xl font-semibold text-charcoal tracking-tight text-balance">
+                        <h2 className="text-3xl md:text-5xl font-semibold text-charcoal tracking-tight text-balance">
                             Excellence in <br /> Affiliate Education.
                         </h2>
-                        <p className="text-xl text-charcoal/50 font-normal max-w-md">
-                            Discover premier colleges dedicated to shaping the future of nursing and allied health.
-                        </p>
+                        <div className="flex flex-col md:items-end gap-4">
+                            <p className="text-base md:text-xl text-charcoal/50 font-normal max-w-md md:text-right">
+                                Discover premier colleges dedicated to shaping the future of nursing and allied health.
+                            </p>
+                            <button
+                                onClick={() => navigate('/colleges')}
+                                className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-black/5 rounded-full text-sm font-semibold text-charcoal hover:bg-gray-50 transition-all shadow-sm w-fit self-start md:self-end"
+                            >
+                                See All Colleges
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -89,12 +101,11 @@ const AffiliatedColleges: React.FC<AffiliatedCollegesProps> = ({ user, onLoginCl
                         No colleges listed yet.
                     </div>
                 ) : (
-                    <div className="grid md:grid-cols-3 gap-10">
+                    <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 -mx-6 px-6 [-ms-overflow-style:'none'] [scrollbar-width:'none'] [&::-webkit-scrollbar]:hidden">
                         {colleges.map((college) => (
                             <div
                                 key={college.id}
-                                className="group relative cursor-pointer"
-                                onClick={() => setSelectedCollege(college)}
+                                className="group relative min-w-[85vw] md:min-w-[400px] snap-start"
                             >
                                 <div className="aspect-[16/10] rounded-[2rem] overflow-hidden shadow-2xl shadow-black/5 bg-white mb-6">
                                     <img
@@ -105,14 +116,27 @@ const AffiliatedColleges: React.FC<AffiliatedCollegesProps> = ({ user, onLoginCl
                                 </div>
                                 <div className="px-2">
                                     <div className="flex items-center gap-2 mb-3">
-                                        <span className="w-2 h-2 rounded-full bg-accent" />
+                                        <span className="w-1.5 h-1.5 rounded-full bg-accent" />
                                         <span className="text-[10px] font-medium text-charcoal/40 uppercase tracking-widest">{college.location}</span>
                                     </div>
-                                    <h4 className="text-2xl font-semibold text-charcoal mb-4 group-hover:text-accent transition-colors tracking-tight leading-tight">{college.name}</h4>
+                                    <h4 className="text-xl md:text-2xl font-semibold text-charcoal mb-3 group-hover:text-accent transition-colors tracking-tight leading-tight line-clamp-1">{college.name}</h4>
                                     <p className="text-charcoal/60 text-sm font-normal line-clamp-2 leading-relaxed mb-6">{college.description}</p>
-                                    <button className="text-xs font-medium text-charcoal uppercase tracking-widest border-b-2 border-charcoal/10 group-hover:border-accent transition-all pb-1">
-                                        Explore Campus
-                                    </button>
+                                    <div className="pt-4 mt-auto">
+                                        {college.websiteUrl ? (
+                                            <a
+                                                href={college.websiteUrl}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                onClick={(e) => e.stopPropagation()}
+                                                className="inline-flex items-center gap-2 px-5 py-2.5 border border-charcoal/10 text-charcoal font-medium rounded-xl hover:bg-gray-50 transition-all text-xs"
+                                            >
+                                                Visit Website
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                                            </a>
+                                        ) : (
+                                            <span className="text-[10px] font-medium text-charcoal/20 uppercase tracking-widest">Contact for Details</span>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         ))}
@@ -120,29 +144,6 @@ const AffiliatedColleges: React.FC<AffiliatedCollegesProps> = ({ user, onLoginCl
                 )}
             </div>
 
-            {/* Modal Logic Styled consistently with Universities */}
-            {selectedCollege && !showLeadForm && (
-                <div className="fixed inset-0 z-[60] bg-charcoal/40 backdrop-blur-md flex items-center justify-center p-6" onClick={() => setSelectedCollege(null)}>
-                    <div className="bg-white rounded-[2.5rem] overflow-hidden max-w-4xl w-full shadow-3xl animate-in fade-in zoom-in-95 duration-300" onClick={e => e.stopPropagation()}>
-                        <div className="relative h-96">
-                            <img src={selectedCollege.imageUrl} alt={selectedCollege.name} className="w-full h-full object-cover" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-transparent to-transparent" />
-                            <button onClick={() => setSelectedCollege(null)} className="absolute top-6 right-6 w-12 h-12 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full flex items-center justify-center text-white"><svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg></button>
-                            <div className="absolute bottom-10 left-10 right-10">
-                                <span className="inline-block px-4 py-2 bg-accent text-white text-[10px] font-medium rounded-full mb-4 tracking-widest uppercase">{selectedCollege.location}</span>
-                                <h2 className="text-4xl md:text-5xl font-semibold text-white tracking-tight">{selectedCollege.name}</h2>
-                            </div>
-                        </div>
-                        <div className="p-12">
-                            <p className="text-xl text-charcoal/60 font-normal leading-relaxed mb-10 whitespace-pre-line">{selectedCollege.description}</p>
-                            <div className="flex gap-4">
-                                <button onClick={() => handleInterest(selectedCollege)} className="px-10 py-5 bg-accent text-white font-medium rounded-2xl shadow-xl shadow-accent/20 hover:bg-blue-700 transition-all flex items-center gap-2">Register Interest <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg></button>
-                                <a href={selectedCollege.websiteUrl} target="_blank" rel="noopener noreferrer" className="px-10 py-5 border border-black/5 text-charcoal font-medium rounded-2xl hover:bg-gray-50 transition-all flex items-center gap-2">Application Portal <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
 
             {/* Lead Form Styled consistently with Universities */}
             {showLeadForm && (

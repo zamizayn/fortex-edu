@@ -1,7 +1,13 @@
 
 import React from 'react';
 
-const Admissions: React.FC = () => {
+import { SiteSettings } from '../types';
+
+interface AdmissionsProps {
+  siteSettings: SiteSettings | null;
+}
+
+const Admissions: React.FC<AdmissionsProps> = ({ siteSettings }) => {
   const steps = [
     { title: 'Personal Consultation', desc: 'Engage with our senior consultants to map your educational potential and career goals.' },
     { title: 'Strategic Selection', desc: 'Narrow down the finest institutions that align with your aspirations and financial planning.' },
@@ -47,10 +53,15 @@ const Admissions: React.FC = () => {
             <p className="mb-10 text-white/50 font-normal leading-relaxed">
               Join our exclusive learning circles for real-time updates on nursing, allied health, and global educational trends.
             </p>
-            <button className="w-full bg-accent text-white font-medium py-5 rounded-2xl shadow-2xl shadow-accent/20 hover:bg-blue-700 transition-all flex items-center justify-center gap-3 active:scale-[0.98]">
+            <a
+              href={`https://wa.me/${siteSettings?.whatsappNumber || '917025337762'}?text=Hi, I would like to join the Fortex Learning Hub circle.`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full bg-accent text-white font-medium py-5 rounded-2xl shadow-2xl shadow-accent/20 hover:bg-blue-700 transition-all flex items-center justify-center gap-3 active:scale-[0.98]"
+            >
               Join the Circle
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-            </button>
+            </a>
           </div>
 
           <div className="relative rounded-[3rem] overflow-hidden shadow-2xl group">

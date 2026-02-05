@@ -344,7 +344,7 @@ const CoursesPage: React.FC<CoursesPageProps> = ({ user, onLogout, onLoginClick,
                 )}
             </AnimatePresence>
 
-            <Footer />
+            <Footer siteSettings={siteSettings} />
         </div>
     );
 };

@@ -11,6 +11,7 @@ import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import CoursesPage from './pages/CoursesPage';
+import CollegesPage from './pages/CollegesPage';
 import ScrollToTop from './components/ScrollToTop';
 import { seedCourses } from './seedCourses';
 import { User, SiteSettings } from './types';
@@ -134,7 +135,7 @@ const App: React.FC = () => {
                   onLoginClick={() => setIsAuthModalOpen(true)}
                   siteSettings={siteSettings}
                 />
-                <Footer />
+                <Footer siteSettings={siteSettings} />
               </>
             }
           />
@@ -169,6 +170,17 @@ const App: React.FC = () => {
                 onLoginClick={() => setIsAuthModalOpen(true)}
                 siteSettings={siteSettings}
                 onBookCourse={triggerBooking}
+              />
+            }
+          />
+          <Route
+            path="/colleges"
+            element={
+              <CollegesPage
+                user={user}
+                onLogout={handleLogout}
+                onLoginClick={() => setIsAuthModalOpen(true)}
+                siteSettings={siteSettings}
               />
             }
           />
@@ -214,7 +226,7 @@ const App: React.FC = () => {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent"></span>
           </span>
-          <span className="font-bold text-sm tracking-widest uppercase whitespace-nowrap">Free Counselling</span>
+          <span className="font-bold text-sm tracking-widest uppercase whitespace-nowrap">Free Consultation</span>
         </button>
 
         <a
