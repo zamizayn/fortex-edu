@@ -9,6 +9,7 @@ import AffiliatedColleges from '../components/AffiliatedColleges';
 import Universities from '../components/Universities';
 import Events from '../components/Events';
 import Team from '../components/Team';
+import Services from '../components/Services';
 import Reviews from '../components/Reviews';
 import { User, SiteSettings } from '../types';
 
@@ -34,6 +35,10 @@ const HomePage: React.FC<HomePageProps> = ({ user, onLoginClick, siteSettings, s
                 <section id="home">
                     <Hero siteSettings={siteSettings} />
                 </section>
+            )}
+
+            {isVisible('services') && (
+                <Services />
             )}
 
             {isVisible('team') && (

@@ -27,8 +27,10 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, user, onLogout, onLoginC
 
   const navLinks = [
     { name: 'Home', href: '/', id: 'home', isRoute: true },
+    { name: 'About', href: '/about', id: 'about', isRoute: true },
     { name: 'Courses', href: '/courses', id: 'programs', isRoute: true },
     { name: 'Colleges', href: '/colleges', id: 'colleges', isRoute: true },
+    { name: 'Universities', href: '/universities', id: 'universities', isRoute: true },
   ];
 
   const fortexDropdownLinks = [

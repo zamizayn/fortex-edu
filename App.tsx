@@ -12,6 +12,7 @@ import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import CoursesPage from './pages/CoursesPage';
 import CollegesPage from './pages/CollegesPage';
+import UniversitiesPage from './pages/UniversitiesPage';
 import ScrollToTop from './components/ScrollToTop';
 import { seedCourses } from './seedCourses';
 import { User, SiteSettings } from './types';
@@ -177,6 +178,17 @@ const App: React.FC = () => {
             path="/colleges"
             element={
               <CollegesPage
+                user={user}
+                onLogout={handleLogout}
+                onLoginClick={() => setIsAuthModalOpen(true)}
+                siteSettings={siteSettings}
+              />
+            }
+          />
+          <Route
+            path="/universities"
+            element={
+              <UniversitiesPage
                 user={user}
                 onLogout={handleLogout}
                 onLoginClick={() => setIsAuthModalOpen(true)}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getSiteSettings } from '../services/db';
 import { SiteSettings } from '../types';
 import { motion } from 'framer-motion';
+import Team from './Team';
 
 const About: React.FC = () => {
   const [settings, setSettings] = useState<SiteSettings | null>(null);
@@ -87,8 +88,8 @@ const About: React.FC = () => {
       <div className="relative max-w-7xl mx-auto px-6 lg:px-12 py-16 md:py-24">
         {/* Removed old hero section - now using image hero above */}
 
-        {/* Main Content Grid */}
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center mb-20">
+        {/* Main Content Grid (Fortex History) */}
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center mb-32">
           {/* Image Section */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -99,7 +100,7 @@ const About: React.FC = () => {
           >
             <div className="relative rounded-3xl overflow-hidden shadow-2xl">
               <img
-                src={settings?.aboutImageUrl || "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1200&auto=format&fit=crop"}
+                src={settings?.aboutImageUrl || "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&auto=format&fit=crop"}
                 alt="Education"
                 className="w-full h-[400px] md:h-[500px] object-cover"
               />
@@ -129,14 +130,89 @@ const About: React.FC = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="space-y-4"
+            className="space-y-6"
           >
+            <div className="mb-6">
+              <p className="text-[10px] md:text-xs font-semibold text-blue-600 uppercase tracking-widest mb-2">
+                Our Journey
+              </p>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">
+                Fortex history
+              </h2>
+            </div>
             {contentParagraphs.map((paragraph, idx) => (
               <p key={idx} className="text-sm md:text-base text-gray-700 leading-relaxed font-normal">
                 {paragraph}
               </p>
             ))}
+
+            {/* Secondary Image in Journey Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2, duration: 0.8 }}
+              className="pt-6"
+            >
+              <div className="relative rounded-2xl overflow-hidden shadow-xl border border-gray-100">
+                <img
+                  src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=1200&auto=format&fit=crop"
+                  alt="Our Journey"
+                  className="w-full h-48 md:h-64 object-cover"
+                />
+              </div>
+            </motion.div>
           </motion.div>
+        </div>
+
+        {/* Mission & Vision */}
+        <div className="grid md:grid-cols-2 gap-10 mb-32">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="group relative bg-white rounded-3xl p-10 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.1)] border border-gray-100 overflow-hidden hover:shadow-[0_20px_50px_-15px_rgba(0,0,0,0.15)] transition-all duration-500"
+          >
+            <div className="absolute top-0 left-0 w-2 h-full bg-blue-600" />
+            <div className="flex items-start gap-6">
+              <div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-500">
+                🚀
+              </div>
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Mission</h3>
+                <p className="text-gray-600 leading-relaxed text-lg font-normal">
+                  To empower students with the knowledge, resources, and guidance needed to make informed decisions about their educational journey and achieve their career aspirations.
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="group relative bg-white rounded-3xl p-10 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.1)] border border-gray-100 overflow-hidden hover:shadow-[0_20px_50px_-15px_rgba(0,0,0,0.15)] transition-all duration-500"
+          >
+            <div className="absolute top-0 left-0 w-2 h-full bg-purple-600" />
+            <div className="flex items-start gap-6">
+              <div className="w-16 h-16 rounded-2xl bg-purple-50 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-500">
+                👁️
+              </div>
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Vision</h3>
+                <p className="text-gray-600 leading-relaxed text-lg font-normal">
+                  To be the most trusted and innovative education consultancy in India, recognized for transforming lives through quality education and personalized student support.
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Meet Our Team */}
+        <div className="mb-32">
+          <Team />
         </div>
 
         {/* Stats Section */}
@@ -145,7 +221,7 @@ const About: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20"
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32"
         >
           {stats.map((stat, i) => (
             <motion.div
@@ -171,7 +247,7 @@ const About: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="mb-20"
+          className="mb-32"
         >
           <div className="text-center mb-12">
             <p className="text-[10px] md:text-xs font-semibold text-blue-600 uppercase tracking-widest mb-3">
@@ -203,35 +279,6 @@ const About: React.FC = () => {
             ))}
           </div>
         </motion.div>
-
-        {/* Mission & Vision */}
-        <div className="grid md:grid-cols-2 gap-8 mb-20">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl p-8 text-white shadow-xl"
-          >
-            <h3 className="text-xl md:text-2xl font-bold mb-3">Our Mission</h3>
-            <p className="text-sm md:text-base leading-relaxed opacity-90 font-normal">
-              To empower students with the knowledge, resources, and guidance needed to make informed decisions about their educational journey and achieve their career aspirations.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="bg-gradient-to-br from-purple-600 to-purple-700 rounded-2xl p-8 text-white shadow-xl"
-          >
-            <h3 className="text-xl md:text-2xl font-bold mb-3">Our Vision</h3>
-            <p className="text-sm md:text-base leading-relaxed opacity-90 font-normal">
-              To be the most trusted and innovative education consultancy in India, recognized for transforming lives through quality education and personalized student support.
-            </p>
-          </motion.div>
-        </div>
 
         {/* CTA Section */}
         <motion.div

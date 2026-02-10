@@ -1,0 +1,112 @@
+import React from 'react';
+import { motion } from 'framer-motion';
+
+const Services: React.FC = () => {
+    const services = [
+        {
+            title: 'Personalized Counseling',
+            description: 'Every student is unique, and so are their career aspirations. Our one-on-one counseling sessions help us understand your strengths, interests, and long-term goals. We provide tailored recommendations to guide you toward the best academic and career choices that align with your future ambitions.',
+            icon: (
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+            ),
+            color: 'bg-blue-50 text-blue-600'
+        },
+        {
+            title: 'University & College Selection',
+            description: 'Choosing the right institution is crucial for academic and career growth. Based on your academic profile, preferences, and aspirations, we carefully map you to top universities and colleges across India, ensuring that you enroll in a program that maximizes your potential.',
+            icon: (
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+            ),
+            color: 'bg-purple-50 text-purple-600'
+        },
+        {
+            title: 'Seamless Application & Documentation Assistance',
+            description: "The admission process can be overwhelming, but with Fortex, you don't have to worry! Our experts assist you in preparing, reviewing, and submitting all necessary documents, ensuring an error-free and hassle-free application experience.",
+            icon: (
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+            ),
+            color: 'bg-green-50 text-green-600'
+        },
+        {
+            title: 'Scholarship & Financial Aid Guidance',
+            description: 'Higher education is a valuable investment, and we strive to make it accessible. Our team provides in-depth guidance on scholarships, grants, and financial aid options, helping students secure funding and minimize educational expenses.',
+            icon: (
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            ),
+            color: 'bg-amber-50 text-amber-600'
+        },
+        {
+            title: 'Admission & Enrollment Support',
+            description: 'From securing admissions to completing the enrollment process, we walk with you every step of the way. Our dedicated team ensures that you meet deadlines, submit all required paperwork, and smoothly transition into your chosen institution.',
+            icon: (
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                </svg>
+            ),
+            color: 'bg-red-50 text-red-600'
+        }
+    ];
+
+    return (
+        <section id="services" className="py-24 bg-white relative overflow-hidden">
+            {/* Decorative Background */}
+            <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[500px] h-[500px] bg-blue-50 rounded-full blur-3xl opacity-50 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-purple-50 rounded-full blur-3xl opacity-50 pointer-events-none" />
+
+            <div className="container mx-auto px-6 relative z-10">
+                <div className="max-w-4xl mx-auto text-center mb-20">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                    >
+                        <h2 className="text-sm font-bold text-blue-600 uppercase tracking-widest mb-4 inline-block px-4 py-2 bg-blue-50 rounded-full">
+                            Our Services
+                        </h2>
+                        <h3 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8 tracking-tight">
+                            Comprehensive Support for Your Academic Journey
+                        </h3>
+                        <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
+                            At Fortex Education Consultancy, we believe that choosing the right educational path is a life-changing decision. Our expert guidance ensures that students not only find the best universities in India but also receive personalized support at every step of their admission journey.
+                        </p>
+                    </motion.div>
+                </div>
+
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+                    {services.map((service, index) => (
+                        <motion.div
+                            key={service.title}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5, delay: index * 0.1 }}
+                            className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_50px_-20px_rgba(0,0,0,0.1)] transition-all duration-500 group"
+                        >
+                            <div className={`w-16 h-16 rounded-2xl ${service.color} flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500`}>
+                                {service.icon}
+                            </div>
+                            <h4 className="text-xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors">
+                                {service.title}
+                            </h4>
+                            <p className="text-gray-600 leading-relaxed text-sm md:text-base">
+                                {service.description}
+                            </p>
+                        </motion.div>
+                    ))}
+                </div>
+
+            </div>
+        </section>
+    );
+};
+
+export default Services;

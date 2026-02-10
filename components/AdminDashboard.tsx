@@ -60,7 +60,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
         setLoading(true);
         try {
             let q;
-            const isTimeOrdered = ['leads', 'consultations', 'inquiries', 'education-insights'].includes(collectionName);
+            const isTimeOrdered = ['leads', 'consultations', 'inquiries'].includes(collectionName);
 
             if (isTimeOrdered) {
                 q = query(collection(db, collectionName), orderBy('createdAt', 'desc'), limit(itemsPerPage));
@@ -400,6 +400,35 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
         }
     };
 
+    const handleServiceImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            if (file.size > 750 * 1024) {
+                alert('File size should be less than 750KB to ensure storage stability');
+                return;
+            }
+            if (!file.type.startsWith('image/')) {
+                alert('Please upload an image file');
+                return;
+            }
+
+            setLoading(true);
+            try {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const base64String = reader.result as string;
+                    setFormData(prev => ({ ...prev, imageUrl: base64String }));
+                    setLoading(false);
+                };
+                reader.readAsDataURL(file);
+            } catch (error) {
+                console.error("Error uploading image:", error);
+                alert("Failed to upload image.");
+                setLoading(false);
+            }
+        }
+    };
+
     const handleCollegeImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
@@ -452,6 +481,93 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                 reader.readAsDataURL(file);
             } catch (error) {
                 console.error("Error uploading image:", error);
+                alert("Failed to upload image.");
+                setLoading(false);
+            }
+        }
+    };
+
+    const handleAboutImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            if (file.size > 750 * 1024) {
+                alert('File size should be less than 750KB to ensure storage stability');
+                return;
+            }
+            if (!file.type.startsWith('image/')) {
+                alert('Please upload an image file');
+                return;
+            }
+
+            setLoading(true);
+            try {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const base64String = reader.result as string;
+                    setSiteSettings(prev => prev ? ({ ...prev, aboutImageUrl: base64String }) : null);
+                    setLoading(false);
+                };
+                reader.readAsDataURL(file);
+            } catch (error) {
+                console.error("Error uploading about image:", error);
+                alert("Failed to upload image.");
+                setLoading(false);
+            }
+        }
+    };
+
+    const handleEventImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            if (file.size > 750 * 1024) {
+                alert('File size should be less than 750KB to ensure storage stability');
+                return;
+            }
+            if (!file.type.startsWith('image/')) {
+                alert('Please upload an image file');
+                return;
+            }
+
+            setLoading(true);
+            try {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const base64String = reader.result as string;
+                    setFormData(prev => ({ ...prev, imageUrl: base64String }));
+                    setLoading(false);
+                };
+                reader.readAsDataURL(file);
+            } catch (error) {
+                console.error("Error uploading event image:", error);
+                alert("Failed to upload image.");
+                setLoading(false);
+            }
+        }
+    };
+
+    const handleReviewImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            if (file.size > 750 * 1024) {
+                alert('File size should be less than 750KB to ensure storage stability');
+                return;
+            }
+            if (!file.type.startsWith('image/')) {
+                alert('Please upload an image file');
+                return;
+            }
+
+            setLoading(true);
+            try {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const base64String = reader.result as string;
+                    setFormData(prev => ({ ...prev, imageUrl: base64String }));
+                    setLoading(false);
+                };
+                reader.readAsDataURL(file);
+            } catch (error) {
+                console.error("Error uploading review image:", error);
                 alert("Failed to upload image.");
                 setLoading(false);
             }
@@ -765,15 +881,18 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
-                                        <input
-                                            required
-                                            type="url"
-                                            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                            placeholder="https://example.com/image.jpg"
-                                            value={formData.imageUrl || ''}
-                                            onChange={e => setFormData({ ...formData, imageUrl: e.target.value })}
-                                        />
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Service Image</label>
+                                        <div className="flex items-center gap-4">
+                                            {formData.imageUrl && (
+                                                <img src={formData.imageUrl} alt="Preview" className="w-12 h-12 rounded-lg object-cover" />
+                                            )}
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                                                onChange={handleServiceImageUpload}
+                                            />
+                                        </div>
                                     </div>
                                     <div className="md:col-span-2">
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
@@ -1076,18 +1195,34 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">About Image URL</label>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">About Image</label>
                                             <div className="flex items-center gap-4">
                                                 {siteSettings.aboutImageUrl && (
                                                     <img src={siteSettings.aboutImageUrl} alt="About Preview" className="h-12 w-12 object-cover rounded border border-gray-200" />
                                                 )}
-                                                <input
-                                                    type="url"
-                                                    placeholder="https://images.unsplash.com/photo-..."
-                                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
-                                                    value={siteSettings.aboutImageUrl || ''}
-                                                    onChange={e => setSiteSettings({ ...siteSettings, aboutImageUrl: e.target.value })}
-                                                />
+                                                <div className="flex-1 flex gap-2">
+                                                    <input
+                                                        type="url"
+                                                        placeholder="Paste image URL here..."
+                                                        className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                                                        value={siteSettings.aboutImageUrl || ''}
+                                                        onChange={e => setSiteSettings({ ...siteSettings, aboutImageUrl: e.target.value })}
+                                                    />
+                                                    <label className="cursor-pointer">
+                                                        <input
+                                                            type="file"
+                                                            accept="image/*"
+                                                            onChange={handleAboutImageUpload}
+                                                            className="hidden"
+                                                        />
+                                                        <span className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm">
+                                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                                            </svg>
+                                                            Upload
+                                                        </span>
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1376,21 +1511,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                             onChange={e => setFormData({ ...formData, name: e.target.value })}
                                         />
                                     </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Tag Service</label>
-                                        <select
-                                            required
-                                            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                            value={formData.serviceTag || ''}
-                                            onChange={e => setFormData({ ...formData, serviceTag: e.target.value })}
-                                        >
-                                            <option value="">Select a Service</option>
-                                            {services.map(service => (
-                                                <option key={service.id} value={service.title}>{service.title}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                    <div>
+                                    <div className="md:col-span-2">
                                         <label className="block text-sm font-medium text-gray-700 mb-1">YouTube Link</label>
                                         <input
                                             required
@@ -1436,9 +1557,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                         </div>
                                         <div className="p-5">
                                             <div className="flex justify-between items-start mb-2">
-                                                <span className="inline-block px-2 py-1 bg-blue-50 text-blue-700 text-[10px] font-semibold uppercase rounded-md mb-2">
-                                                    {item.serviceTag}
-                                                </span>
+                                                {item.serviceTag && (
+                                                    <span className="inline-block px-2 py-1 bg-blue-50 text-blue-700 text-[10px] font-semibold uppercase rounded-md mb-2">
+                                                        {item.serviceTag}
+                                                    </span>
+                                                )}
                                             </div>
                                             <h3 className="font-semibold text-gray-900 mb-4 line-clamp-2">{item.name}</h3>
 
@@ -1913,14 +2036,32 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                         />
                                     </div>
                                     <div className="md:col-span-2">
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Event Image URL</label>
-                                        <input
-                                            type="url"
-                                            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                            placeholder="https://example.com/event-image.jpg"
-                                            value={formData.imageUrl || ''}
-                                            onChange={e => setFormData({ ...formData, imageUrl: e.target.value })}
-                                        />
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Event Image</label>
+                                        <div className="flex items-center gap-4">
+                                            {formData.imageUrl && (
+                                                <img src={formData.imageUrl} alt="Preview" className="h-12 w-12 object-cover rounded border border-gray-200" />
+                                            )}
+                                            <div className="flex-1 flex gap-2">
+                                                <input
+                                                    type="url"
+                                                    placeholder="Paste image URL here..."
+                                                    className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                                                    value={formData.imageUrl || ''}
+                                                    onChange={e => setFormData({ ...formData, imageUrl: e.target.value })}
+                                                />
+                                                <label className="cursor-pointer">
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        onChange={handleEventImageUpload}
+                                                        className="hidden"
+                                                    />
+                                                    <span className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm">
+                                                        Upload
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div className="md:col-span-2">
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
@@ -2059,14 +2200,32 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                         </select>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Student Image URL (Optional)</label>
-                                        <input
-                                            type="url"
-                                            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                            placeholder="https://example.com/photo.jpg"
-                                            value={formData.imageUrl || ''}
-                                            onChange={e => setFormData({ ...formData, imageUrl: e.target.value })}
-                                        />
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Student Photo</label>
+                                        <div className="flex items-center gap-4">
+                                            {formData.imageUrl && (
+                                                <img src={formData.imageUrl} alt="Preview" className="h-10 w-10 object-cover rounded-full border border-gray-200" />
+                                            )}
+                                            <div className="flex-1 flex gap-2">
+                                                <input
+                                                    type="url"
+                                                    placeholder="Paste URL here..."
+                                                    className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                                                    value={formData.imageUrl || ''}
+                                                    onChange={e => setFormData({ ...formData, imageUrl: e.target.value })}
+                                                />
+                                                <label className="cursor-pointer">
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        onChange={handleReviewImageUpload}
+                                                        className="hidden"
+                                                    />
+                                                    <span className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm">
+                                                        Upload
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div className="md:col-span-2">
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Testimonial</label>

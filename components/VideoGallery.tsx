@@ -85,7 +85,9 @@ const VideoGallery: React.FC = () => {
                   </div>
                 </div>
                 <div className="absolute top-6 left-6">
-                  <span className="px-5 py-2 bg-black/20 backdrop-blur-xl border border-white/10 text-white text-[10px] font-medium uppercase rounded-full tracking-widest">{insight.serviceTag}</span>
+                  {insight.serviceTag && (
+                    <span className="px-5 py-2 bg-black/20 backdrop-blur-xl border border-white/10 text-white text-[10px] font-medium uppercase rounded-full tracking-widest">{insight.serviceTag}</span>
+                  )}
                 </div>
               </div>
               <h4 className="font-semibold text-xl text-charcoal group-hover:text-accent transition-colors leading-tight tracking-tight px-2">{insight.name}</h4>
