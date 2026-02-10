@@ -77,10 +77,13 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, user, onLogout, onLoginC
           ))}
 
           {/* Fortex Dropdown */}
-          <div className="relative">
+          <div
+            className="relative"
+            onMouseEnter={() => setShowFortexDropdown(true)}
+            onMouseLeave={() => setShowFortexDropdown(false)}
+          >
             <button
               onClick={() => setShowFortexDropdown(!showFortexDropdown)}
-              onBlur={() => setTimeout(() => setShowFortexDropdown(false), 200)}
               className={`flex items-center gap-1 text-xs md:text-sm font-medium tracking-wide transition-all ${scrolled ? 'text-gray-800 hover:text-blue-600' : 'text-white hover:text-blue-300 drop-shadow-lg'}`}
             >
               Company

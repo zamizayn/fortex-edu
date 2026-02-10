@@ -26,8 +26,121 @@ const Programs: React.FC = () => {
   }, []);
 
   return (
-    <section id="programs" className="py-8 md:py-24 bg-gray-50">
+    <section id="programs" className="py-8 md:py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
+        {/* Timeline Section */}
+        <div className="mb-0 md:mb-20">
+          {/* Title */}
+          <h3 className="text-2xl md:text-4xl font-semibold text-charcoal mb-0 md:mb-8">
+            Our Services
+          </h3>
+
+          {/* Horizontal Timeline */}
+          <div className="relative pb-8">
+            <div className="flex md:grid md:grid-cols-5 overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none gap-4 md:gap-6 pb-4 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0 [-ms-overflow-style:'none'] [scrollbar-width:'none'] [&::-webkit-scrollbar]:hidden">
+              {/* Item 1 */}
+              <div className="flex flex-col items-center group min-w-[280px] md:min-w-0 snap-center">
+                <div className="w-full bg-gradient-to-br from-blue-50 to-purple-50 p-6 md:p-6 rounded-3xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 min-h-[120px] md:min-h-[180px] flex flex-col items-center justify-center">
+                  <div className="flex justify-center mb-4">
+                    <div className="w-14 h-14 md:w-16 md:h-16 bg-white rounded-2xl flex items-center justify-center shadow-lg">
+                      <svg className="w-7 h-7 md:w-8 md:h-8" viewBox="0 0 24 24" fill="none">
+                        <defs>
+                          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style={{ stopColor: '#3b82f6', stopOpacity: 1 }} />
+                            <stop offset="100%" style={{ stopColor: '#8b5cf6', stopOpacity: 1 }} />
+                          </linearGradient>
+                        </defs>
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" stroke="url(#grad1)" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <h4 className="text-sm md:text-base font-medium text-charcoal text-center leading-tight">Expert Counselling</h4>
+                </div>
+              </div>
+
+              {/* Item 2 */}
+              <div className="flex flex-col items-center group min-w-[280px] md:min-w-0 snap-center">
+                <div className="w-full bg-gradient-to-br from-purple-50 to-pink-50 p-6 md:p-6 rounded-3xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 min-h-[120px] md:min-h-[180px] flex flex-col items-center justify-center">
+                  <div className="flex justify-center mb-4">
+                    <div className="w-14 h-14 md:w-16 md:h-16 bg-white rounded-2xl flex items-center justify-center shadow-lg">
+                      <svg className="w-7 h-7 md:w-8 md:h-8" viewBox="0 0 24 24" fill="none">
+                        <defs>
+                          <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style={{ stopColor: '#a855f7', stopOpacity: 1 }} />
+                            <stop offset="100%" style={{ stopColor: '#ec4899', stopOpacity: 1 }} />
+                          </linearGradient>
+                        </defs>
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" stroke="url(#grad2)" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <h4 className="text-sm md:text-base font-medium text-charcoal text-center leading-tight">University Selection</h4>
+                </div>
+              </div>
+
+              {/* Item 3 */}
+              <div className="flex flex-col items-center group min-w-[280px] md:min-w-0 snap-center">
+                <div className="w-full bg-gradient-to-br from-green-50 to-blue-50 p-6 md:p-6 rounded-3xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 min-h-[120px] md:min-h-[180px] flex flex-col items-center justify-center">
+                  <div className="flex justify-center mb-4">
+                    <div className="w-14 h-14 md:w-16 md:h-16 bg-white rounded-2xl flex items-center justify-center shadow-lg">
+                      <svg className="w-7 h-7 md:w-8 md:h-8" viewBox="0 0 24 24" fill="none">
+                        <defs>
+                          <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style={{ stopColor: '#10b981', stopOpacity: 1 }} />
+                            <stop offset="100%" style={{ stopColor: '#3b82f6', stopOpacity: 1 }} />
+                          </linearGradient>
+                        </defs>
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" stroke="url(#grad3)" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <h4 className="text-sm md:text-base font-medium text-charcoal text-center leading-tight">Application Support</h4>
+                </div>
+              </div>
+
+              {/* Item 4 */}
+              <div className="flex flex-col items-center group min-w-[280px] md:min-w-0 snap-center">
+                <div className="w-full bg-gradient-to-br from-orange-50 to-red-50 p-6 md:p-6 rounded-3xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 min-h-[120px] md:min-h-[180px] flex flex-col items-center justify-center">
+                  <div className="flex justify-center mb-4">
+                    <div className="w-14 h-14 md:w-16 md:h-16 bg-white rounded-2xl flex items-center justify-center shadow-lg">
+                      <svg className="w-7 h-7 md:w-8 md:h-8" viewBox="0 0 24 24" fill="none">
+                        <defs>
+                          <linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style={{ stopColor: '#f59e0b', stopOpacity: 1 }} />
+                            <stop offset="100%" style={{ stopColor: '#ef4444', stopOpacity: 1 }} />
+                          </linearGradient>
+                        </defs>
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" stroke="url(#grad4)" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <h4 className="text-sm md:text-base font-medium text-charcoal text-center leading-tight">Financial Support</h4>
+                </div>
+              </div>
+
+              {/* Item 5 */}
+              <div className="flex flex-col items-center group min-w-[280px] md:min-w-0 snap-center">
+                <div className="w-full bg-gradient-to-br from-pink-50 to-purple-50 p-6 md:p-6 rounded-3xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 min-h-[120px] md:min-h-[180px] flex flex-col items-center justify-center">
+                  <div className="flex justify-center mb-4">
+                    <div className="w-14 h-14 md:w-16 md:h-16 bg-white rounded-2xl flex items-center justify-center shadow-lg">
+                      <svg className="w-7 h-7 md:w-8 md:h-8" viewBox="0 0 24 24" fill="none">
+                        <defs>
+                          <linearGradient id="grad5" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style={{ stopColor: '#ec4899', stopOpacity: 1 }} />
+                            <stop offset="100%" style={{ stopColor: '#8b5cf6', stopOpacity: 1 }} />
+                          </linearGradient>
+                        </defs>
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" stroke="url(#grad5)" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <h4 className="text-sm md:text-base font-medium text-charcoal text-center leading-tight">Enrollment Support</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="mb-16">
           <p className="text-[10px] md:text-sm font-medium text-accent uppercase tracking-[0.3em] mb-4">Our Programs</p>
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -38,13 +151,13 @@ const Programs: React.FC = () => {
               <p className="text-base md:text-xl text-charcoal/50 font-normal max-w-md leading-relaxed md:text-right">
                 Tailored guidance for every step of your international educational journey.
               </p>
-              <button
+              {/* <button
                 onClick={() => navigate('/courses')}
                 className="px-6 py-3 md:px-8 md:py-4 bg-charcoal text-white rounded-full font-bold text-xs md:text-sm tracking-widest uppercase hover:bg-black transition-all shadow-xl shadow-black/10 flex items-center gap-2"
               >
                 <span>View All Programs</span>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
@@ -62,7 +175,7 @@ const Programs: React.FC = () => {
                 layoutId={service.id}
                 key={service.id}
                 onClick={() => navigate(`/courses?category=${service.id}`)}
-                className="relative min-w-[75vw] md:min-w-0 snap-center aspect-[4/5] rounded-3xl md:rounded-3xl overflow-hidden cursor-pointer group shadow-2xl shadow-black/5"
+                className="relative min-w-[75vw] md:min-w-0 snap-center aspect-[3/4] md:aspect-[4/3] rounded-3xl md:rounded-3xl overflow-hidden cursor-pointer group shadow-2xl shadow-black/5"
               >
                 <img
                   src={service.imageUrl}
@@ -72,8 +185,8 @@ const Programs: React.FC = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
 
                 {/* Glass Details */}
-                <div className="absolute bottom-6 left-8 right-8 p-4 md:p-6 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl md:rounded-2xl transform transition-transform group-hover:-translate-y-2 flex flex-col items-center justify-center text-center">
-                  <h4 className="text-2xl md:text-2xl font-semibold text-white mb-2 leading-tight">{service.title}</h4>
+                <div className="absolute bottom-4 left-8 right-8 p-3 md:p-4 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl md:rounded-2xl transform transition-transform group-hover:-translate-y-2 flex flex-col items-center justify-center text-center">
+                  <h4 className="text-xl md:text-xl font-semibold text-white mb-2 leading-tight">{service.title}</h4>
                   <p className="text-base md:text-base text-white/60 font-normal line-clamp-2 md:hidden">{service.description}</p>
                 </div>
 

@@ -9,21 +9,21 @@ const HERO_SLIDES = [
     title: "Clear Guidance for a Bright Future.",
     description: "Expert guidance for admissions to India's top universities & colleges. We help you navigate your educational path with ease.",
     subtitle: "PRIORITY CAREER ACCESS",
-    image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070&auto=format&fit=crop"
   },
   {
     id: 2,
     title: "Global Education, Within Your Reach.",
     description: "Connect with world-class institutions and unlock international opportunities that align with your ambitions.",
     subtitle: "GLOBAL PATHWAYS",
-    image: "/banner.JPG"
+    image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070&auto=format&fit=crop"
   },
   {
     id: 3,
     title: "Expert Strategy for Career Success.",
     description: "Join 6,000+ students who transformed their futures with Fortex's personalized counseling and strategy.",
     subtitle: "SUCCESS GUARANTEED",
-    image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=2070&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=2070&auto=format&fit=crop"
   }
 ];
 
@@ -75,56 +75,44 @@ const Hero: React.FC<HeroProps> = ({ siteSettings }) => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="space-y-6 md:space-y-8"
           >
-            {/* Show subtitle only if it's NOT the second slide (index 1) */}
-            {currentSlide !== 1 && (
-              <span className="text-accent-blue text-[10px] md:text-xs font-semibold uppercase tracking-[0.3em] bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full text-white inline-block">
-                {HERO_SLIDES[currentSlide].subtitle}
-              </span>
-            )}
+            <span className="text-accent-blue text-[10px] md:text-xs font-semibold uppercase tracking-[0.3em] bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full text-white inline-block">
+              {HERO_SLIDES[currentSlide].subtitle}
+            </span>
 
-            {/* Show title only if it's NOT the second slide (index 1) */}
-            {currentSlide !== 1 && (
-              <h1 className="text-3xl md:text-6xl font-semibold text-white leading-[1.15] tracking-tight text-balance">
-                {HERO_SLIDES[currentSlide].title.split('.').map((part, i) => (
-                  <React.Fragment key={i}>
-                    {part}{i === 0 && part && '.'}
-                    {i === 0 && <br />}
-                  </React.Fragment>
-                ))}
-              </h1>
-            )}
+            <h1 className="text-3xl md:text-6xl font-semibold text-white leading-[1.15] tracking-tight text-balance">
+              {HERO_SLIDES[currentSlide].title.split('.').map((part, i) => (
+                <React.Fragment key={i}>
+                  {part}{i === 0 && part && '.'}
+                  {i === 0 && <br />}
+                </React.Fragment>
+              ))}
+            </h1>
 
-            {/* Show description only if it's NOT the second slide (index 1) */}
-            {currentSlide !== 1 && (
-              <p className="text-sm md:text-lg text-white/80 font-normal max-w-2xl mx-auto text-balance leading-relaxed">
-                {HERO_SLIDES[currentSlide].description}
-              </p>
-            )}
+            <p className="text-sm md:text-lg text-white/80 font-normal max-w-2xl mx-auto text-balance leading-relaxed">
+              {HERO_SLIDES[currentSlide].description}
+            </p>
 
-            {/* Show Action Buttons only if it's NOT the second slide (index 1) */}
-            {currentSlide !== 1 && (
-              <div className="pt-8 flex flex-col md:flex-row items-center justify-center gap-6 max-w-4xl mx-auto">
-                <div className="w-full md:flex-1 bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-2 md:p-3 flex flex-col md:flex-row items-center gap-2 md:gap-3 shadow-2xl">
-                  {/* <div className="flex-1 px-4 py-3 md:px-6 md:py-4 text-left w-full group">
-                    <p className="text-[10px] text-white/50 font-medium uppercase tracking-widest mb-1">Stay Updated</p>
-                    <p className="text-white font-medium text-xs md:text-sm">Latest Career News</p>
-                  </div> */}
-                  {/* <div className="w-px h-8 bg-white/10 hidden md:block" /> */}
-                  <div className="flex-1 px-4 py-3 md:px-6 md:py-4 text-left w-full">
-                    <p className="text-[10px] text-white/50 font-medium uppercase tracking-widest mb-1">WhatsApp</p>
-                    <p className="text-white font-medium text-xs md:text-sm">Stay Updated on the latest career updates - Join our WhatsApp Channel.</p>
-                  </div>
-                  <a
-                    href={`https://wa.me/${siteSettings?.whatsappNumber || '917025337762'}?text=Hi, I am interested in joining your updates channel.`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full md:w-auto px-8 py-4 bg-accent text-white font-semibold text-xs md:text-sm rounded-2xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/40 min-h-[48px] flex items-center justify-center whitespace-nowrap"
-                  >
-                    Join Now
-                  </a>
+            <div className="pt-8 flex flex-col md:flex-row items-center justify-center gap-6 max-w-4xl mx-auto">
+              <div className="w-full md:flex-1 bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-2 md:p-3 flex flex-col md:flex-row items-center gap-2 md:gap-3 shadow-2xl">
+                {/* <div className="flex-1 px-4 py-3 md:px-6 md:py-4 text-left w-full group">
+                  <p className="text-[10px] text-white/50 font-medium uppercase tracking-widest mb-1">Stay Updated</p>
+                  <p className="text-white font-medium text-xs md:text-sm">Latest Career News</p>
+                </div> */}
+                {/* <div className="w-px h-8 bg-white/10 hidden md:block" /> */}
+                <div className="flex-1 px-4 py-3 md:px-6 md:py-4 text-left w-full">
+                  <p className="text-[10px] text-white/50 font-medium uppercase tracking-widest mb-1">WhatsApp</p>
+                  <p className="text-white font-medium text-xs md:text-sm">Stay Updated on the latest career updates - Join our WhatsApp Channel.</p>
                 </div>
+                <a
+                  href={`https://wa.me/${siteSettings?.whatsappNumber || '917025337762'}?text=Hi, I am interested in joining your updates channel.`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full md:w-auto px-8 py-4 bg-accent text-white font-semibold text-xs md:text-sm rounded-2xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/40 min-h-[48px] flex items-center justify-center whitespace-nowrap"
+                >
+                  Join Now
+                </a>
               </div>
-            )}
+            </div>
           </motion.div>
         </AnimatePresence>
       </div>

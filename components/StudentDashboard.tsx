@@ -5,6 +5,7 @@ import { uploadStudentDocument } from '../services/storage';
 import { updateStudentProfile } from '../services/db';
 import { db, doc, onSnapshot } from '../firebase';
 import { motion, AnimatePresence } from 'framer-motion';
+import ApplicationForm from './ApplicationForm';
 
 interface StudentDashboardProps {
     user: User | null;
@@ -12,7 +13,7 @@ interface StudentDashboardProps {
     siteSettings: SiteSettings | null;
 }
 
-type ViewType = 'dashboard' | 'profile' | 'update';
+type ViewType = 'dashboard' | 'profile' | 'update' | 'application';
 
 // --- External Components ---
 // Defined outside to prevent re-mounting on parent re-renders
@@ -411,6 +412,13 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ user: initialUser, 
                                 active={activeView === 'update'}
                                 onClick={setActiveView}
                             />
+                            <SidebarItem
+                                view="application"
+                                label="Application Form"
+                                icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>}
+                                active={activeView === 'application'}
+                                onClick={setActiveView}
+                            />
                             <button
                                 onClick={onLogout}
                                 className="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-gray-500 hover:bg-red-50 hover:text-red-600 mt-2"
@@ -427,6 +435,7 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ user: initialUser, 
                     <button onClick={() => setActiveView('dashboard')} className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap ${activeView === 'dashboard' ? 'bg-charcoal text-white' : 'bg-gray-100 text-gray-600'}`}>Dashboard</button>
                     <button onClick={() => setActiveView('profile')} className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap ${activeView === 'profile' ? 'bg-charcoal text-white' : 'bg-gray-100 text-gray-600'}`}>Profile</button>
                     <button onClick={() => setActiveView('update')} className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap ${activeView === 'update' ? 'bg-charcoal text-white' : 'bg-gray-100 text-gray-600'}`}>Update</button>
+                    <button onClick={() => setActiveView('application')} className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap ${activeView === 'application' ? 'bg-charcoal text-white' : 'bg-gray-100 text-gray-600'}`}>Application</button>
                 </div>
 
                 {/* Main Content */}
@@ -434,6 +443,7 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ user: initialUser, 
                     {activeView === 'dashboard' && renderDashboardView()}
                     {activeView === 'profile' && renderProfileDetailsView()}
                     {activeView === 'update' && renderUpdateProfileView()}
+                    {activeView === 'application' && <ApplicationForm user={currentUser} onBack={() => setActiveView('dashboard')} />}
                 </div>
             </div>
         </div>

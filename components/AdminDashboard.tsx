@@ -33,6 +33,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
     const [editingId, setEditingId] = useState<string | null>(null);
     const [selectedConsultation, setSelectedConsultation] = useState<Consultation | null>(null);
     const [selectedStudent, setSelectedStudent] = useState<User | null>(null);
+    const [studentApplicationData, setStudentApplicationData] = useState<any | null>(null);
+    const [loadingApplication, setLoadingApplication] = useState(false);
 
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(5);
@@ -227,8 +229,39 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
         setCurrentPage(1);
         setLastDocs({});
         setSelectedStudent(null);
+        setStudentApplicationData(null);
         initData();
     }, [activeTab]);
+
+    // Fetch application data when a student is selected
+    useEffect(() => {
+        const fetchApplicationData = async () => {
+            if (!selectedStudent) {
+                setStudentApplicationData(null);
+                return;
+            }
+
+            setLoadingApplication(true);
+            try {
+                const appDocRef = doc(db, 'applications', selectedStudent.id);
+                const appSnapshot = await getDocs(query(collection(db, 'applications')));
+                const appDoc = appSnapshot.docs.find(d => d.id === selectedStudent.id);
+
+                if (appDoc) {
+                    setStudentApplicationData(appDoc.data());
+                } else {
+                    setStudentApplicationData(null);
+                }
+            } catch (error) {
+                console.error('Error fetching application:', error);
+                setStudentApplicationData(null);
+            } finally {
+                setLoadingApplication(false);
+            }
+        };
+
+        fetchApplicationData();
+    }, [selectedStudent]);
 
     // Reset pagination when switching tabs
 
@@ -676,14 +709,14 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                         <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden animate-in fade-in duration-300">
                             <div className="px-6 py-4 border-b border-gray-200 flex items-center gap-4">
                                 <button
-                                    onClick={() => setSelectedStudent(null)}
+                                    onClick={() => { setSelectedStudent(null); setStudentApplicationData(null); }}
                                     className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
                                 >
                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg>
                                     Back to List
                                 </button>
                                 <div className="w-px h-6 bg-gray-200" />
-                                <h2 className="text-lg font-semibold text-gray-800">Student Details</h2>
+                                <h2 className="text-lg font-semibold text-gray-800">Student Details & Application</h2>
                             </div>
                             <div className="p-6 md:p-8 space-y-8">
                                 {/* Profile Header */}
@@ -693,66 +726,292 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                         src={selectedStudent.picture || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedStudent.name)}&background=6366f1&color=fff&size=128`}
                                         alt={selectedStudent.name}
                                     />
-                                    <div className="text-center sm:text-left">
+                                    <div className="text-center sm:text-left flex-1">
                                         <h3 className="text-2xl font-bold text-gray-900">{selectedStudent.name}</h3>
                                         <p className="text-sm text-gray-500 mt-1">{selectedStudent.email}</p>
-                                        <span className="mt-2 inline-block px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Active Student</span>
+                                        <div className="flex gap-2 mt-2 justify-center sm:justify-start">
+                                            <span className="inline-block px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Active Student</span>
+                                            {studentApplicationData && (
+                                                <span className={`inline-block px-3 py-1 text-xs font-semibold rounded-full ${studentApplicationData.status === 'submitted' ? 'bg-blue-100 text-blue-800' : 'bg-yellow-100 text-yellow-800'
+                                                    }`}>
+                                                    Application: {studentApplicationData.status === 'submitted' ? 'Submitted' : 'Draft'}
+                                                </span>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
 
-                                {/* Personal Information */}
-                                <div>
-                                    <h4 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Personal Information</h4>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                                        {[
-                                            { label: 'Full Name', value: selectedStudent.name },
-                                            { label: 'Email Address', value: selectedStudent.email },
-                                            { label: 'Mobile', value: selectedStudent.mobile || 'Not provided' },
-                                            { label: 'Date of Birth', value: selectedStudent.dob || 'Not provided' },
-                                            { label: 'Gender', value: selectedStudent.gender || 'Not provided' },
-                                            { label: 'Address', value: selectedStudent.address || 'Not provided' },
-                                        ].map((item, i) => (
-                                            <div key={i} className="bg-gray-50 rounded-xl p-4 border border-gray-100">
-                                                <p className="text-xs text-gray-400 font-medium uppercase tracking-wider">{item.label}</p>
-                                                <p className="text-sm font-medium text-gray-800 mt-1 break-words">{item.value}</p>
-                                            </div>
-                                        ))}
+                                {loadingApplication ? (
+                                    <div className="text-center py-8">
+                                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
+                                        <p className="text-sm text-gray-500">Loading application data...</p>
                                     </div>
-                                </div>
+                                ) : studentApplicationData ? (
+                                    <>
+                                        {/* Application Form Data */}
+                                        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                                            <h4 className="text-sm font-semibold text-blue-900 mb-2">📋 Application Form Submitted</h4>
+                                            <p className="text-xs text-blue-700">
+                                                This student has submitted their application form. All details are shown below.
+                                            </p>
+                                        </div>
 
-                                {/* Documents */}
-                                <div>
-                                    <h4 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Uploaded Documents</h4>
-                                    {selectedStudent.documents && selectedStudent.documents.length > 0 ? (
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                            {selectedStudent.documents.map((doc, i) => (
-                                                <div key={i} className="flex items-center justify-between bg-gray-50 rounded-xl p-4 border border-gray-100 hover:border-blue-200 transition-colors">
-                                                    <div className="flex items-center gap-3 min-w-0">
-                                                        <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
-                                                            <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                                        {/* Student Details Section */}
+                                        {studentApplicationData.studentDetails && (
+                                            <div>
+                                                <h4 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">👤 Student Details</h4>
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                                    {[
+                                                        { label: 'Full Name', value: studentApplicationData.studentDetails.fullName },
+                                                        { label: 'Gender', value: studentApplicationData.studentDetails.gender },
+                                                        { label: 'Date of Birth', value: studentApplicationData.studentDetails.dob },
+                                                        { label: 'Age', value: studentApplicationData.studentDetails.age },
+                                                        { label: 'Nationality', value: studentApplicationData.studentDetails.nationality },
+                                                        { label: 'Religion', value: studentApplicationData.studentDetails.religion },
+                                                        { label: 'Community', value: studentApplicationData.studentDetails.community },
+                                                        { label: 'Caste', value: studentApplicationData.studentDetails.caste },
+                                                        { label: 'Aadhaar Number', value: studentApplicationData.studentDetails.aadhaarNumber },
+                                                        { label: 'Mobile', value: studentApplicationData.studentDetails.studentMobile },
+                                                        { label: 'Email', value: studentApplicationData.studentDetails.studentEmail },
+                                                    ].map((item, i) => (
+                                                        <div key={i} className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                                                            <p className="text-xs text-gray-400 font-medium uppercase tracking-wider">{item.label}</p>
+                                                            <p className="text-sm font-medium text-gray-800 mt-1 break-words">{item.value || 'Not provided'}</p>
                                                         </div>
-                                                        <div className="min-w-0">
-                                                            <p className="text-sm font-medium text-gray-800 truncate">{doc.name}</p>
-                                                            <p className="text-xs text-gray-400">{doc.date || 'No date'}</p>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Parent/Guardian Details */}
+                                        {studentApplicationData.parentDetails && (
+                                            <div>
+                                                <h4 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">👨‍👩‍👧 Parent/Guardian Details</h4>
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                                    {[
+                                                        { label: "Father's Name", value: studentApplicationData.parentDetails.fatherName },
+                                                        { label: "Father's Mobile", value: studentApplicationData.parentDetails.fatherMobile },
+                                                        { label: "Father's Occupation", value: studentApplicationData.parentDetails.fatherOccupation },
+                                                        { label: "Mother's Name", value: studentApplicationData.parentDetails.motherName },
+                                                        { label: "Mother's Mobile", value: studentApplicationData.parentDetails.motherMobile },
+                                                        { label: "Mother's Occupation", value: studentApplicationData.parentDetails.motherOccupation },
+                                                        { label: 'Annual Income', value: studentApplicationData.parentDetails.annualIncome },
+                                                    ].map((item, i) => (
+                                                        <div key={i} className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                                                            <p className="text-xs text-gray-400 font-medium uppercase tracking-wider">{item.label}</p>
+                                                            <p className="text-sm font-medium text-gray-800 mt-1 break-words">{item.value || 'Not provided'}</p>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Address Details */}
+                                        {studentApplicationData.addressDetails && (
+                                            <div>
+                                                <h4 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">🏠 Address Details</h4>
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                                    {[
+                                                        { label: 'House/Flat No.', value: studentApplicationData.addressDetails.houseNo },
+                                                        { label: 'Street/Locality', value: studentApplicationData.addressDetails.street },
+                                                        { label: 'Post Office', value: studentApplicationData.addressDetails.postOffice },
+                                                        { label: 'District', value: studentApplicationData.addressDetails.district },
+                                                        { label: 'State', value: studentApplicationData.addressDetails.state },
+                                                        { label: 'PIN Code', value: studentApplicationData.addressDetails.pinCode },
+                                                    ].map((item, i) => (
+                                                        <div key={i} className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                                                            <p className="text-xs text-gray-400 font-medium uppercase tracking-wider">{item.label}</p>
+                                                            <p className="text-sm font-medium text-gray-800 mt-1 break-words">{item.value || 'Not provided'}</p>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Academic Details */}
+                                        {studentApplicationData.academicDetails && (
+                                            <div>
+                                                <h4 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">📚 Academic Details</h4>
+
+                                                {/* 10th Standard */}
+                                                <div className="mb-6">
+                                                    <h5 className="text-xs font-semibold text-gray-600 mb-3">10th Standard</h5>
+                                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                                        {[
+                                                            { label: 'School Name', value: studentApplicationData.academicDetails.tenth?.schoolName },
+                                                            { label: 'Place', value: studentApplicationData.academicDetails.tenth?.place },
+                                                            { label: 'Board', value: studentApplicationData.academicDetails.tenth?.board },
+                                                            { label: 'Year of Passing', value: studentApplicationData.academicDetails.tenth?.yearOfPassing },
+                                                            { label: 'Percentage', value: studentApplicationData.academicDetails.tenth?.percentage },
+                                                        ].map((item, i) => (
+                                                            <div key={i} className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                                                                <p className="text-xs text-gray-400 font-medium uppercase tracking-wider">{item.label}</p>
+                                                                <p className="text-sm font-medium text-gray-800 mt-1 break-words">{item.value || 'Not provided'}</p>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+
+                                                {/* +2 Standard */}
+                                                <div>
+                                                    <h5 className="text-xs font-semibold text-gray-600 mb-3">+2 / Equivalent</h5>
+                                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                                        {[
+                                                            { label: 'College Name', value: studentApplicationData.academicDetails.plusTwo?.collegeName },
+                                                            { label: 'Stream', value: studentApplicationData.academicDetails.plusTwo?.stream },
+                                                            { label: 'Board', value: studentApplicationData.academicDetails.plusTwo?.board },
+                                                            { label: 'Year of Passing', value: studentApplicationData.academicDetails.plusTwo?.yearOfPassing },
+                                                            { label: 'Percentage', value: studentApplicationData.academicDetails.plusTwo?.percentage },
+                                                        ].map((item, i) => (
+                                                            <div key={i} className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                                                                <p className="text-xs text-gray-400 font-medium uppercase tracking-wider">{item.label}</p>
+                                                                <p className="text-sm font-medium text-gray-800 mt-1 break-words">{item.value || 'Not provided'}</p>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Course Preference */}
+                                        {studentApplicationData.coursePreference && (
+                                            <div>
+                                                <h4 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">🎓 Course Preference</h4>
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                                    <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                                                        <p className="text-xs text-gray-400 font-medium uppercase tracking-wider">Course Applying For</p>
+                                                        <p className="text-sm font-medium text-gray-800 mt-1">{studentApplicationData.coursePreference.courseApplyingFor || 'Not provided'}</p>
+                                                    </div>
+                                                    <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                                                        <p className="text-xs text-gray-400 font-medium uppercase tracking-wider">Preferred Location</p>
+                                                        <p className="text-sm font-medium text-gray-800 mt-1">{studentApplicationData.coursePreference.preferredLocation || 'Not provided'}</p>
+                                                    </div>
+                                                    <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                                                        <p className="text-xs text-gray-400 font-medium uppercase tracking-wider">Mode of Admission</p>
+                                                        <p className="text-sm font-medium text-gray-800 mt-1">{studentApplicationData.coursePreference.modeOfAdmission || 'Not provided'}</p>
+                                                    </div>
+                                                    <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 sm:col-span-2">
+                                                        <p className="text-xs text-gray-400 font-medium uppercase tracking-wider">Preferred Colleges</p>
+                                                        <p className="text-sm font-medium text-gray-800 mt-1 whitespace-pre-line">{studentApplicationData.coursePreference.preferredColleges || 'Not provided'}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Additional Information */}
+                                        {studentApplicationData.additionalInfo && (
+                                            <div>
+                                                <h4 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">ℹ️ Additional Information</h4>
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                                    {[
+                                                        { label: 'Entrance Exam Appeared', value: studentApplicationData.additionalInfo.entranceExamAppeared },
+                                                        { label: 'Exam Name & Score', value: studentApplicationData.additionalInfo.examNameAndScore },
+                                                        { label: 'Gap in Studies', value: studentApplicationData.additionalInfo.gapInStudies },
+                                                        { label: 'Gap Reason', value: studentApplicationData.additionalInfo.gapReason },
+                                                    ].map((item, i) => (
+                                                        <div key={i} className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                                                            <p className="text-xs text-gray-400 font-medium uppercase tracking-wider">{item.label}</p>
+                                                            <p className="text-sm font-medium text-gray-800 mt-1 break-words">{item.value || 'Not provided'}</p>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Documents */}
+                                        {studentApplicationData.documents && (
+                                            <div>
+                                                <h4 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">📄 Uploaded Documents</h4>
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                                    {[
+                                                        { key: 'sslcCertificate', label: 'SSLC / 10th Certificate' },
+                                                        { key: 'plusTwoCertificate', label: '+2 Certificate' },
+                                                        { key: 'aadhaarCard', label: 'Aadhaar Card' },
+                                                        { key: 'passportPhoto', label: 'Passport Photo' },
+                                                        { key: 'transferCertificate', label: 'Transfer Certificate' },
+                                                        { key: 'migrationCertificate', label: 'Migration Certificate' },
+                                                    ].map((doc) => {
+                                                        const docData = studentApplicationData.documents[doc.key];
+                                                        return (
+                                                            <div key={doc.key} className={`flex items-center justify-between bg-gray-50 rounded-xl p-4 border ${docData ? 'border-green-200 bg-green-50' : 'border-gray-100'
+                                                                } transition-colors`}>
+                                                                <div className="flex items-center gap-3 min-w-0">
+                                                                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${docData ? 'bg-green-100' : 'bg-gray-100'
+                                                                        }`}>
+                                                                        {docData ? (
+                                                                            <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                                                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                                                            </svg>
+                                                                        ) : (
+                                                                            <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                                            </svg>
+                                                                        )}
+                                                                    </div>
+                                                                    <div className="min-w-0">
+                                                                        <p className="text-sm font-medium text-gray-800 truncate">{doc.label}</p>
+                                                                        <p className="text-xs text-gray-400">{docData ? docData.name : 'Not uploaded'}</p>
+                                                                    </div>
+                                                                </div>
+                                                                {docData && (
+                                                                    <a
+                                                                        href={docData.url}
+                                                                        target="_blank"
+                                                                        rel="noopener noreferrer"
+                                                                        className="text-blue-600 hover:text-blue-800 text-sm font-medium flex-shrink-0 ml-3"
+                                                                    >
+                                                                        View
+                                                                    </a>
+                                                                )}
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Declaration */}
+                                        {studentApplicationData.declaration && (
+                                            <div>
+                                                <h4 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">✍️ Declaration</h4>
+                                                <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                                                        <div>
+                                                            <p className="text-xs text-gray-400 font-medium uppercase tracking-wider">Place</p>
+                                                            <p className="text-sm font-medium text-gray-800 mt-1">{studentApplicationData.declaration.place || 'Not provided'}</p>
+                                                        </div>
+                                                        <div>
+                                                            <p className="text-xs text-gray-400 font-medium uppercase tracking-wider">Date</p>
+                                                            <p className="text-sm font-medium text-gray-800 mt-1">{studentApplicationData.declaration.date || 'Not provided'}</p>
                                                         </div>
                                                     </div>
-                                                    <a
-                                                        href={doc.url}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="text-blue-600 hover:text-blue-800 text-sm font-medium flex-shrink-0 ml-3"
-                                                    >
-                                                        View
-                                                    </a>
+                                                    <div className="flex items-center gap-2">
+                                                        {studentApplicationData.declaration.agreed ? (
+                                                            <>
+                                                                <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                                                </svg>
+                                                                <span className="text-sm font-medium text-green-800">Student has agreed to the declaration</span>
+                                                            </>
+                                                        ) : (
+                                                            <span className="text-sm text-gray-600">Declaration not agreed</span>
+                                                        )}
+                                                    </div>
                                                 </div>
-                                            ))}
-                                        </div>
-                                    ) : (
-                                        <div className="bg-gray-50 rounded-xl p-6 text-center text-gray-400 border border-gray-100">
-                                            No documents uploaded yet.
-                                        </div>
-                                    )}
-                                </div>
+                                            </div>
+                                        )}
+                                    </>
+                                ) : (
+                                    <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 text-center">
+                                        <svg className="w-12 h-12 text-yellow-600 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        </svg>
+                                        <h4 className="text-sm font-semibold text-yellow-900 mb-2">No Application Submitted</h4>
+                                        <p className="text-xs text-yellow-700">
+                                            This student has not submitted their application form yet.
+                                        </p>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     );

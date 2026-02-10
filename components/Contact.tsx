@@ -151,6 +151,90 @@ const Contact: React.FC = () => {
           })}
         </motion.div>
 
+        {/* Statistics Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="mb-16"
+        >
+          <div className="text-center mb-12">
+            <h2 className="text-2xl md:text-4xl font-semibold text-charcoal mb-4">
+              Our Impact in Numbers
+            </h2>
+            <p className="text-base md:text-lg text-charcoal/60 max-w-2xl mx-auto">
+              Trusted by thousands of students and partnered with hundreds of institutions worldwide
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            {/* Stat 1 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1, duration: 0.5 }}
+              className="bg-white rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100"
+            >
+              <div className="text-4xl md:text-5xl font-bold text-blue-600 mb-2">
+                1.5K+
+              </div>
+              <div className="text-sm md:text-base text-charcoal/70 font-medium">
+                Courses
+              </div>
+            </motion.div>
+
+            {/* Stat 2 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="bg-white rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100"
+            >
+              <div className="text-4xl md:text-5xl font-bold text-green-600 mb-2">
+                100%
+              </div>
+              <div className="text-sm md:text-base text-charcoal/70 font-medium">
+                Satisfaction Rate
+              </div>
+            </motion.div>
+
+            {/* Stat 3 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+              className="bg-white rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100"
+            >
+              <div className="text-4xl md:text-5xl font-bold text-purple-600 mb-2">
+                5K+
+              </div>
+              <div className="text-sm md:text-base text-charcoal/70 font-medium">
+                Enrolled Students
+              </div>
+            </motion.div>
+
+            {/* Stat 4 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+              className="bg-white rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100"
+            >
+              <div className="text-4xl md:text-5xl font-bold text-orange-600 mb-2">
+                350+
+              </div>
+              <div className="text-sm md:text-base text-charcoal/70 font-medium">
+                Affiliated Universities
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
+
         {/* Main Content Grid */}
 
       </div>
