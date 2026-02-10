@@ -25,6 +25,7 @@ const App: React.FC = () => {
     return storedUser ? JSON.parse(storedUser) : null;
   });
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authModalView, setAuthModalView] = useState<'login' | 'register' | 'admin'>('login');
   const [whatsappNumber, setWhatsappNumber] = useState('917025337762');
   const [siteSettings, setSiteSettings] = useState<SiteSettings | null>(null);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
@@ -210,7 +211,7 @@ const App: React.FC = () => {
               ) : (
                 <HomePage
                   user={user}
-                  onLoginClick={() => setIsAuthModalOpen(true)}
+                  onLoginClick={() => { setAuthModalView('admin'); setIsAuthModalOpen(true); }}
                   siteSettings={siteSettings}
                   shouldOpenLogin={true}
                 />
@@ -236,8 +237,9 @@ const App: React.FC = () => {
 
         <AuthModal
           isOpen={isAuthModalOpen}
-          onClose={() => setIsAuthModalOpen(false)}
+          onClose={() => { setIsAuthModalOpen(false); setAuthModalView('login'); }}
           onLogin={handleLogin}
+          initialView={authModalView}
         />
 
         {isVisible('booking') && (

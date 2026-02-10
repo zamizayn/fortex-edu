@@ -32,6 +32,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
     const [siteSettings, setSiteSettings] = useState<SiteSettings | null>(null);
     const [editingId, setEditingId] = useState<string | null>(null);
     const [selectedConsultation, setSelectedConsultation] = useState<Consultation | null>(null);
+    const [selectedStudent, setSelectedStudent] = useState<User | null>(null);
 
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(5);
@@ -225,6 +226,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
         // Reset state on tab change
         setCurrentPage(1);
         setLastDocs({});
+        setSelectedStudent(null);
         initData();
     }, [activeTab]);
 
@@ -668,6 +670,95 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
             case 'students':
                 const currentStudents = students;
 
+                // Student Detail View
+                if (selectedStudent) {
+                    return (
+                        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden animate-in fade-in duration-300">
+                            <div className="px-6 py-4 border-b border-gray-200 flex items-center gap-4">
+                                <button
+                                    onClick={() => setSelectedStudent(null)}
+                                    className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                                >
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg>
+                                    Back to List
+                                </button>
+                                <div className="w-px h-6 bg-gray-200" />
+                                <h2 className="text-lg font-semibold text-gray-800">Student Details</h2>
+                            </div>
+                            <div className="p-6 md:p-8 space-y-8">
+                                {/* Profile Header */}
+                                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+                                    <img
+                                        className="h-20 w-20 rounded-full border-2 border-gray-200 object-cover shadow-md"
+                                        src={selectedStudent.picture || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedStudent.name)}&background=6366f1&color=fff&size=128`}
+                                        alt={selectedStudent.name}
+                                    />
+                                    <div className="text-center sm:text-left">
+                                        <h3 className="text-2xl font-bold text-gray-900">{selectedStudent.name}</h3>
+                                        <p className="text-sm text-gray-500 mt-1">{selectedStudent.email}</p>
+                                        <span className="mt-2 inline-block px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Active Student</span>
+                                    </div>
+                                </div>
+
+                                {/* Personal Information */}
+                                <div>
+                                    <h4 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Personal Information</h4>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                        {[
+                                            { label: 'Full Name', value: selectedStudent.name },
+                                            { label: 'Email Address', value: selectedStudent.email },
+                                            { label: 'Mobile', value: selectedStudent.mobile || 'Not provided' },
+                                            { label: 'Date of Birth', value: selectedStudent.dob || 'Not provided' },
+                                            { label: 'Gender', value: selectedStudent.gender || 'Not provided' },
+                                            { label: 'Address', value: selectedStudent.address || 'Not provided' },
+                                        ].map((item, i) => (
+                                            <div key={i} className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                                                <p className="text-xs text-gray-400 font-medium uppercase tracking-wider">{item.label}</p>
+                                                <p className="text-sm font-medium text-gray-800 mt-1 break-words">{item.value}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Documents */}
+                                <div>
+                                    <h4 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Uploaded Documents</h4>
+                                    {selectedStudent.documents && selectedStudent.documents.length > 0 ? (
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                            {selectedStudent.documents.map((doc, i) => (
+                                                <div key={i} className="flex items-center justify-between bg-gray-50 rounded-xl p-4 border border-gray-100 hover:border-blue-200 transition-colors">
+                                                    <div className="flex items-center gap-3 min-w-0">
+                                                        <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
+                                                            <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                                                        </div>
+                                                        <div className="min-w-0">
+                                                            <p className="text-sm font-medium text-gray-800 truncate">{doc.name}</p>
+                                                            <p className="text-xs text-gray-400">{doc.date || 'No date'}</p>
+                                                        </div>
+                                                    </div>
+                                                    <a
+                                                        href={doc.url}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="text-blue-600 hover:text-blue-800 text-sm font-medium flex-shrink-0 ml-3"
+                                                    >
+                                                        View
+                                                    </a>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="bg-gray-50 rounded-xl p-6 text-center text-gray-400 border border-gray-100">
+                                            No documents uploaded yet.
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    );
+                }
+
+                // Student List View
                 return (
                     <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden animate-in fade-in duration-300">
                         <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
@@ -691,7 +782,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                     </thead>
                                     <tbody className="divide-y divide-gray-200">
                                         {currentStudents.map((student) => (
-                                            <tr key={student.id} className="hover:bg-gray-50 transition-colors">
+                                            <tr key={student.id} className="hover:bg-gray-50 transition-colors cursor-pointer" onClick={() => setSelectedStudent(student)}>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="flex items-center">
                                                         <img
@@ -702,11 +793,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                                         <div className="ml-4">
                                                             <div className="text-sm font-medium text-gray-900">{student.name}</div>
                                                             <div className="text-xs text-gray-500">ID: {student.id.slice(0, 8)}...</div>
-                                                        </div >
-                                                    </div >
-                                                </td >
+                                                        </div>
+                                                    </div>
+                                                </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="text-sm text-gray-600">{student.email}</div>
+                                                    {student.mobile && <div className="text-xs text-gray-400">{student.mobile}</div>}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <span className="px-2.5 py-0.5 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
@@ -714,16 +806,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                                     </span>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    <button className="text-blue-600 hover:text-blue-900 font-medium">View Details</button>
+                                                    <button onClick={(e) => { e.stopPropagation(); setSelectedStudent(student); }} className="text-blue-600 hover:text-blue-900 font-medium">View Details</button>
                                                 </td>
-                                            </tr >
+                                            </tr>
                                         ))}
-                                    </tbody >
-                                </table >
-                            </div >
+                                    </tbody>
+                                </table>
+                            </div>
                         )}
                         <PaginationControls />
-                    </div >
+                    </div>
                 );
 
             case 'leads':

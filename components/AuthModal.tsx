@@ -10,8 +10,15 @@ interface AuthModalProps {
   onLogin: (user: User) => void;
 }
 
-const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
-  const [view, setView] = useState<'login' | 'register' | 'admin'>('login');
+const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin, initialView = 'login' }) => {
+  const [view, setView] = useState<'login' | 'register' | 'admin'>(initialView);
+
+  // Sync view with initialView when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setView(initialView);
+    }
+  }, [isOpen, initialView]);
   const [loadingType, setLoadingType] = useState<'student' | 'admin' | null>(null);
 
   // Form States
