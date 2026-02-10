@@ -399,20 +399,6 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ user: initialUser, 
                                 onClick={setActiveView}
                             />
                             <SidebarItem
-                                view="profile"
-                                label="My Profile"
-                                icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>}
-                                active={activeView === 'profile'}
-                                onClick={setActiveView}
-                            />
-                            <SidebarItem
-                                view="update"
-                                label="Update Profile"
-                                icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>}
-                                active={activeView === 'update'}
-                                onClick={setActiveView}
-                            />
-                            <SidebarItem
                                 view="application"
                                 label="Application Form"
                                 icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>}
@@ -433,16 +419,12 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ user: initialUser, 
                 {/* Mobile Tab Bar (below top navbar) */}
                 <div className="md:hidden fixed top-[60px] left-0 right-0 bg-white border-b border-gray-100 z-40 px-4 py-2 flex gap-2 overflow-x-auto no-scrollbar">
                     <button onClick={() => setActiveView('dashboard')} className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap ${activeView === 'dashboard' ? 'bg-charcoal text-white' : 'bg-gray-100 text-gray-600'}`}>Dashboard</button>
-                    <button onClick={() => setActiveView('profile')} className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap ${activeView === 'profile' ? 'bg-charcoal text-white' : 'bg-gray-100 text-gray-600'}`}>Profile</button>
-                    <button onClick={() => setActiveView('update')} className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap ${activeView === 'update' ? 'bg-charcoal text-white' : 'bg-gray-100 text-gray-600'}`}>Update</button>
                     <button onClick={() => setActiveView('application')} className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap ${activeView === 'application' ? 'bg-charcoal text-white' : 'bg-gray-100 text-gray-600'}`}>Application</button>
                 </div>
 
                 {/* Main Content */}
                 <div className="flex-1 overflow-y-auto bg-gray-50/50 p-6 md:p-12 pb-24 md:pb-12 mt-12 md:mt-0">
                     {activeView === 'dashboard' && renderDashboardView()}
-                    {activeView === 'profile' && renderProfileDetailsView()}
-                    {activeView === 'update' && renderUpdateProfileView()}
                     {activeView === 'application' && <ApplicationForm user={currentUser} onBack={() => setActiveView('dashboard')} />}
                 </div>
             </div>
