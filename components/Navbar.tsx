@@ -158,9 +158,9 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, user, onLogout, onLoginC
           ) : (
             <button
               onClick={onLoginClick}
-              className={`px-5 py-2.5 rounded-xl font-bold text-xs md:text-sm tracking-wide transition-all ${scrolled ? 'bg-charcoal text-white hover:bg-black shadow-lg shadow-black/10' : 'bg-white text-charcoal hover:bg-gray-100 shadow-xl'}`}
+              className={`text-xs md:text-sm font-medium tracking-wide transition-all ${scrolled ? 'text-gray-800 hover:text-blue-600' : 'text-white hover:text-blue-300 drop-shadow-lg'}`}
             >
-              Student Login
+              Sign In
             </button>
           )}
         </div>
@@ -233,9 +233,9 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, user, onLogout, onLoginC
             {!user && (
               <button
                 onClick={() => { onLoginClick(); setIsOpen(false); }}
-                className="w-full py-5 bg-accent text-white rounded-2xl font-bold text-lg text-center uppercase tracking-widest shadow-xl shadow-accent/20 mt-4 min-h-[56px]"
+                className="text-base font-semibold text-white hover:text-blue-300 transition-colors py-2 text-left"
               >
-                Student Login
+                Sign In
               </button>
             )}
           </div>
