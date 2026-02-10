@@ -216,7 +216,7 @@ const About: React.FC = () => {
         </div>
 
         {/* Stats Section */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -239,68 +239,13 @@ const About: React.FC = () => {
               </p>
             </motion.div>
           ))}
-        </motion.div>
+        </motion.div> */}
 
         {/* Our Values Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="mb-32"
-        >
-          <div className="text-center mb-12">
-            <p className="text-[10px] md:text-xs font-semibold text-blue-600 uppercase tracking-widest mb-3">
-              Our Core Values
-            </p>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">
-              What Drives Us Forward
-            </h2>
-          </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {values.map((value, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.15, duration: 0.5 }}
-                className="bg-gradient-to-br from-white to-blue-50/50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1"
-              >
-                <div className="text-4xl mb-3">{value.icon}</div>
-                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2">
-                  {value.title}
-                </h3>
-                <p className="text-sm text-gray-600 leading-relaxed font-normal">
-                  {value.description}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
 
         {/* CTA Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl p-12 md:p-16 text-white shadow-2xl"
-        >
-          <h2 className="text-2xl md:text-3xl font-bold mb-3">
-            Ready to Start Your Journey?
-          </h2>
-          <p className="text-base md:text-lg mb-6 opacity-90 max-w-xl mx-auto font-normal">
-            Join thousands of successful students who trusted us with their educational dreams
-          </p>
-          <a
-            href="/contact"
-            className="inline-block bg-white text-blue-600 font-bold px-7 py-3 rounded-full hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg text-base"
-          >
-            Get in Touch
-          </a>
-        </motion.div>
+
       </div>
     </div>
   );

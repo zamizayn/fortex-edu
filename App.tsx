@@ -7,6 +7,7 @@ import AuthModal from './components/AuthModal';
 import EventPopup from './components/EventPopup';
 import BookingPopup from './components/BookingPopup';
 import AdminDashboard from './components/AdminDashboard';
+import StudentDashboard from './components/StudentDashboard';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
@@ -61,11 +62,14 @@ const App: React.FC = () => {
 
   const isVisible = (sectionId: string) => siteSettings?.visibleSections?.[sectionId] !== false;
 
-  // Auto-show booking popup after 3 seconds
+  const hasAutoTriggeredBooking = React.useRef(false);
+
+  // Auto-show booking popup after 3 seconds (only once per session)
   useEffect(() => {
-    if (isVisible('booking')) {
+    if (isVisible('booking') && !hasAutoTriggeredBooking.current && window.location.pathname === '/') {
       const timer = setTimeout(() => {
         setIsBookingOpen(true);
+        hasAutoTriggeredBooking.current = true;
       }, 2000);
       return () => clearTimeout(timer);
     }
@@ -76,6 +80,8 @@ const App: React.FC = () => {
     localStorage.setItem('fortex_user', JSON.stringify(newUser));
     if (newUser.role === 'admin') {
       window.location.href = '/admin';
+    } else {
+      window.location.href = '/dashboard';
     }
   };
 
@@ -211,6 +217,21 @@ const App: React.FC = () => {
               )
             }
           />
+          <Route
+            path="/dashboard"
+            element={
+              user ? (
+                <StudentDashboard user={user} onLogout={handleLogout} siteSettings={siteSettings} />
+              ) : (
+                <HomePage
+                  user={user}
+                  onLoginClick={() => setIsAuthModalOpen(true)}
+                  siteSettings={siteSettings}
+                  shouldOpenLogin={true}
+                />
+              )
+            }
+          />
         </Routes>
 
         <AuthModal
@@ -222,7 +243,11 @@ const App: React.FC = () => {
         {isVisible('booking') && (
           <BookingPopup
             externalIsOpen={isBookingOpen}
-            onExternalClose={() => setIsBookingOpen(false)}
+            onExternalClose={() => {
+              setIsBookingOpen(false);
+              setPreFilledCourse(undefined);
+              setPreFilledCategory(undefined);
+            }}
             initialCourse={preFilledCourse}
             initialCategory={preFilledCategory}
           />
@@ -232,13 +257,13 @@ const App: React.FC = () => {
         <button
           onClick={() => setIsBookingOpen(true)}
           style={{ writingMode: 'vertical-rl' }}
-          className={`fixed right-0 top-1/2 -translate-y-1/2 z-50 bg-charcoal text-white px-2.5 py-5 rounded-r-xl shadow-2xl hover:bg-black transition-all duration-500 ease-out flex items-center gap-3 border-l border-y border-white/20 rotate-180 ${showWidget ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10 pointer-events-none'}`}
+          className={`fixed right-0 top-1/2 -translate-y-1/2 z-50 bg-charcoal text-white px-1.5 py-3 rounded-r-xl shadow-2xl hover:bg-black transition-all duration-500 ease-out flex items-center gap-2 border-l border-y border-white/20 rotate-180 ${showWidget ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10 pointer-events-none'}`}
         >
-          <span className="relative flex h-2.5 w-2.5 rotate-90">
+          <span className="relative flex h-2 w-2 rotate-90">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
           </span>
-          <span className="font-bold text-sm tracking-widest uppercase whitespace-nowrap">Free Consultation</span>
+          <span className="font-bold text-xs tracking-widest uppercase whitespace-nowrap">Free Consultation</span>
         </button>
 
         <a

@@ -88,7 +88,7 @@ const Reviews: React.FC = () => {
                     </motion.p>
                 </div>
 
-                <div className="relative max-w-5xl mx-auto px-12">
+                <div className="relative max-w-3xl mx-auto px-12">
                     {/* Navigation Buttons */}
                     <button
                         onClick={prev}

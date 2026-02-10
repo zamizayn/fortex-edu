@@ -37,13 +37,13 @@ const HomePage: React.FC<HomePageProps> = ({ user, onLoginClick, siteSettings, s
                 </section>
             )}
 
-            {isVisible('services') && (
+            {/* {isVisible('services') && (
                 <Services />
-            )}
+            )} */}
 
-            {isVisible('team') && (
+            {/* {isVisible('team') && (
                 <Team members={siteSettings?.teamMembers} />
-            )}
+            )} */}
 
             {isVisible('colleges') && (
                 <>
@@ -55,11 +55,13 @@ const HomePage: React.FC<HomePageProps> = ({ user, onLoginClick, siteSettings, s
 
             {isVisible('programs') && <Programs />}
 
+            {isVisible('media') && <VideoGallery />}
+
             {isVisible('reviews') && <Reviews />}
 
             {/* {isVisible('booking') && <ConsultationBooking />} */}
 
-            {isVisible('media') && <VideoGallery />}
+
 
             {/* {isVisible('admissions') && <Admissions siteSettings={siteSettings} />} */}
             {/* {isVisible('social') && <SocialFeed siteSettings={siteSettings} />} */}

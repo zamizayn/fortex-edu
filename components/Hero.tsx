@@ -112,7 +112,7 @@ const Hero: React.FC<HeroProps> = ({ siteSettings }) => {
                   {/* <div className="w-px h-8 bg-white/10 hidden md:block" /> */}
                   <div className="flex-1 px-4 py-3 md:px-6 md:py-4 text-left w-full">
                     <p className="text-[10px] text-white/50 font-medium uppercase tracking-widest mb-1">WhatsApp</p>
-                    <p className="text-white font-medium text-xs md:text-sm">Stay Updated on the latest career updates - Join our WhatsApp Channel. Join Now</p>
+                    <p className="text-white font-medium text-xs md:text-sm">Stay Updated on the latest career updates - Join our WhatsApp Channel.</p>
                   </div>
                   <a
                     href={`https://wa.me/${siteSettings?.whatsappNumber || '917025337762'}?text=Hi, I am interested in joining your updates channel.`}
@@ -120,7 +120,7 @@ const Hero: React.FC<HeroProps> = ({ siteSettings }) => {
                     rel="noopener noreferrer"
                     className="w-full md:w-auto px-8 py-4 bg-accent text-white font-semibold text-xs md:text-sm rounded-2xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/40 min-h-[48px] flex items-center justify-center whitespace-nowrap"
                   >
-                    Join Our WhatsApp
+                    Join Now
                   </a>
                 </div>
               </div>

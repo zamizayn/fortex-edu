@@ -34,9 +34,18 @@ const Programs: React.FC = () => {
             <h2 className="text-3xl md:text-5xl font-semibold text-charcoal tracking-tight text-balance">
               Explore Your <br /> Global Path.
             </h2>
-            <p className="text-base md:text-xl text-charcoal/50 font-normal max-w-md leading-relaxed">
-              Tailored guidance for every step of your international educational journey.
-            </p>
+            <div className="flex flex-col items-start md:items-end gap-4 md:gap-6">
+              <p className="text-base md:text-xl text-charcoal/50 font-normal max-w-md leading-relaxed md:text-right">
+                Tailored guidance for every step of your international educational journey.
+              </p>
+              <button
+                onClick={() => navigate('/courses')}
+                className="px-6 py-3 md:px-8 md:py-4 bg-charcoal text-white rounded-full font-bold text-xs md:text-sm tracking-widest uppercase hover:bg-black transition-all shadow-xl shadow-black/10 flex items-center gap-2"
+              >
+                <span>View All Programs</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -47,7 +56,7 @@ const Programs: React.FC = () => {
             ))}
           </div>
         ) : (
-          <div className="flex md:grid grid-cols-2 md:grid-cols-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none gap-4 md:gap-8 pb-8 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0 [-ms-overflow-style:'none'] [scrollbar-width:'none'] [&::-webkit-scrollbar]:hidden">
+          <div className="flex md:grid grid-cols-2 md:grid-cols-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none gap-4 md:gap-8 pb-8 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0 [-ms-overflow-style:'none'] [scrollbar-width:'none'] [&::-webkit-scrollbar]:hidden">
             {services.map((service) => (
               <motion.div
                 layoutId={service.id}
@@ -63,29 +72,19 @@ const Programs: React.FC = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
 
                 {/* Glass Details */}
-                <div className="absolute bottom-6 left-6 right-6 p-6 md:p-8 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl md:rounded-2xl transform transition-transform group-hover:-translate-y-2">
+                <div className="absolute bottom-6 left-8 right-8 p-4 md:p-6 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl md:rounded-2xl transform transition-transform group-hover:-translate-y-2 flex flex-col items-center justify-center text-center">
                   <h4 className="text-2xl md:text-2xl font-semibold text-white mb-2 leading-tight">{service.title}</h4>
                   <p className="text-base md:text-base text-white/60 font-normal line-clamp-2 md:hidden">{service.description}</p>
                 </div>
 
                 {/* View Arrow */}
-                <div className="absolute top-6 right-6 w-14 h-14 bg-white rounded-full flex items-center justify-center opacity-100 md:opacity-0 md:translate-y-4 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition-all duration-300 shadow-lg">
-                  <svg className="w-7 h-7 text-charcoal" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                <div className="absolute top-6 right-6 w-14 h-14 md:w-10 md:h-10 bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center opacity-100 md:opacity-0 md:translate-y-4 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition-all duration-300 shadow-lg">
+                  <svg className="w-7 h-7 md:w-5 md:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                 </div>
               </motion.div>
             ))}
 
-            {/* View All Card - Mobile Only */}
-            <motion.div
-              onClick={() => navigate('/courses')}
-              className="relative min-w-[75vw] md:hidden snap-center aspect-[4/5] rounded-3xl overflow-hidden cursor-pointer group shadow-2xl shadow-accent/20 bg-accent flex flex-col items-center justify-center text-center p-8"
-            >
-              <div className="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-              </div>
-              <h4 className="text-3xl font-bold text-white mb-2">View All<br />Programs</h4>
-              <p className="text-white/60 text-sm">Explore our complete catalog.</p>
-            </motion.div>
+
           </div>
         )}
 

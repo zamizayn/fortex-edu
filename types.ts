@@ -37,6 +37,15 @@ export interface User {
   email: string;
   picture?: string;
   role: 'student' | 'admin';
+  mobile?: string;
+  address?: string;
+  dob?: string;
+  gender?: string;
+  documents?: {
+    name: string;
+    url: string;
+    date: string;
+  }[];
   createdAt?: any;
 }
 

@@ -39,7 +39,10 @@ const BookingPopup: React.FC<BookingPopupProps> = ({ externalIsOpen, onExternalC
                 const fetchedServices = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as Service));
                 setServices(fetchedServices);
                 if (fetchedServices.length > 0) {
-                    setFormData(prev => ({ ...prev, course: fetchedServices[0].title }));
+                    setFormData(prev => ({
+                        ...prev,
+                        course: initialCategory || fetchedServices[0].title
+                    }));
                 }
             } catch (error) {
                 console.error("Error fetching services:", error);
@@ -147,7 +150,7 @@ const BookingPopup: React.FC<BookingPopupProps> = ({ externalIsOpen, onExternalC
                                 {/* Academic Context (Interest & Program) */}
                                 <div className="space-y-4">
                                     <div className="space-y-1">
-                                        <label className="text-[10px] md:text-base font-normal text-charcoal/40 uppercase tracking-widest ml-1">Academic Interest</label>
+                                        <label className="text-[10px] md:text-xs font-normal text-charcoal/40 uppercase tracking-widest ml-1">Academic Interest</label>
                                         <div className="relative">
                                             <select
                                                 required
@@ -160,6 +163,7 @@ const BookingPopup: React.FC<BookingPopupProps> = ({ externalIsOpen, onExternalC
                                                 {services.map(service => (
                                                     <option key={service.id} value={service.title}>{service.title}</option>
                                                 ))}
+                                                <option value="Others">Others</option>
                                             </select>
                                             {!initialCategory && (
                                                 <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-charcoal/20">
@@ -178,7 +182,7 @@ const BookingPopup: React.FC<BookingPopupProps> = ({ externalIsOpen, onExternalC
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                                     <div className="space-y-1">
-                                        <label className="text-[10px] md:text-base font-normal text-charcoal/40 uppercase tracking-widest ml-1">Full Name</label>
+                                        <label className="text-[10px] md:text-xs font-normal text-charcoal/40 uppercase tracking-widest ml-1">Full Name</label>
                                         <input
                                             required
                                             type="text"
@@ -189,7 +193,7 @@ const BookingPopup: React.FC<BookingPopupProps> = ({ externalIsOpen, onExternalC
                                         />
                                     </div>
                                     <div className="space-y-1">
-                                        <label className="text-[10px] md:text-base font-normal text-charcoal/40 uppercase tracking-widest ml-1">Contact Number</label>
+                                        <label className="text-[10px] md:text-xs font-normal text-charcoal/40 uppercase tracking-widest ml-1">Contact Number</label>
                                         <input
                                             required
                                             type="tel"
@@ -203,8 +207,8 @@ const BookingPopup: React.FC<BookingPopupProps> = ({ externalIsOpen, onExternalC
 
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                                    <div className="space-y-1 text-charcoal">
-                                        <label className="text-[10px] md:text-base font-normal text-charcoal/40 uppercase tracking-widest ml-1">Highest Qualification</label>
+                                    <div className="space-y-1 flex flex-col justify-between">
+                                        <label className="text-[10px] md:text-xs font-normal text-charcoal/40 uppercase tracking-widest ml-1">Highest Qualification</label>
                                         <input
                                             type="text"
                                             className="w-full bg-slate-50 border-none rounded-xl px-4 py-2 text-charcoal font-normal focus:ring-2 focus:ring-accent transition-all text-xs md:text-base min-h-[38px]"
@@ -213,8 +217,8 @@ const BookingPopup: React.FC<BookingPopupProps> = ({ externalIsOpen, onExternalC
                                             onChange={e => setFormData({ ...formData, lastAttendedCourse: e.target.value })}
                                         />
                                     </div>
-                                    <div className="space-y-1">
-                                        <label className="text-[10px] md:text-base font-normal text-charcoal/40 uppercase tracking-widest ml-1">Marks (%)</label>
+                                    <div className="space-y-1 flex flex-col justify-between">
+                                        <label className="text-[10px] md:text-xs font-normal text-charcoal/40 uppercase tracking-widest ml-1">Marks (%)</label>
                                         <input
                                             type="text"
                                             className="w-full bg-slate-50 border-none rounded-xl px-4 py-2 text-charcoal font-normal focus:ring-2 focus:ring-accent transition-all text-xs md:text-base min-h-[38px]"
@@ -225,7 +229,7 @@ const BookingPopup: React.FC<BookingPopupProps> = ({ externalIsOpen, onExternalC
                                     </div>
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="text-[10px] md:text-base font-normal text-charcoal/40 uppercase tracking-widest ml-1">Additional Information (Optional)</label>
+                                    <label className="text-[10px] md:text-xs font-normal text-charcoal/40 uppercase tracking-widest ml-1">Additional Information (Optional)</label>
                                     <textarea
                                         rows={3}
                                         className="w-full bg-slate-50 border-none rounded-xl px-4 py-2 text-charcoal font-normal focus:ring-2 focus:ring-accent transition-all text-xs md:text-base resize-none"

@@ -107,36 +107,76 @@ export const verifyAdminCredentials = async (username: string, password: string)
     }
 };
 
-// Student: Save Details on Login
-export const saveStudentDetails = async (firebaseUser: FirebaseUser): Promise<User> => {
+// Student: Save Details on Login / Profile Update
+export const saveStudentDetails = async (firebaseUser: FirebaseUser, details?: {
+    name?: string;
+    mobile?: string;
+    gender?: string;
+    dob?: string;
+    address?: string;
+    documents?: any;
+}): Promise<User> => {
     const studentRef = doc(db, STUDENTS_COLLECTION, firebaseUser.uid);
 
-    const studentData = {
+    const studentData: any = {
         id: firebaseUser.uid,
-        name: firebaseUser.displayName || 'Student',
+        name: details?.name || firebaseUser.displayName || 'Student',
         email: firebaseUser.email || '',
-        picture: firebaseUser.photoURL || undefined,
+        picture: firebaseUser.photoURL || null,
         role: 'student' as const,
         lastLogin: serverTimestamp(),
-        // We use merge: true so we don't overwrite existing profile data (like phone, grade, etc if added later)
-        // but we ensure core identity info is up to date
     };
 
+    if (details?.mobile) studentData.mobile = details.mobile;
+    if (details?.gender) studentData.gender = details.gender;
+    if (details?.dob) studentData.dob = details.dob;
+    if (details?.address) studentData.address = details.address;
+    if (details?.documents) {
+        studentData.documents = details.documents;
+    }
+
     try {
-        // Check if user exists to preserve 'createdAt' if you wanted, but merge handles updates well.
-        // We want to ensure the document exists.
+        // Merge updates to preserve existing fields not being updated here
+        // For documents, we need to be careful not to overwrite the entire map if we only update one
+        // Ideally we would use updateDoc for specific fields, but setDoc with merge handles top-level merge well.
+        // For nested objects like 'documents', setDoc with merge: true typically merges the top-level keys.
+        // If we want to merge *inside* documents, we might need to fetch first or use dot notation update.
+        // For simplicity here, we assume 'details.documents' contains the *new* state or we rely on merge behavior.
+        // Actually, with setDoc({ documents: { ... } }, { merge: true }), it merges the 'documents' object into the existing doc.
+        // But it *replaces* the 'documents' field if it exists with the new object provided in the map? 
+        // No, setDoc with merge: true performs a deep merge on maps.
+
         await setDoc(studentRef, studentData, { merge: true });
 
-        // Return the application User type
+        // Fetch the updated document to return complete user data
+        const updatedDoc = await getDoc(studentRef);
+        const data = updatedDoc.data();
+
         return {
-            id: studentData.id,
-            name: studentData.name,
-            email: studentData.email,
-            picture: studentData.picture,
-            role: 'student'
+            id: data?.id,
+            name: data?.name,
+            email: data?.email,
+            picture: data?.picture,
+            role: 'student',
+            mobile: data?.mobile,
+            address: data?.address,
+            dob: data?.dob,
+            gender: data?.gender,
+            documents: data?.documents
         };
     } catch (error) {
         console.error('Error saving student details:', error);
+        throw error;
+    }
+};
+
+// Update Student Profile safely
+export const updateStudentProfile = async (uid: string, data: Partial<User>): Promise<void> => {
+    try {
+        const studentRef = doc(db, STUDENTS_COLLECTION, uid);
+        await setDoc(studentRef, data, { merge: true });
+    } catch (error) {
+        console.error('Error updating student profile:', error);
         throw error;
     }
 };

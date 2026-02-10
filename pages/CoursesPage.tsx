@@ -134,7 +134,7 @@ const CoursesPage: React.FC<CoursesPageProps> = ({ user, onLogout, onLoginClick,
                         <div className="lg:sticky lg:top-32 space-y-10">
 
                             {/* Categories Filter - Single Select */}
-                            <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-black/[0.02]">
+                            <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-xl shadow-black/[0.02]">
                                 <div className="flex items-center justify-between mb-8">
                                     <h3 className="text-[10px] font-bold text-charcoal/20 uppercase tracking-[0.3em]">Disciplines</h3>
                                     {selectedCategory && (
@@ -151,7 +151,7 @@ const CoursesPage: React.FC<CoursesPageProps> = ({ user, onLogout, onLoginClick,
                                         <button
                                             key={service.id}
                                             onClick={() => toggleCategory(service.id)}
-                                            className={`w-full px-5 py-4 rounded-xl text-left text-sm font-bold transition-all flex items-center justify-between group ${selectedCategory === service.id
+                                            className={`w-full px-4 py-3 rounded-lg text-left text-xs font-bold transition-all flex items-center justify-between group ${selectedCategory === service.id
                                                 ? 'bg-charcoal text-white shadow-xl shadow-black/10'
                                                 : 'text-charcoal/40 hover:text-charcoal hover:bg-slate-50'
                                                 }`}
@@ -164,20 +164,18 @@ const CoursesPage: React.FC<CoursesPageProps> = ({ user, onLogout, onLoginClick,
                             </div>
 
                             {/* Results Count Card */}
-                            <div className="p-8 bg-accent rounded-[2.5rem] text-white shadow-2xl shadow-accent/20 relative overflow-hidden group">
-                                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-                                <p className="text-[10px] font-bold text-white/50 uppercase tracking-[0.2em] mb-4">Live Discovery</p>
-                                <div className="flex items-baseline gap-2 mb-4">
-                                    <span className="text-5xl font-bold">{filteredPrograms.length}</span>
-                                    <span className="text-xs font-bold text-white/70 italic">Programs</span>
+                            <div className="p-6 bg-gray-100 rounded-lg text-gray-900 flex flex-col items-center justify-center text-center">
+                                <p className="text-sm font-medium text-gray-600 mb-2">
+                                    Total Programs
+                                </p>
+
+                                <div className="text-4xl font-bold">
+                                    {filteredPrograms.length}
                                 </div>
-                                <button
-                                    onClick={() => window.scrollTo({ top: window.innerHeight * 0.9, behavior: 'smooth' })}
-                                    className="w-full py-4 bg-white/10 hover:bg-white/20 transition-all rounded-xl text-xs font-bold uppercase tracking-widest border border-white/10"
-                                >
-                                    View Selection
-                                </button>
                             </div>
+
+
+
                         </div>
                     </aside>
 
@@ -185,57 +183,46 @@ const CoursesPage: React.FC<CoursesPageProps> = ({ user, onLogout, onLoginClick,
                     <main className="lg:w-3/4">
                         <AnimatePresence mode="popLayout">
                             {loading ? (
-                                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-                                    {[1, 2, 3, 4, 5, 6].map(i => (
-                                        <div key={i} className="aspect-[4/5] rounded-[3rem] bg-white animate-pulse shadow-sm" />
+                                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                                    {[1, 2, 3, 4, 5, 6].map((i) => (
+                                        <div
+                                            key={i}
+                                            className="aspect-[4/5] rounded-xl bg-gray-200 animate-pulse"
+                                        />
                                     ))}
                                 </div>
                             ) : filteredPrograms.length > 0 ? (
                                 <motion.div
                                     layout
-                                    className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8"
+                                    className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
                                 >
-                                    {filteredPrograms.map((prog, idx) => (
+                                    {filteredPrograms.map((prog) => (
                                         <motion.div
-                                            layout
-                                            initial={{ opacity: 0, y: 20 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            exit={{ opacity: 0, scale: 0.95 }}
-                                            transition={{ duration: 0.3, delay: Math.min(idx * 0.03, 0.3) }}
                                             key={`${prog.categoryId}-${prog.name}`}
-                                            className="group p-5 md:p-10 bg-white border border-slate-200 rounded-[2rem] md:rounded-[3rem] hover:border-accent/10 hover:shadow-3xl hover:shadow-accent/[0.03] transition-all flex flex-col justify-between"
+                                            layout
+                                            initial={{ opacity: 0, y: 12 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0 }}
+                                            transition={{ duration: 0.25 }}
+                                            className="bg-white border border-gray-200 rounded-xl p-6 flex flex-col justify-between hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
                                         >
                                             <div>
-                                                <div className="flex items-center justify-between mb-4 md:mb-8">
-                                                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-slate-50 flex items-center justify-center group-hover:bg-accent/5 transition-colors">
-                                                        <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-slate-200 group-hover:bg-accent transition-all group-hover:scale-150" />
-                                                    </div>
-                                                    <span className="text-[8px] md:text-[9px] font-bold text-slate-300 uppercase tracking-widest group-hover:text-accent/30 transition-colors bg-slate-50/50 px-2 py-1 md:px-3 md:py-1 rounded-full">
-                                                        {prog.category}
-                                                    </span>
-                                                </div>
-                                                <h4 className="text-base md:text-xl font-semibold text-charcoal leading-tight group-hover:text-accent transition-colors">
+                                                <span className="inline-block text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">
+                                                    {prog.category}
+                                                </span>
+
+                                                <h4 className="text-lg font-semibold text-gray-900 leading-snug">
                                                     {prog.name}
                                                 </h4>
                                             </div>
-                                            <div className="mt-6 md:mt-10 pt-5 md:pt-8 border-t border-slate-50 flex items-center justify-between">
+
+                                            <div className="mt-8 pt-4 border-t border-gray-100">
                                                 <button
                                                     onClick={() => onBookCourse?.(prog.name, prog.category)}
-                                                    className="px-4 py-2 rounded-xl bg-slate-50 text-accent font-bold text-[10px] uppercase tracking-widest hover:bg-accent hover:text-white transition-all opacity-100 translate-x-0 md:opacity-0 md:-translate-x-2 md:group-hover:opacity-100 md:group-hover:translate-x-0"
+                                                    className="w-full py-2.5 bg-gray-900 text-white text-sm font-medium rounded-md hover:bg-black transition"
                                                 >
                                                     Enquire Now
                                                 </button>
-                                                <div className="flex items-center gap-2">
-                                                    <a
-                                                        href={`https://wa.me/${siteSettings?.whatsappNumber || '917025337762'}?text=Hi, I am interested in ${prog.name}`}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center opacity-100 translate-x-0 md:opacity-0 md:translate-x-3 md:group-hover:opacity-100 md:group-hover:translate-x-0 transition-all hover:bg-accent hover:text-white"
-                                                        title="WhatsApp Inquiry"
-                                                    >
-                                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-                                                    </a>
-                                                </div>
                                             </div>
                                         </motion.div>
                                     ))}
@@ -244,25 +231,27 @@ const CoursesPage: React.FC<CoursesPageProps> = ({ user, onLogout, onLoginClick,
                                 <motion.div
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
-                                    className="py-40 text-center bg-white rounded-[4rem] border border-dashed border-slate-200"
+                                    className="py-28 text-center border border-dashed border-gray-300 rounded-xl bg-gray-50"
                                 >
-                                    <div className="w-28 h-28 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-8 text-slate-200">
-                                        <svg className="w-14 h-14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                                    </div>
-                                    <h3 className="text-3xl font-bold text-charcoal mb-4">Zero Matches Found.</h3>
-                                    <p className="text-slate-400 font-medium text-lg max-w-md mx-auto leading-relaxed mb-10">
-                                        Try selecting a different academic discipline.
+                                    <h3 className="text-2xl font-semibold text-gray-900 mb-3">
+                                        No Programs Found
+                                    </h3>
+                                    <p className="text-gray-500 mb-6 max-w-md mx-auto">
+                                        Try adjusting your filters or selecting a different category.
                                     </p>
+
                                     <button
                                         onClick={() => setSelectedCategory(null)}
-                                        className="px-12 py-5 bg-charcoal text-white font-bold rounded-2xl shadow-2xl shadow-black/20 hover:scale-105 active:scale-95 transition-all text-sm uppercase tracking-widest"
+                                        className="px-6 py-2.5 bg-gray-900 text-white rounded-md hover:bg-black transition"
                                     >
-                                        Reset All Filters
+                                        Reset Filters
                                     </button>
                                 </motion.div>
                             )}
                         </AnimatePresence>
                     </main>
+
+
                 </div>
             </div>
 
