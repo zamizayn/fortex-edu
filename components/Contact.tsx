@@ -61,6 +61,12 @@ const Contact: React.FC = () => {
       value: 'Kalpetta, Wayanad, Kerala — 673121',
       link: 'https://maps.google.com',
     },
+    {
+      icon: '🕘',
+      title: 'Business Hours',
+      value: 'Mon – Sat: 9:00 AM – 6:00 PM',
+      link: undefined,
+    },
   ];
 
   const socialLinks = [
@@ -117,207 +123,36 @@ const Contact: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="grid md:grid-cols-3 gap-6 mb-16"
+          className="grid md:grid-cols-4 gap-6 mb-16"
         >
-          {contactInfo.map((info, i) => (
-            <motion.a
-              key={i}
-              href={info.link}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
-              className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 text-center group"
-            >
-              <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">
-                {info.icon}
-              </div>
-              <h3 className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-1">
-                {info.title}
-              </h3>
-              <p className="text-base font-semibold text-gray-900">
-                {info.value}
-              </p>
-            </motion.a>
-          ))}
+          {contactInfo.map((info, i) => {
+            const Tag = info.link ? motion.a : motion.div;
+            return (
+              <Tag
+                key={i}
+                {...(info.link ? { href: info.link } : {})}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.5 }}
+                className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 text-center group"
+              >
+                <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">
+                  {info.icon}
+                </div>
+                <h3 className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-1">
+                  {info.title}
+                </h3>
+                <p className="text-base font-semibold text-gray-900">
+                  {info.value}
+                </p>
+              </Tag>
+            );
+          })}
         </motion.div>
 
         {/* Main Content Grid */}
-        <div className="grid lg:grid-cols-2 gap-12 mb-16">
-          {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="bg-white rounded-3xl p-8 md:p-12 shadow-xl"
-          >
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-              Send us a Message
-            </h2>
-            <p className="text-sm text-gray-600 mb-6 font-normal">
-              Fill out the form below and we'll get back to you shortly
-            </p>
 
-            {showSuccess && (
-              <div className="mb-6 bg-green-50 border border-green-200 rounded-xl p-4 flex items-center gap-3">
-                <span className="text-2xl">✅</span>
-                <p className="text-green-800 font-medium">
-                  Message sent successfully! We'll contact you soon.
-                </p>
-              </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-xs font-semibold text-gray-600 uppercase tracking-widest ml-1">
-                    Your Name *
-                  </label>
-                  <input
-                    required
-                    type="text"
-                    className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-900 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-                    placeholder="John Smith"
-                    value={formData.name}
-                    onChange={e => setFormData({ ...formData, name: e.target.value })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-semibold text-gray-600 uppercase tracking-widest ml-1">
-                    Phone Number *
-                  </label>
-                  <input
-                    required
-                    type="tel"
-                    className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-900 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-                    placeholder="+91 XXXXX XXXXX"
-                    value={formData.phone}
-                    onChange={e => setFormData({ ...formData, phone: e.target.value })}
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xs font-semibold text-gray-600 uppercase tracking-widest ml-1">
-                  Area of Interest *
-                </label>
-                <select
-                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-900 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all cursor-pointer"
-                  value={formData.subject}
-                  onChange={e => setFormData({ ...formData, subject: e.target.value })}
-                >
-                  <option>B.Sc. Nursing Admissions</option>
-                  <option>GNM Diploma Programs</option>
-                  <option>International IT & Engineering</option>
-                  <option>Allied Health Sciences</option>
-                  <option>Other Programs</option>
-                </select>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xs font-semibold text-gray-600 uppercase tracking-widest ml-1">
-                  Your Message *
-                </label>
-                <textarea
-                  required
-                  rows={4}
-                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-900 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all resize-none"
-                  placeholder="Tell us about your educational goals..."
-                  value={formData.message}
-                  onChange={e => setFormData({ ...formData, message: e.target.value })}
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
-              >
-                {loading ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                    </svg>
-                    Sending...
-                  </span>
-                ) : (
-                  'Send Message'
-                )}
-              </button>
-
-              <p className="text-center text-sm text-gray-500">
-                🔒 Your information is secure and confidential
-              </p>
-            </form>
-          </motion.div>
-
-          {/* Map & Additional Info */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="space-y-8"
-          >
-            {/* Map Placeholder */}
-            <div className="bg-gradient-to-br from-purple-100 to-blue-100 rounded-3xl overflow-hidden shadow-lg h-[300px] flex items-center justify-center">
-              <div className="text-center">
-                <div className="text-6xl mb-4">🗺️</div>
-                <p className="text-lg font-semibold text-gray-700">
-                  Visit Our Office
-                </p>
-                <p className="text-gray-600">
-                  Kalpetta, Wayanad, Kerala
-                </p>
-              </div>
-            </div>
-
-            {/* Business Hours */}
-            <div className="bg-white rounded-3xl p-8 shadow-lg">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                Business Hours
-              </h3>
-              <div className="space-y-4">
-                <div className="flex justify-between items-center pb-4 border-b border-gray-100">
-                  <span className="font-semibold text-gray-700">Monday - Friday</span>
-                  <span className="text-gray-600">9:00 AM - 6:00 PM</span>
-                </div>
-                <div className="flex justify-between items-center pb-4 border-b border-gray-100">
-                  <span className="font-semibold text-gray-700">Saturday</span>
-                  <span className="text-gray-600">10:00 AM - 4:00 PM</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="font-semibold text-gray-700">Sunday</span>
-                  <span className="text-red-600 font-semibold">Closed</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Social Links */}
-            <div className="bg-gradient-to-br from-purple-600 to-blue-600 rounded-3xl p-8 shadow-lg text-white">
-              <h3 className="text-2xl font-bold mb-4">
-                Connect With Us
-              </h3>
-              <p className="mb-6 opacity-90">
-                Follow us on social media for updates and insights
-              </p>
-              <div className="flex gap-4">
-                {socialLinks.map((social, i) => (
-                  <a
-                    key={i}
-                    href={social.href}
-                    className="bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-xl p-4 transition-all hover:scale-110 flex items-center gap-2"
-                    title={social.name}
-                  >
-                    <span className="text-2xl">{social.icon}</span>
-                  </a>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        </div>
       </div>
     </div>
   );
