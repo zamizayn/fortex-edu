@@ -744,6 +744,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ user, onBack, isAdmin
                                         <option value="Science">Science</option>
                                         <option value="Commerce">Commerce</option>
                                         <option value="Humanities">Humanities</option>
+                                        <option value="Other">Other</option>
                                     </select>
                                 </div>
                                 <div>

@@ -119,11 +119,11 @@ const Programs: React.FC = () => {
           <p className="text-[10px] md:text-sm font-medium text-accent uppercase tracking-[0.3em] mb-4">Our Programs</p>
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <h2 className="text-3xl md:text-5xl font-semibold text-charcoal tracking-tight text-balance">
-              Explore Your <br /> Global Path.
+              Find the Right Course <br /> for Your Future.
             </h2>
             <div className="flex flex-col items-start md:items-end gap-4 md:gap-6">
               <p className="text-base md:text-xl text-charcoal/50 font-normal max-w-md leading-relaxed md:text-right">
-                Tailored guidance for every step of your international educational journey.
+                Every student has a unique goal. At Fortex Education, we guide you through a wide variety of courses offered in leading Indian colleges.
               </p>
               {/* <button
                 onClick={() => navigate('/courses')}
@@ -143,7 +143,7 @@ const Programs: React.FC = () => {
             ))}
           </div>
         ) : (
-          <div className="flex md:grid grid-cols-2 md:grid-cols-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none gap-4 md:gap-8 pb-8 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0 [-ms-overflow-style:'none'] [scrollbar-width:'none'] [&::-webkit-scrollbar]:hidden">
+          <div className="flex md:grid grid-cols-2 md:grid-cols-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none gap-4 md:gap-8 pb-8 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0 [-ms-overflow-style:'none'] [scrollbar-width:'none'] [&::-webkit-scrollbar]:hidden">
             {services.map((service) => (
               <motion.div
                 layoutId={service.id}
