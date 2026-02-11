@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 interface ApplicationFormProps {
     user: User;
     onBack: () => void;
+    isAdmin?: boolean;
 }
 
 interface ApplicationData {
@@ -102,7 +103,7 @@ const SECTIONS = [
     { id: 7, title: 'Declaration', icon: '✍️' },
 ];
 
-const ApplicationForm: React.FC<ApplicationFormProps> = ({ user, onBack }) => {
+const ApplicationForm: React.FC<ApplicationFormProps> = ({ user, onBack, isAdmin }) => {
     const [currentSection, setCurrentSection] = useState(0);
     const [loading, setLoading] = useState(false);
     const [saving, setSaving] = useState(false);
@@ -219,7 +220,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ user, onBack }) => {
     // Auto-save draft
     useEffect(() => {
         const autoSave = async () => {
-            if (saving) return;
+            if (saving || isAdmin) return;
             setSaving(true);
             try {
                 await setDoc(doc(db, 'applications', user.id), {
@@ -940,8 +941,8 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ user, onBack }) => {
                                     <label
                                         htmlFor={doc.key}
                                         className={`flex-1 px-4 py-2 text-center rounded-lg border cursor-pointer transition-all ${uploadingDoc === doc.key
-                                                ? 'bg-gray-100 text-gray-400 border-gray-200'
-                                                : 'bg-white border-gray-300 text-gray-700 hover:border-blue-500 hover:text-blue-600'
+                                            ? 'bg-gray-100 text-gray-400 border-gray-200'
+                                            : 'bg-white border-gray-300 text-gray-700 hover:border-blue-500 hover:text-blue-600'
                                             }`}
                                     >
                                         {uploadingDoc === doc.key ? 'Uploading...' : 'Choose File'}

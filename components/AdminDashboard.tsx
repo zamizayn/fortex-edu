@@ -4,6 +4,7 @@ import { db, collection, getDocs, addDoc, deleteDoc, updateDoc, doc, query, orde
 import { getSiteSettings, saveSiteSettings } from '../services/db';
 import { seedCourses } from '../seedCourses';
 import * as XLSX from 'xlsx';
+import ApplicationForm from './ApplicationForm';
 
 interface AdminDashboardProps {
     user: User;
@@ -35,6 +36,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
     const [selectedStudent, setSelectedStudent] = useState<User | null>(null);
     const [studentApplicationData, setStudentApplicationData] = useState<any | null>(null);
     const [loadingApplication, setLoadingApplication] = useState(false);
+    const [isAddingDetails, setIsAddingDetails] = useState(false);
 
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(5);
@@ -230,6 +232,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
         setLastDocs({});
         setSelectedStudent(null);
         setStudentApplicationData(null);
+        setIsAddingDetails(false);
         initData();
     }, [activeTab]);
 
@@ -705,6 +708,25 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
 
                 // Student Detail View
                 if (selectedStudent) {
+                    if (isAddingDetails) {
+                        return (
+                            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden animate-in fade-in duration-300 p-6">
+                                <ApplicationForm
+                                    user={selectedStudent}
+                                    isAdmin={true}
+                                    onBack={async () => {
+                                        setIsAddingDetails(false);
+                                        // Trigger a refresh of application data
+                                        const appSnapshot = await getDocs(query(collection(db, 'applications')));
+                                        const appDoc = appSnapshot.docs.find(d => d.id === selectedStudent.id);
+                                        if (appDoc) {
+                                            setStudentApplicationData(appDoc.data());
+                                        }
+                                    }}
+                                />
+                            </div>
+                        );
+                    }
                     return (
                         <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden animate-in fade-in duration-300">
                             <div className="px-6 py-4 border-b border-gray-200 flex items-center gap-4">
@@ -1007,9 +1029,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                         </svg>
                                         <h4 className="text-sm font-semibold text-yellow-900 mb-2">No Application Submitted</h4>
-                                        <p className="text-xs text-yellow-700">
+                                        <p className="text-xs text-yellow-700 mb-4">
                                             This student has not submitted their application form yet.
                                         </p>
+                                        <button
+                                            onClick={() => setIsAddingDetails(true)}
+                                            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium transition-colors"
+                                        >
+                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+                                            Add Student Details
+                                        </button>
                                     </div>
                                 )}
                             </div>
@@ -1041,7 +1070,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                     </thead>
                                     <tbody className="divide-y divide-gray-200">
                                         {currentStudents.map((student) => (
-                                            <tr key={student.id} className="hover:bg-gray-50 transition-colors cursor-pointer" onClick={() => setSelectedStudent(student)}>
+                                            <tr key={student.id} className="hover:bg-gray-50 transition-colors cursor-pointer" onClick={() => { setSelectedStudent(student); setIsAddingDetails(false); }}>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="flex items-center">
                                                         <img
