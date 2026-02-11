@@ -43,7 +43,7 @@ const Hero: React.FC<HeroProps> = ({ siteSettings }) => {
   }, []);
 
   return (
-    <div className="relative h-[75vh] md:min-h-screen flex items-center justify-center overflow-hidden bg-white">
+    <div className="relative h-[60vh] md:min-h-screen flex items-center justify-center overflow-hidden bg-white">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentSlide}
@@ -118,7 +118,7 @@ const Hero: React.FC<HeroProps> = ({ siteSettings }) => {
       </div>
 
       {/* Progress Indicators */}
-      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-30 flex gap-3">
+      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-30 hidden md:flex gap-3">
         {HERO_SLIDES.map((_, index) => (
           <button
             key={index}

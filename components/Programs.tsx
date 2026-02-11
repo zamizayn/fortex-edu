@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { collection, getDocs, db } from '../firebase';
 import { Service } from '../types';
 import { motion, AnimatePresence } from 'framer-motion';
+import Stats from './Stats';
 
 const Programs: React.FC = () => {
   const navigate = useNavigate();
@@ -28,118 +29,91 @@ const Programs: React.FC = () => {
   return (
     <section id="programs" className="py-8 md:py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        {/* Timeline Section */}
-        <div className="mb-0 md:mb-20">
-          {/* Title */}
-          <h3 className="text-2xl md:text-4xl font-semibold text-charcoal mb-0 md:mb-8">
-            Our Services
-          </h3>
+        {/* Services Section */}
+        <div className="mb-20">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left Column: Content */}
+            <div className="text-left">
 
-          {/* Horizontal Timeline */}
-          <div className="relative pb-8">
-            <div className="flex md:grid md:grid-cols-5 overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none gap-4 md:gap-6 pb-4 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0 [-ms-overflow-style:'none'] [scrollbar-width:'none'] [&::-webkit-scrollbar]:hidden">
+              <h3 className="text-3xl md:text-5xl font-medium text-gray-900 mb-6 tracking-tight leading-tight">
+                Our Services
+              </h3>
+              <p className="text-lg text-gray-600 leading-relaxed mb-8">
+                At Fortex Education Consultancy, we believe that choosing the right educational path is a life-changing
+                decision. Our expert guidance ensures that students not only find the best universities in India but also
+                receive personalized support at every step of their admission journey. We offer comprehensive, end-to-end
+                services that make the transition into higher education smooth, stress-free, and successful.
+              </p>
+
+            </div>
+
+            {/* Right Column: Services Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {/* Item 1 */}
-              <div className="flex flex-col items-center group min-w-[280px] md:min-w-0 snap-center">
-                <div className="w-full bg-gradient-to-br from-blue-50 to-purple-50 p-6 md:p-6 rounded-3xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 min-h-[120px] md:min-h-[180px] flex flex-col items-center justify-center">
-                  <div className="flex justify-center mb-4">
-                    <div className="w-14 h-14 md:w-16 md:h-16 bg-white rounded-2xl flex items-center justify-center shadow-lg">
-                      <svg className="w-7 h-7 md:w-8 md:h-8" viewBox="0 0 24 24" fill="none">
-                        <defs>
-                          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style={{ stopColor: '#3b82f6', stopOpacity: 1 }} />
-                            <stop offset="100%" style={{ stopColor: '#8b5cf6', stopOpacity: 1 }} />
-                          </linearGradient>
-                        </defs>
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" stroke="url(#grad1)" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                      </svg>
-                    </div>
+              <div className="flex flex-col items-center group">
+                <div className="w-full bg-blue-50 p-6 rounded-3xl transition-all duration-300 hover:shadow-lg hover:-translate-y-1 flex flex-col items-center justify-center aspect-square">
+                  <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-md mb-4 text-blue-600">
+                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
                   </div>
-                  <h4 className="text-sm md:text-base font-medium text-charcoal text-center leading-tight">Expert Counselling</h4>
+                  <h4 className="text-sm font-medium text-gray-900 text-center leading-tight">Expert Counselling</h4>
                 </div>
               </div>
 
               {/* Item 2 */}
-              <div className="flex flex-col items-center group min-w-[280px] md:min-w-0 snap-center">
-                <div className="w-full bg-gradient-to-br from-purple-50 to-pink-50 p-6 md:p-6 rounded-3xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 min-h-[120px] md:min-h-[180px] flex flex-col items-center justify-center">
-                  <div className="flex justify-center mb-4">
-                    <div className="w-14 h-14 md:w-16 md:h-16 bg-white rounded-2xl flex items-center justify-center shadow-lg">
-                      <svg className="w-7 h-7 md:w-8 md:h-8" viewBox="0 0 24 24" fill="none">
-                        <defs>
-                          <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style={{ stopColor: '#a855f7', stopOpacity: 1 }} />
-                            <stop offset="100%" style={{ stopColor: '#ec4899', stopOpacity: 1 }} />
-                          </linearGradient>
-                        </defs>
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" stroke="url(#grad2)" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                      </svg>
-                    </div>
+              <div className="flex flex-col items-center group">
+                <div className="w-full bg-purple-50 p-6 rounded-3xl transition-all duration-300 hover:shadow-lg hover:-translate-y-1 flex flex-col items-center justify-center aspect-square">
+                  <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-md mb-4 text-purple-600">
+                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
                   </div>
-                  <h4 className="text-sm md:text-base font-medium text-charcoal text-center leading-tight">University Selection</h4>
+                  <h4 className="text-sm font-medium text-gray-900 text-center leading-tight">University Selection</h4>
                 </div>
               </div>
 
               {/* Item 3 */}
-              <div className="flex flex-col items-center group min-w-[280px] md:min-w-0 snap-center">
-                <div className="w-full bg-gradient-to-br from-green-50 to-blue-50 p-6 md:p-6 rounded-3xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 min-h-[120px] md:min-h-[180px] flex flex-col items-center justify-center">
-                  <div className="flex justify-center mb-4">
-                    <div className="w-14 h-14 md:w-16 md:h-16 bg-white rounded-2xl flex items-center justify-center shadow-lg">
-                      <svg className="w-7 h-7 md:w-8 md:h-8" viewBox="0 0 24 24" fill="none">
-                        <defs>
-                          <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style={{ stopColor: '#10b981', stopOpacity: 1 }} />
-                            <stop offset="100%" style={{ stopColor: '#3b82f6', stopOpacity: 1 }} />
-                          </linearGradient>
-                        </defs>
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" stroke="url(#grad3)" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                      </svg>
-                    </div>
+              <div className="flex flex-col items-center group">
+                <div className="w-full bg-green-50 p-6 rounded-3xl transition-all duration-300 hover:shadow-lg hover:-translate-y-1 flex flex-col items-center justify-center aspect-square">
+                  <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-md mb-4 text-green-600">
+                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
                   </div>
-                  <h4 className="text-sm md:text-base font-medium text-charcoal text-center leading-tight">Application Support</h4>
+                  <h4 className="text-sm font-medium text-gray-900 text-center leading-tight">Application Support</h4>
                 </div>
               </div>
 
               {/* Item 4 */}
-              <div className="flex flex-col items-center group min-w-[280px] md:min-w-0 snap-center">
-                <div className="w-full bg-gradient-to-br from-orange-50 to-red-50 p-6 md:p-6 rounded-3xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 min-h-[120px] md:min-h-[180px] flex flex-col items-center justify-center">
-                  <div className="flex justify-center mb-4">
-                    <div className="w-14 h-14 md:w-16 md:h-16 bg-white rounded-2xl flex items-center justify-center shadow-lg">
-                      <svg className="w-7 h-7 md:w-8 md:h-8" viewBox="0 0 24 24" fill="none">
-                        <defs>
-                          <linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style={{ stopColor: '#f59e0b', stopOpacity: 1 }} />
-                            <stop offset="100%" style={{ stopColor: '#ef4444', stopOpacity: 1 }} />
-                          </linearGradient>
-                        </defs>
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" stroke="url(#grad4)" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
-                      </svg>
-                    </div>
+              <div className="flex flex-col items-center group">
+                <div className="w-full bg-amber-50 p-6 rounded-3xl transition-all duration-300 hover:shadow-lg hover:-translate-y-1 flex flex-col items-center justify-center aspect-square">
+                  <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-md mb-4 text-amber-600">
+                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
                   </div>
-                  <h4 className="text-sm md:text-base font-medium text-charcoal text-center leading-tight">Financial Support</h4>
+                  <h4 className="text-sm font-medium text-gray-900 text-center leading-tight">Financial Support</h4>
                 </div>
               </div>
 
               {/* Item 5 */}
-              <div className="flex flex-col items-center group min-w-[280px] md:min-w-0 snap-center">
-                <div className="w-full bg-gradient-to-br from-pink-50 to-purple-50 p-6 md:p-6 rounded-3xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 min-h-[120px] md:min-h-[180px] flex flex-col items-center justify-center">
-                  <div className="flex justify-center mb-4">
-                    <div className="w-14 h-14 md:w-16 md:h-16 bg-white rounded-2xl flex items-center justify-center shadow-lg">
-                      <svg className="w-7 h-7 md:w-8 md:h-8" viewBox="0 0 24 24" fill="none">
-                        <defs>
-                          <linearGradient id="grad5" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style={{ stopColor: '#ec4899', stopOpacity: 1 }} />
-                            <stop offset="100%" style={{ stopColor: '#8b5cf6', stopOpacity: 1 }} />
-                          </linearGradient>
-                        </defs>
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" stroke="url(#grad5)" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-                      </svg>
-                    </div>
+              <div className="flex flex-col items-center group">
+                <div className="w-full bg-red-50 p-6 rounded-3xl transition-all duration-300 hover:shadow-lg hover:-translate-y-1 flex flex-col items-center justify-center aspect-square">
+                  <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-md mb-4 text-red-600">
+                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                    </svg>
                   </div>
-                  <h4 className="text-sm md:text-base font-medium text-charcoal text-center leading-tight">Enrollment Support</h4>
+                  <h4 className="text-sm font-medium text-gray-900 text-center leading-tight">Enrollment Support</h4>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
+
+        <Stats />
 
         <div className="mb-16">
           <p className="text-[10px] md:text-sm font-medium text-accent uppercase tracking-[0.3em] mb-4">Our Programs</p>

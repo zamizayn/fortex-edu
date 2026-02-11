@@ -83,7 +83,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, user, onLogout, onLoginC
             onMouseLeave={() => setShowFortexDropdown(false)}
           >
             <button
-              onClick={() => setShowFortexDropdown(!showFortexDropdown)}
+              onClick={() => setShowFortexDropdown(true)}
               className={`flex items-center gap-1 text-xs md:text-sm font-medium tracking-wide transition-all ${scrolled ? 'text-gray-800 hover:text-blue-600' : 'text-white hover:text-blue-300 drop-shadow-lg'}`}
             >
               Company
@@ -93,17 +93,19 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, user, onLogout, onLoginC
             </button>
 
             {showFortexDropdown && (
-              <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50">
-                {fortexDropdownLinks.map((link) => (
-                  <Link
-                    key={link.name}
-                    to={link.href}
-                    className="block px-4 py-3 text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
-                    onClick={() => setShowFortexDropdown(false)}
-                  >
-                    {link.name}
-                  </Link>
-                ))}
+              <div className="absolute top-full right-0 pt-2 w-48">
+                <div className="bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50">
+                  {fortexDropdownLinks.map((link) => (
+                    <Link
+                      key={link.name}
+                      to={link.href}
+                      className="block px-4 py-3 text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                      onClick={() => setShowFortexDropdown(false)}
+                    >
+                      {link.name}
+                    </Link>
+                  ))}
+                </div>
               </div>
             )}
           </div>
@@ -225,7 +227,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, user, onLogout, onLoginC
               href="/brochure.pdf"
               download="FORTEXEDU-Brochure.pdf"
               onClick={() => setIsOpen(false)}
-              className="flex items-center gap-3 text-base font-semibold text-charcoal hover:text-accent transition-colors py-2"
+              className="flex items-center gap-3 text-base font-semibold text-white hover:text-accent transition-colors py-2"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />

@@ -62,48 +62,62 @@ const Services: React.FC = () => {
             <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-purple-50 rounded-full blur-3xl opacity-50 pointer-events-none" />
 
             <div className="container mx-auto px-6 relative z-10">
-                <div className="max-w-4xl mx-auto text-center mb-20">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                    >
-                        <h2 className="text-sm font-bold text-blue-600 uppercase tracking-widest mb-4 inline-block px-4 py-2 bg-blue-50 rounded-full">
-                            Our Services
-                        </h2>
-                        <h3 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8 tracking-tight">
-                            Comprehensive Support for Your Academic Journey
-                        </h3>
-                        <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
-                            At Fortex Education Consultancy, we believe that choosing the right educational path is a life-changing decision. Our expert guidance ensures that students not only find the best universities in India but also receive personalized support at every step of their admission journey.
-                        </p>
-                    </motion.div>
-                </div>
-
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
-                    {services.map((service, index) => (
+                <div className="grid lg:grid-cols-12 gap-12 items-start">
+                    {/* Left Column: Content */}
+                    <div className="lg:col-span-5 lg:sticky lg:top-24">
                         <motion.div
-                            key={service.title}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                            className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_50px_-20px_rgba(0,0,0,0.1)] transition-all duration-500 group"
+                            transition={{ duration: 0.6 }}
+                            className="text-left"
                         >
-                            <div className={`w-16 h-16 rounded-2xl ${service.color} flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500`}>
-                                {service.icon}
-                            </div>
-                            <h4 className="text-xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors">
-                                {service.title}
-                            </h4>
-                            <p className="text-gray-600 leading-relaxed text-sm md:text-base">
-                                {service.description}
+                            <h2 className="text-sm font-bold text-blue-600 uppercase tracking-widest mb-4 inline-block px-4 py-2 bg-blue-50 rounded-full">
+                                Our Services
+                            </h2>
+                            <h3 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 tracking-tight leading-tight">
+                                Comprehensive Support for Your Academic Journey
+                            </h3>
+                            <p className="text-lg text-gray-600 leading-relaxed mb-8">
+                                At Fortex Education Consultancy, we believe that choosing the right educational path is a life-changing decision. Our expert guidance ensures that students not only find the best universities in India but also receive personalized support at every step of their admission journey.
                             </p>
+                            <div className="flex flex-wrap gap-4">
+                                <a href="#contact" className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl">
+                                    Get Started
+                                </a>
+                                <a href="#about" className="px-8 py-3 bg-white text-gray-700 font-semibold rounded-full border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all">
+                                    Learn More
+                                </a>
+                            </div>
                         </motion.div>
-                    ))}
-                </div>
+                    </div>
 
+                    {/* Right Column: Services Grid */}
+                    <div className="lg:col-span-7">
+                        <div className="grid md:grid-cols-2 gap-6">
+                            {services.map((service, index) => (
+                                <motion.div
+                                    key={service.title}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                                    className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] transition-all duration-300 group"
+                                >
+                                    <div className={`w-14 h-14 rounded-xl ${service.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                                        {React.cloneElement(service.icon as React.ReactElement, { className: "w-6 h-6" })}
+                                    </div>
+                                    <h4 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                                        {service.title}
+                                    </h4>
+                                    <p className="text-sm text-gray-600 leading-relaxed">
+                                        {service.description}
+                                    </p>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     );
