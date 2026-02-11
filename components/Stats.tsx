@@ -13,7 +13,7 @@ const Stats: React.FC = () => {
                 className="bg-gray-50/50 rounded-2xl p-6 md:p-8 hover:bg-white hover:shadow-lg transition-all border border-transparent hover:border-gray-100"
             >
                 <div className="text-3xl md:text-5xl font-semibold text-gray-900 mb-2">
-                    1.5K+
+                    2.3K+
                 </div>
                 <div className="text-sm md:text-base text-gray-500 font-medium">
                     Courses
@@ -45,7 +45,7 @@ const Stats: React.FC = () => {
                 className="bg-gray-50/50 rounded-2xl p-6 md:p-8 hover:bg-white hover:shadow-lg transition-all border border-transparent hover:border-gray-100"
             >
                 <div className="text-3xl md:text-5xl font-semibold text-gray-900 mb-2">
-                    5K+
+                    5.9K+
                 </div>
                 <div className="text-sm md:text-base text-gray-500 font-medium">
                     Enrolled Students
@@ -61,12 +61,13 @@ const Stats: React.FC = () => {
                 className="bg-gray-50/50 rounded-2xl p-6 md:p-8 hover:bg-white hover:shadow-lg transition-all border border-transparent hover:border-gray-100"
             >
                 <div className="text-3xl md:text-5xl font-semibold text-gray-900 mb-2">
-                    350+
+                    100+
                 </div>
                 <div className="text-sm md:text-base text-gray-500 font-medium">
                     Affiliated Universities
                 </div>
             </motion.div>
+
         </div>
     );
 };

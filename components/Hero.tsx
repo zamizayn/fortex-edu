@@ -6,23 +6,23 @@ import { motion, AnimatePresence } from 'framer-motion';
 const HERO_SLIDES = [
   {
     id: 1,
-    title: "Clear Guidance for a Bright Future.",
-    description: "Expert guidance for admissions to India's top universities & colleges. We help you navigate your educational path with ease.",
-    subtitle: "PRIORITY CAREER ACCESS",
+    title: "Premium College Admissions Across India",
+    description: "Fortex Education Consultancy specializes in securing admissions in top and recognized institutions across India. From career guidance to confirmed admission, we provide complete support to help students choose the right course and build a successful future.",
+    subtitle: "KERALA’S NO.1 DOMESTIC ADMISSION CONSULTANCY",
     image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070&auto=format&fit=crop"
   },
   {
     id: 2,
-    title: "Global Education, Within Your Reach.",
-    description: "Connect with world-class institutions and unlock international opportunities that align with your ambitions.",
-    subtitle: "GLOBAL PATHWAYS",
+    title: "Choose the Right Course. Choose the Right College",
+    description: "At Fortex Education, we provide personalized career guidance and complete admission support across India. Our mission is to help students make confident decisions that shape a strong academic and professional future.",
+    subtitle: "YOUR CAREER STARTS HERE",
     image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070&auto=format&fit=crop"
   },
   {
     id: 3,
-    title: "Expert Strategy for Career Success.",
-    description: "Join 6,000+ students who transformed their futures with Fortex's personalized counseling and strategy.",
-    subtitle: "SUCCESS GUARANTEED",
+    title: "Secure Your Seat in India’s Leading Colleges",
+    description: "We guide students towards premium colleges across Kerala, Karnataka, Tamil Nadu, Telangana, and major education hubs in India. With expert counselling and transparent processes, Fortex makes admissions simple and stress-free.",
+    subtitle: "INDIA ADMISSIONS EXPERTS",
     image: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=2070&auto=format&fit=crop"
   }
 ];
