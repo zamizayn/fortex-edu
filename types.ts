@@ -124,6 +124,9 @@ export interface SiteSettings {
   themeColor?: string;
   logoUrl?: string;
   visibleSections?: { [key: string]: boolean };
+  emailjsServiceId?: string;
+  emailjsTemplateId?: string;
+  emailjsPublicKey?: string;
   teamMembers?: {
     id: string;
     name: string;

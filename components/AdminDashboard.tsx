@@ -1709,6 +1709,43 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                     </div>
                                 </section>
 
+                                {/* EmailJS Configuration Section */}
+                                <section className="space-y-4">
+                                    <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">EmailJS Configuration (For OTP)</h3>
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Service ID</label>
+                                            <input
+                                                type="text"
+                                                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                                                placeholder="service_xxxxxxxx"
+                                                value={siteSettings.emailjsServiceId || ''}
+                                                onChange={e => setSiteSettings({ ...siteSettings, emailjsServiceId: e.target.value })}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Template ID</label>
+                                            <input
+                                                type="text"
+                                                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                                                placeholder="template_xxxxxxxx"
+                                                value={siteSettings.emailjsTemplateId || ''}
+                                                onChange={e => setSiteSettings({ ...siteSettings, emailjsTemplateId: e.target.value })}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Public Key</label>
+                                            <input
+                                                type="text"
+                                                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                                                placeholder="xxxxxxxxxxxxxxxxx"
+                                                value={siteSettings.emailjsPublicKey || ''}
+                                                onChange={e => setSiteSettings({ ...siteSettings, emailjsPublicKey: e.target.value })}
+                                            />
+                                        </div>
+                                    </div>
+                                </section>
+
                                 <div className="pt-6 flex justify-end">
                                     <button
                                         type="submit"

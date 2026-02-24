@@ -7,21 +7,21 @@ const HERO_SLIDES = [
   {
     id: 1,
     title: "Premium College Admissions Across India",
-    description: "Fortex Education Consultancy specializes in securing admissions in top and recognized institutions across India. From career guidance to confirmed admission, we provide complete support to help students choose the right course and build a successful future.",
+    description: "Kerala’s leading consultancy for admissions in top institutions across India.",
     subtitle: "KERALA’S NO.1 DOMESTIC ADMISSION CONSULTANCY",
     image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070&auto=format&fit=crop"
   },
   {
     id: 2,
     title: "Choose the Right Course. Choose the Right College",
-    description: "At Fortex Education, we provide personalized career guidance and complete admission support across India. Our mission is to help students make confident decisions that shape a strong academic and professional future.",
+    description: "Fortex Education Consultancy connects students to top colleges across India with expert admission guidance.",
     subtitle: "YOUR CAREER STARTS HERE",
     image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070&auto=format&fit=crop"
   },
   {
     id: 3,
     title: "Secure Your Seat in India’s Leading Colleges",
-    description: "We guide students towards premium colleges across Kerala, Karnataka, Tamil Nadu, Telangana, and major education hubs in India. With expert counselling and transparent processes, Fortex makes admissions simple and stress-free.",
+    description: "Fortex Education offers personalized career guidance and complete admission support across India.",
     subtitle: "INDIA ADMISSIONS EXPERTS",
     image: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=2070&auto=format&fit=crop"
   }

@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { collection, getDocs, db } from '../firebase';
 import { Service } from '../types';
@@ -11,6 +11,28 @@ const Programs: React.FC = () => {
   const [services, setServices] = useState<Service[]>([]);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isPaused, setIsPaused] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const scrollContainer = scrollRef.current;
+    if (!scrollContainer || loading || isPaused) return;
+
+    const scrollInterval = setInterval(() => {
+      if (scrollContainer.scrollLeft + scrollContainer.clientWidth >= scrollContainer.scrollWidth - 10) {
+        scrollContainer.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        const firstChild = scrollContainer.firstElementChild as HTMLElement;
+        if (firstChild) {
+          const itemWidth = firstChild.offsetWidth;
+          const gap = parseInt(window.getComputedStyle(scrollContainer).gap || '0');
+          scrollContainer.scrollBy({ left: itemWidth + gap, behavior: 'smooth' });
+        }
+      }
+    }, 3000);
+
+    return () => clearInterval(scrollInterval);
+  }, [loading, services, isPaused]);
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -143,7 +165,14 @@ const Programs: React.FC = () => {
             ))}
           </div>
         ) : (
-          <div className="flex md:grid grid-cols-2 md:grid-cols-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none gap-4 md:gap-8 pb-8 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0 [-ms-overflow-style:'none'] [scrollbar-width:'none'] [&::-webkit-scrollbar]:hidden">
+          <div
+            ref={scrollRef}
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+            onTouchStart={() => setIsPaused(true)}
+            onTouchEnd={() => setIsPaused(false)}
+            className="flex md:grid grid-cols-2 md:grid-cols-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none gap-4 md:gap-8 pb-8 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0 [-ms-overflow-style:'none'] [scrollbar-width:'none'] [&::-webkit-scrollbar]:hidden"
+          >
             {services.map((service) => (
               <motion.div
                 layoutId={service.id}

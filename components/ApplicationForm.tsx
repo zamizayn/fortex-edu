@@ -163,9 +163,9 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ user, onBack, isAdmin
             modeOfAdmission: '',
         },
         additionalInfo: {
-            entranceExamAppeared: 'No',
+            entranceExamAppeared: '',
             examNameAndScore: '',
-            gapInStudies: 'No',
+            gapInStudies: '',
             gapReason: '',
         },
         documents: {
@@ -306,6 +306,11 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ user, onBack, isAdmin
     };
 
     const handleSubmit = async () => {
+        if (!formData.declaration.place.trim() || !formData.declaration.date) {
+            alert('Please fill in the Place and Date in the declaration section.');
+            return;
+        }
+
         if (!formData.declaration.agreed) {
             alert('Please agree to the declaration before submitting.');
             return;
@@ -455,23 +460,21 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ user, onBack, isAdmin
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Community *</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Community (Optional)</label>
                             <input
                                 type="text"
                                 value={formData.studentDetails.community}
                                 onChange={(e) => handleInputChange('studentDetails', 'community', e.target.value)}
                                 className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
-                                required
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Caste *</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Caste (Optional)</label>
                             <input
                                 type="text"
                                 value={formData.studentDetails.caste}
                                 onChange={(e) => handleInputChange('studentDetails', 'caste', e.target.value)}
                                 className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
-                                required
                             />
                         </div>
                         <div>
@@ -837,6 +840,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ user, onBack, isAdmin
                                 <option value="Merit">Merit</option>
                                 <option value="Management">Management</option>
                                 <option value="NRI">NRI</option>
+                                <option value="Others">Others</option>
                             </select>
                         </div>
                     </div>
@@ -846,13 +850,13 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ user, onBack, isAdmin
                 {currentSection === 5 && (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Entrance Exam Appeared *</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Entrance Exam Appeared (Optional)</label>
                             <select
                                 value={formData.additionalInfo.entranceExamAppeared}
                                 onChange={(e) => handleInputChange('additionalInfo', 'entranceExamAppeared', e.target.value)}
                                 className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
-                                required
                             >
+                                <option value="">Select Option</option>
                                 <option value="No">No</option>
                                 <option value="Yes">Yes</option>
                             </select>
@@ -865,17 +869,17 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ user, onBack, isAdmin
                                 onChange={(e) => handleInputChange('additionalInfo', 'examNameAndScore', e.target.value)}
                                 className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
                                 placeholder="e.g., NEET - 650/720"
-                                disabled={formData.additionalInfo.entranceExamAppeared === 'No'}
+                                disabled={formData.additionalInfo.entranceExamAppeared !== 'Yes'}
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Any Gap in Studies *</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Any Gap in Studies (Optional)</label>
                             <select
                                 value={formData.additionalInfo.gapInStudies}
                                 onChange={(e) => handleInputChange('additionalInfo', 'gapInStudies', e.target.value)}
                                 className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
-                                required
                             >
+                                <option value="">Select Option</option>
                                 <option value="No">No</option>
                                 <option value="Yes">Yes</option>
                             </select>
@@ -888,7 +892,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ user, onBack, isAdmin
                                 onChange={(e) => handleInputChange('additionalInfo', 'gapReason', e.target.value)}
                                 className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
                                 placeholder="Explain the reason"
-                                disabled={formData.additionalInfo.gapInStudies === 'No'}
+                                disabled={formData.additionalInfo.gapInStudies !== 'Yes'}
                             />
                         </div>
                     </div>

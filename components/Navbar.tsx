@@ -15,6 +15,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, user, onLogout, onLoginC
   const [isOpen, setIsOpen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showFortexDropdown, setShowFortexDropdown] = useState(false);
+  const [showInstitutionsDropdown, setShowInstitutionsDropdown] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -27,10 +28,12 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, user, onLogout, onLoginC
 
   const navLinks = [
     { name: 'Home', href: '/', id: 'home', isRoute: true },
-    // { name: 'About', href: '/about', id: 'about', isRoute: true },
     { name: 'Courses', href: '/courses', id: 'programs', isRoute: true },
-    { name: 'Colleges', href: '/colleges', id: 'colleges', isRoute: true },
-    { name: 'Universities', href: '/universities', id: 'universities', isRoute: true },
+  ];
+
+  const institutionsDropdownLinks = [
+    { name: 'Colleges', href: '/colleges' },
+    { name: 'Universities', href: '/universities' },
   ];
 
   const fortexDropdownLinks = [
@@ -75,6 +78,40 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, user, onLogout, onLoginC
               </a>
             )
           ))}
+
+          {/* Institutions Dropdown */}
+          <div
+            className="relative"
+            onMouseEnter={() => setShowInstitutionsDropdown(true)}
+            onMouseLeave={() => setShowInstitutionsDropdown(false)}
+          >
+            <button
+              onClick={() => setShowInstitutionsDropdown(true)}
+              className={`flex items-center gap-1 text-xs md:text-sm font-medium tracking-wide transition-all ${scrolled ? 'text-gray-800 hover:text-blue-600' : 'text-white hover:text-blue-300 drop-shadow-lg'}`}
+            >
+              Institutions
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            {showInstitutionsDropdown && (
+              <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-48">
+                <div className="bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50">
+                  {institutionsDropdownLinks.map((link) => (
+                    <Link
+                      key={link.name}
+                      to={link.href}
+                      className="block px-4 py-3 text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                      onClick={() => setShowInstitutionsDropdown(false)}
+                    >
+                      {link.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
 
           {/* Fortex Dropdown */}
           <div
@@ -207,8 +244,23 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, user, onLogout, onLoginC
               )
             ))}
 
+            {/* Institutions Dropdown in Mobile */}
+            <div className="border-t border-gray-200/20 pt-4">
+              <p className="text-xs font-semibold text-white/70 uppercase tracking-wider mb-3">Institutions</p>
+              {institutionsDropdownLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  onClick={() => setIsOpen(false)}
+                  className="block text-base font-semibold text-white hover:text-blue-300 transition-colors py-2 pl-4"
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </div>
+
             {/* Fortex Dropdown in Mobile */}
-            <div className="border-t border-gray-200 pt-4">
+            <div className="border-t border-gray-200/20 pt-4">
               <p className="text-xs font-semibold text-white/70 uppercase tracking-wider mb-3">Fortex</p>
               {fortexDropdownLinks.map((link) => (
                 <Link
