@@ -771,11 +771,20 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                 ) : studentApplicationData ? (
                                     <>
                                         {/* Application Form Data */}
-                                        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-                                            <h4 className="text-sm font-semibold text-blue-900 mb-2">📋 Application Form Submitted</h4>
-                                            <p className="text-xs text-blue-700">
-                                                This student has submitted their application form. All details are shown below.
-                                            </p>
+                                        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 flex justify-between items-start sm:items-center flex-col sm:flex-row gap-4">
+                                            <div>
+                                                <h4 className="text-sm font-semibold text-blue-900 mb-2">📋 Application Form Submitted</h4>
+                                                <p className="text-xs text-blue-700">
+                                                    This student has submitted their application form. All details are shown below.
+                                                </p>
+                                            </div>
+                                            <button
+                                                onClick={() => setIsAddingDetails(true)}
+                                                className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-xs font-medium transition-colors"
+                                            >
+                                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                                                Edit Application
+                                            </button>
                                         </div>
 
                                         {/* Student Details Section */}
@@ -880,7 +889,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                                         {[
                                                             { label: 'College Name', value: studentApplicationData.academicDetails.plusTwo?.collegeName },
-                                                            { label: 'Stream', value: studentApplicationData.academicDetails.plusTwo?.stream },
+                                                            { label: 'Stream', value: studentApplicationData.academicDetails.plusTwo?.stream === 'Other' ? studentApplicationData.academicDetails.plusTwo?.otherStream : studentApplicationData.academicDetails.plusTwo?.stream },
                                                             { label: 'Board', value: studentApplicationData.academicDetails.plusTwo?.board },
                                                             { label: 'Year of Passing', value: studentApplicationData.academicDetails.plusTwo?.yearOfPassing },
                                                             { label: 'Percentage', value: studentApplicationData.academicDetails.plusTwo?.percentage },
@@ -892,6 +901,27 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                                         ))}
                                                     </div>
                                                 </div>
+
+                                                {/* UG Standard */}
+                                                {studentApplicationData.academicDetails.ug && studentApplicationData.academicDetails.ug.degreeName && (
+                                                    <div className="mt-6">
+                                                        <h5 className="text-xs font-semibold text-gray-600 mb-3">Undergraduate</h5>
+                                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                                            {[
+                                                                { label: 'Degree Name', value: studentApplicationData.academicDetails.ug.degreeName },
+                                                                { label: 'College Name', value: studentApplicationData.academicDetails.ug.collegeName },
+                                                                { label: 'University Name', value: studentApplicationData.academicDetails.ug.universityName },
+                                                                { label: 'Year of Passing', value: studentApplicationData.academicDetails.ug.yearOfPassing },
+                                                                { label: 'Percentage', value: studentApplicationData.academicDetails.ug.percentage },
+                                                            ].map((item, i) => (
+                                                                <div key={i} className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                                                                    <p className="text-xs text-gray-400 font-medium uppercase tracking-wider">{item.label}</p>
+                                                                    <p className="text-sm font-medium text-gray-800 mt-1 break-words">{item.value || 'Not provided'}</p>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
                                         )}
 
@@ -1284,6 +1314,62 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                             value={formData.description || ''}
                                             onChange={e => setFormData({ ...formData, description: e.target.value })}
                                         />
+                                    </div>
+                                    <div className="md:col-span-2 mt-2 pt-4 border-t border-gray-100">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Programs under this Course</label>
+                                        <div className="flex gap-2 mb-3">
+                                            <input
+                                                type="text"
+                                                id="newProgramInput"
+                                                className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                placeholder="e.g. B.Tech Computer Science"
+                                                onKeyDown={(e) => {
+                                                    if (e.key === 'Enter') {
+                                                        e.preventDefault();
+                                                        const val = e.currentTarget.value.trim();
+                                                        if (val) {
+                                                            setFormData({ ...formData, programs: [...(formData.programs || []), val] });
+                                                            e.currentTarget.value = '';
+                                                        }
+                                                    }
+                                                }}
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    const input = document.getElementById('newProgramInput') as HTMLInputElement;
+                                                    const val = input.value.trim();
+                                                    if (val) {
+                                                        setFormData({ ...formData, programs: [...(formData.programs || []), val] });
+                                                        input.value = '';
+                                                    }
+                                                }}
+                                                className="bg-blue-100 text-blue-700 px-4 py-2 rounded-lg hover:bg-blue-200 font-medium transition"
+                                            >
+                                                Add Program
+                                            </button>
+                                        </div>
+                                        <div className="flex flex-wrap gap-2">
+                                            {(formData.programs || []).map((program: string, idx: number) => (
+                                                <span key={idx} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
+                                                    {program}
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            const newPrograms = [...(formData.programs || [])];
+                                                            newPrograms.splice(idx, 1);
+                                                            setFormData({ ...formData, programs: newPrograms });
+                                                        }}
+                                                        className="text-gray-400 hover:text-red-500 focus:outline-none"
+                                                    >
+                                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                                                    </button>
+                                                </span>
+                                            ))}
+                                            {(!formData.programs || formData.programs.length === 0) && (
+                                                <span className="text-sm text-gray-400 italic">No programs added yet. Type a program name and click Add.</span>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="mt-4 flex justify-end">

@@ -29,28 +29,7 @@ const DEFAULT_MEMBERS: TeamMember[] = [
             instagram: '#'
         }
     },
-    {
-        id: '2',
-        name: 'Dr. Michael Chen',
-        role: 'Head of Admissions',
-        image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=400&h=400',
-        bio: 'Dedicated to helping students find their perfect academic fit.',
-        socials: {
-            linkedin: '#',
-            twitter: '#'
-        }
-    },
-    {
-        id: '3',
-        name: 'Emma Williams',
-        role: 'Senior Career Counselor',
-        image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=400&h=400',
-        bio: 'Expert in global career trends and professional development.',
-        socials: {
-            linkedin: '#',
-            instagram: '#'
-        }
-    }
+
 ];
 
 const Team: React.FC<{ members?: TeamMember[] }> = ({ members = DEFAULT_MEMBERS }) => {

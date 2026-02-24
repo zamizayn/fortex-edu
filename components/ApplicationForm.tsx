@@ -56,7 +56,15 @@ interface ApplicationData {
         plusTwo: {
             collegeName: string;
             stream: string;
+            otherStream?: string;
             board: string;
+            yearOfPassing: string;
+            percentage: string;
+        };
+        ug?: {
+            degreeName: string;
+            collegeName: string;
+            universityName: string;
             yearOfPassing: string;
             percentage: string;
         };
@@ -151,7 +159,15 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ user, onBack, isAdmin
             plusTwo: {
                 collegeName: '',
                 stream: '',
+                otherStream: '',
                 board: '',
+                yearOfPassing: '',
+                percentage: '',
+            },
+            ug: {
+                degreeName: '',
+                collegeName: '',
+                universityName: '',
                 yearOfPassing: '',
                 percentage: '',
             },
@@ -750,6 +766,18 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ user, onBack, isAdmin
                                         <option value="Other">Other</option>
                                     </select>
                                 </div>
+                                {formData.academicDetails.plusTwo.stream === 'Other' && (
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Please specify stream *</label>
+                                        <input
+                                            type="text"
+                                            value={formData.academicDetails.plusTwo.otherStream || ''}
+                                            onChange={(e) => handleNestedInputChange('academicDetails', 'plusTwo', 'otherStream', e.target.value)}
+                                            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
+                                            required
+                                        />
+                                    </div>
+                                )}
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Board *</label>
                                     <select
@@ -785,6 +813,61 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ user, onBack, isAdmin
                                         className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
                                         placeholder="e.g., 75%"
                                         required
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* UG Level */}
+                        <div className="mt-8">
+                            <h3 className="text-lg font-semibold text-charcoal mb-4 pb-2 border-b">Undergraduate (If Applicable)</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Degree Name</label>
+                                    <input
+                                        type="text"
+                                        value={formData.academicDetails.ug?.degreeName || ''}
+                                        onChange={(e) => handleNestedInputChange('academicDetails', 'ug', 'degreeName', e.target.value)}
+                                        className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
+                                        placeholder="e.g., B.Sc Computer Science"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">College / Institution Name</label>
+                                    <input
+                                        type="text"
+                                        value={formData.academicDetails.ug?.collegeName || ''}
+                                        onChange={(e) => handleNestedInputChange('academicDetails', 'ug', 'collegeName', e.target.value)}
+                                        className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">University Name</label>
+                                    <input
+                                        type="text"
+                                        value={formData.academicDetails.ug?.universityName || ''}
+                                        onChange={(e) => handleNestedInputChange('academicDetails', 'ug', 'universityName', e.target.value)}
+                                        className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Year of Passing</label>
+                                    <input
+                                        type="text"
+                                        value={formData.academicDetails.ug?.yearOfPassing || ''}
+                                        onChange={(e) => handleNestedInputChange('academicDetails', 'ug', 'yearOfPassing', e.target.value)}
+                                        className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
+                                        placeholder="e.g., 2024"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Total Marks / Percentage</label>
+                                    <input
+                                        type="text"
+                                        value={formData.academicDetails.ug?.percentage || ''}
+                                        onChange={(e) => handleNestedInputChange('academicDetails', 'ug', 'percentage', e.target.value)}
+                                        className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
+                                        placeholder="e.g., 80%"
                                     />
                                 </div>
                             </div>
