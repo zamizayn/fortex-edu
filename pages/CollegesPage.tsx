@@ -31,7 +31,18 @@ const CollegesPage: React.FC<CollegesPageProps> = ({ user, onLogout, onLoginClic
         const fetchColleges = async () => {
             try {
                 const snapshot = await getDocs(collection(db, 'colleges'));
-                setColleges(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as College)));
+                const data = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as College));
+                data.sort((a, b) => {
+                    if (a.order !== undefined && b.order !== undefined) {
+                        if (a.order !== b.order) return a.order - b.order;
+                    } else if (a.order !== undefined) {
+                        return -1;
+                    } else if (b.order !== undefined) {
+                        return 1;
+                    }
+                    return a.name.localeCompare(b.name);
+                });
+                setColleges(data);
             } catch (error) {
                 console.error("Error fetching colleges:", error);
             } finally {

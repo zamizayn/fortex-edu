@@ -49,7 +49,7 @@ const About: React.FC = () => {
   return (
     <div className="relative bg-white overflow-hidden">
       {/* Hero Section with Background Image - extends to top */}
-      <div className="relative min-h-[85vh] flex items-center justify-center overflow-hidden pt-0">
+      <div className="relative min-h-[85vh] lg:min-h-screen flex items-center justify-center overflow-hidden pt-0">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-black/50 z-10" />

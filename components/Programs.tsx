@@ -38,7 +38,18 @@ const Programs: React.FC = () => {
     const fetchServices = async () => {
       try {
         const snapshot = await getDocs(collection(db, 'services'));
-        setServices(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as Service)));
+        const data = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as Service));
+        data.sort((a, b) => {
+          if (a.order !== undefined && b.order !== undefined) {
+            if (a.order !== b.order) return a.order - b.order;
+          } else if (a.order !== undefined) {
+            return -1;
+          } else if (b.order !== undefined) {
+            return 1;
+          }
+          return (a.title || '').localeCompare(b.title || '');
+        });
+        setServices(data);
       } catch (error) {
         console.error("Error fetching services:", error);
       } finally {

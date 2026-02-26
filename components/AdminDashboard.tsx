@@ -1312,6 +1312,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                         />
                                     </div>
                                     <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Order (Ranking)</label>
+                                        <input
+                                            type="number"
+                                            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="e.g. 1"
+                                            value={formData.order || ''}
+                                            onChange={e => setFormData({ ...formData, order: e.target.value ? Number(e.target.value) : undefined })}
+                                        />
+                                    </div>
+                                    <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Service Image</label>
                                         <div className="flex items-center gap-4">
                                             {formData.imageUrl && (
@@ -1474,6 +1484,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                         />
                                     </div>
                                     <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Order (Ranking)</label>
+                                        <input
+                                            type="number"
+                                            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="e.g. 1"
+                                            value={formData.order || ''}
+                                            onChange={e => setFormData({ ...formData, order: e.target.value ? Number(e.target.value) : undefined })}
+                                        />
+                                    </div>
+                                    <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
                                         <input
                                             required
@@ -1541,7 +1561,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                 </div>
                                 <div className="mt-4 flex justify-end">
                                     <button type="submit" className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 font-medium">
-                                        Save College
+                                        {editingId ? 'Update College' : 'Save College'}
                                     </button>
                                 </div>
                             </form>
@@ -1563,13 +1583,27 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                         <h3 className="font-semibold text-lg text-gray-900 mb-1">{college.name}</h3>
                                         <a href={college.websiteUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 text-xs hover:underline mb-3 block">{college.websiteUrl}</a>
                                         <p className="text-gray-600 text-sm mb-4 line-clamp-3">{college.description}</p>
-                                        <button
-                                            onClick={() => handleDelete('colleges', college.id)}
-                                            className="text-red-600 text-sm font-medium hover:text-red-800 flex items-center gap-1"
-                                        >
-                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                                            Delete
-                                        </button>
+                                        <div className="flex gap-4">
+                                            <button
+                                                onClick={() => {
+                                                    setFormData(college);
+                                                    setEditingId(college.id);
+                                                    setIsAdding(true);
+                                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                                }}
+                                                className="text-blue-600 text-sm font-medium hover:text-blue-800 flex items-center gap-1"
+                                            >
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                                                Edit
+                                            </button>
+                                            <button
+                                                onClick={() => handleDelete('colleges', college.id)}
+                                                className="text-red-600 text-sm font-medium hover:text-red-800 flex items-center gap-1"
+                                            >
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                                Delete
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             ))}
@@ -2101,6 +2135,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                         />
                                     </div>
                                     <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Order (Ranking)</label>
+                                        <input
+                                            type="number"
+                                            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="e.g. 1"
+                                            value={formData.order || ''}
+                                            onChange={e => setFormData({ ...formData, order: e.target.value ? Number(e.target.value) : undefined })}
+                                        />
+                                    </div>
+                                    <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Website URL</label>
                                         <input
                                             required
@@ -2157,7 +2201,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                 </div>
                                 <div className="mt-4 flex justify-end">
                                     <button type="submit" className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 font-medium">
-                                        Save University
+                                        {editingId ? 'Update University' : 'Save University'}
                                     </button>
                                 </div>
                             </form>
@@ -2179,13 +2223,27 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                         <h3 className="font-semibold text-lg text-gray-900 mb-1">{uni.name}</h3>
                                         <a href={uni.websiteUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 text-xs hover:underline mb-3 block">{uni.websiteUrl}</a>
                                         <p className="text-gray-600 text-sm mb-4 line-clamp-3">{uni.description}</p>
-                                        <button
-                                            onClick={() => handleDelete('universities', uni.id)}
-                                            className="text-red-600 text-sm font-medium hover:text-red-800 flex items-center gap-1"
-                                        >
-                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                                            Delete
-                                        </button>
+                                        <div className="flex gap-4">
+                                            <button
+                                                onClick={() => {
+                                                    setFormData(uni);
+                                                    setEditingId(uni.id);
+                                                    setIsAdding(true);
+                                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                                }}
+                                                className="text-blue-600 text-sm font-medium hover:text-blue-800 flex items-center gap-1"
+                                            >
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                                                Edit
+                                            </button>
+                                            <button
+                                                onClick={() => handleDelete('universities', uni.id)}
+                                                className="text-red-600 text-sm font-medium hover:text-red-800 flex items-center gap-1"
+                                            >
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                                Delete
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             ))}

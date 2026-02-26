@@ -8,6 +8,7 @@ export interface Program {
   outcomes: string[];
   careerPaths: string[];
   icon: string;
+  order?: number;
 }
 
 export interface Event {
@@ -64,6 +65,7 @@ export interface Service {
   imageUrl: string;
   programs?: string[];
   createdAt?: any;
+  order?: number;
 }
 
 export interface College {
@@ -74,6 +76,7 @@ export interface College {
   websiteUrl: string;
   imageUrl: string;
   createdAt?: any;
+  order?: number;
 }
 
 export interface University {
@@ -84,6 +87,7 @@ export interface University {
   websiteUrl: string;
   imageUrl: string;
   createdAt?: any;
+  order?: number;
 }
 
 export interface Lead {

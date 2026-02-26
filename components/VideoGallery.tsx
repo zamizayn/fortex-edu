@@ -43,8 +43,10 @@ const VideoGallery: React.FC = () => {
     return (match && match[2].length === 11) ? match[2] : null;
   };
 
-  if (loading) return <div className="py-12 md:py-32 grid md:grid-cols-3 gap-8 max-w-7xl mx-auto px-6">
-    {[1, 2, 3].map(i => <div key={i} className="aspect-video rounded-[2.5rem] bg-gray-50 animate-pulse" />)}
+  if (loading) return <div className="py-12 md:py-32 max-w-7xl mx-auto px-6 lg:px-12">
+    <div className="flex overflow-x-auto md:grid md:grid-cols-3 gap-6 md:gap-10 pb-8 md:pb-0 -mx-6 px-6 lg:mx-0 lg:px-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+      {[1, 2, 3].map(i => <div key={i} className="flex-none w-[85vw] sm:w-[60vw] md:w-auto aspect-video rounded-[2.5rem] bg-gray-200 animate-pulse" />)}
+    </div>
   </div>;
   if (insights.length === 0) return null;
 
@@ -66,13 +68,13 @@ const VideoGallery: React.FC = () => {
         </a>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-10">
+      <div className="flex overflow-x-auto md:grid md:grid-cols-3 gap-6 md:gap-10 pb-4 md:pb-0 snap-x snap-mandatory md:snap-none -mx-6 px-6 lg:mx-0 lg:px-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         {insights.map(insight => {
           const videoId = getYoutubeId(insight.youtubeLink);
           if (!videoId) return null;
 
           return (
-            <div key={insight.id} className="group cursor-pointer" onClick={() => setActiveVideo(videoId)}>
+            <div key={insight.id} className="group cursor-pointer flex-none w-[85vw] sm:w-[60vw] md:w-auto snap-center md:snap-align-none" onClick={() => setActiveVideo(videoId)}>
               <div className="relative aspect-video rounded-[2.5rem] overflow-hidden shadow-2xl shadow-black/5 mb-8 bg-gray-100 border border-black/5">
                 <img
                   src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
