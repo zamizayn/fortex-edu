@@ -28,6 +28,7 @@ const App: React.FC = () => {
   const [authModalView, setAuthModalView] = useState<'login' | 'register' | 'admin'>('login');
   const [whatsappNumber, setWhatsappNumber] = useState('917025337762');
   const [siteSettings, setSiteSettings] = useState<SiteSettings | null>(null);
+  const [isSettingsLoading, setIsSettingsLoading] = useState(true);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [preFilledCourse, setPreFilledCourse] = useState<string | undefined>(undefined);
   const [preFilledCategory, setPreFilledCategory] = useState<string | undefined>(undefined);
@@ -56,6 +57,10 @@ const App: React.FC = () => {
         setSiteSettings(settings);
         if (settings.whatsappNumber) setWhatsappNumber(settings.whatsappNumber);
       }
+      setIsSettingsLoading(false);
+    }, (error) => {
+      console.error("Error fetching settings:", error);
+      setIsSettingsLoading(false);
     });
 
     return () => unsub();
@@ -120,6 +125,14 @@ const App: React.FC = () => {
       window.removeEventListener('resize', handleScroll);
     };
   }, []);
+
+  if (isSettingsLoading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-gray-100 border-t-blue-600 rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <Router>

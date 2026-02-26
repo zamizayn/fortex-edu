@@ -19,6 +19,7 @@ const Universities: React.FC<UniversitiesProps> = ({ user, onLoginClick }) => {
         course: '',
         percentage: ''
     });
+    const [selectedLocation, setSelectedLocation] = useState<string>('All');
 
     useEffect(() => {
         const fetchUniversities = async () => {
@@ -69,6 +70,11 @@ const Universities: React.FC<UniversitiesProps> = ({ user, onLoginClick }) => {
         );
     }
 
+    const uniqueLocations = ['All', ...Array.from(new Set(universities.map(u => u.location).filter(Boolean)))];
+    const filteredUniversities = selectedLocation === 'All'
+        ? universities
+        : universities.filter(u => u.location === selectedLocation);
+
     if (universities.length === 0) return null;
 
     return (
@@ -80,40 +86,57 @@ const Universities: React.FC<UniversitiesProps> = ({ user, onLoginClick }) => {
                         <h2 className="text-5xl font-semibold text-charcoal tracking-tight text-balance">
                             Partnering with <br /> the World's Best.
                         </h2>
-                        <p className="text-xl text-charcoal/50 font-normal max-w-md">
-                            Direct pathways to prestigious universities across the globe.
-                        </p>
+                        <div className="flex flex-col md:items-end gap-4">
+                            <p className="text-xl text-charcoal/50 font-normal max-w-md md:text-right">
+                                Direct pathways to prestigious universities across the globe.
+                            </p>
+                            <select
+                                value={selectedLocation}
+                                onChange={(e) => setSelectedLocation(e.target.value)}
+                                className="px-4 py-3 bg-gray-50 border border-black/5 rounded-full text-sm font-semibold text-charcoal outline-none focus:ring-2 focus:ring-accent transition-all cursor-pointer shadow-sm w-full sm:w-auto self-start md:self-end"
+                            >
+                                {uniqueLocations.map(loc => (
+                                    <option key={loc} value={loc}>{loc}</option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-10">
-                    {universities.map((uni) => (
-                        <div
-                            key={uni.id}
-                            className="group relative cursor-pointer"
-                            onClick={() => setSelectedUni(uni)}
-                        >
-                            <div className="aspect-[16/10] rounded-[2rem] overflow-hidden shadow-2xl shadow-black/5 bg-gray-50 mb-6">
-                                <img
-                                    src={uni.imageUrl}
-                                    alt={uni.name}
-                                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                                />
-                            </div>
-                            <div className="px-2">
-                                <div className="flex items-center gap-2 mb-3">
-                                    <span className="w-2 h-2 rounded-full bg-accent" />
-                                    <span className="text-[10px] font-medium text-charcoal/40 uppercase tracking-widest">{uni.location}</span>
+                {filteredUniversities.length === 0 ? (
+                    <div className="text-center py-24 bg-gray-50 rounded-[2rem] border border-black/5 text-charcoal/30 font-bold uppercase tracking-widest">
+                        No universities found for the selected location.
+                    </div>
+                ) : (
+                    <div className="grid md:grid-cols-3 gap-10">
+                        {filteredUniversities.map((uni) => (
+                            <div
+                                key={uni.id}
+                                className="group relative cursor-pointer"
+                                onClick={() => setSelectedUni(uni)}
+                            >
+                                <div className="aspect-[16/10] rounded-[2rem] overflow-hidden shadow-2xl shadow-black/5 bg-gray-50 mb-6">
+                                    <img
+                                        src={uni.imageUrl}
+                                        alt={uni.name}
+                                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                                    />
                                 </div>
-                                <h4 className="text-2xl font-semibold text-charcoal mb-4 group-hover:text-accent transition-colors tracking-tight leading-tight">{uni.name}</h4>
-                                <p className="text-charcoal/60 text-sm font-normal line-clamp-2 leading-relaxed mb-6">{uni.description}</p>
-                                <button className="text-xs font-medium text-charcoal uppercase tracking-widest border-b-2 border-charcoal/10 group-hover:border-accent transition-all pb-1">
-                                    View Prospectus
-                                </button>
+                                <div className="px-2">
+                                    <div className="flex items-center gap-2 mb-3">
+                                        <span className="w-2 h-2 rounded-full bg-accent" />
+                                        <span className="text-[10px] font-medium text-charcoal/40 uppercase tracking-widest">{uni.location}</span>
+                                    </div>
+                                    <h4 className="text-2xl font-semibold text-charcoal mb-4 group-hover:text-accent transition-colors tracking-tight leading-tight">{uni.name}</h4>
+                                    <p className="text-charcoal/60 text-sm font-normal line-clamp-2 leading-relaxed mb-6">{uni.description}</p>
+                                    <button className="text-xs font-medium text-charcoal uppercase tracking-widest border-b-2 border-charcoal/10 group-hover:border-accent transition-all pb-1">
+                                        View Prospectus
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                )}
             </div>
 
             {/* Modal & Form Logic Remains Similar for functionality but Styled for Revamp */}

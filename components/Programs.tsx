@@ -57,10 +57,10 @@ const Programs: React.FC = () => {
             {/* Left Column: Content */}
             <div className="text-left">
 
-              <h3 className="text-3xl md:text-5xl font-medium text-gray-900 mb-6 tracking-tight leading-tight">
+              <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-6">
                 Our Services
               </h3>
-              <p className="text-lg text-gray-600 leading-relaxed mb-8">
+              <p className="text-sm md:text-base text-gray-700 leading-relaxed font-normal mb-8">
                 At Fortex Education Consultancy, we believe that choosing the right educational path is a life-changing
                 decision. Our expert guidance ensures that students not only find the best universities in India but also
                 receive personalized support at every step of their admission journey. We offer comprehensive, end-to-end

@@ -58,7 +58,7 @@ const Contact: React.FC = () => {
     {
       icon: '📍',
       title: 'Location',
-      value: 'Kalpetta, Wayanad, Kerala — 673121',
+      value: settings?.address || 'Kalpetta, Wayanad, Kerala — 673121',
       link: 'https://maps.google.com',
     },
     {

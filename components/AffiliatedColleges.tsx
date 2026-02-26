@@ -22,6 +22,7 @@ const AffiliatedColleges: React.FC<AffiliatedCollegesProps> = ({ user, onLoginCl
         percentage: '',
         phone: ''
     });
+    const [selectedLocation, setSelectedLocation] = useState<string>('All');
 
     useEffect(() => {
         const fetchColleges = async () => {
@@ -72,6 +73,11 @@ const AffiliatedColleges: React.FC<AffiliatedCollegesProps> = ({ user, onLoginCl
         );
     }
 
+    const uniqueLocations = ['All', ...Array.from(new Set(colleges.map(c => c.location).filter(Boolean)))];
+    const filteredColleges = selectedLocation === 'All'
+        ? colleges
+        : colleges.filter(c => c.location === selectedLocation);
+
     return (
         <section id="colleges" className="py-12 md:py-32 bg-gray-50">
             <div className="max-w-7xl mx-auto px-6 lg:px-12">
@@ -85,24 +91,35 @@ const AffiliatedColleges: React.FC<AffiliatedCollegesProps> = ({ user, onLoginCl
                             <p className="text-base md:text-xl text-charcoal/50 font-normal max-w-md md:text-right">
                                 Discover premier colleges dedicated to shaping your future across diverse academic disciplines.
                             </p>
-                            <button
-                                onClick={() => navigate('/colleges')}
-                                className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-black/5 rounded-full text-sm font-semibold text-charcoal hover:bg-gray-50 transition-all shadow-sm w-fit self-start md:self-end"
-                            >
-                                See All Colleges
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-                            </button>
+                            <div className="flex flex-col sm:flex-row items-center gap-4 self-start md:self-end">
+                                <select
+                                    value={selectedLocation}
+                                    onChange={(e) => setSelectedLocation(e.target.value)}
+                                    className="px-4 py-3 bg-white border border-black/5 rounded-full text-sm font-semibold text-charcoal outline-none focus:ring-2 focus:ring-accent transition-all cursor-pointer shadow-sm w-full sm:w-auto"
+                                >
+                                    {uniqueLocations.map(loc => (
+                                        <option key={loc} value={loc}>{loc}</option>
+                                    ))}
+                                </select>
+                                <button
+                                    onClick={() => navigate('/colleges')}
+                                    className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-black/5 rounded-full text-sm font-semibold text-charcoal hover:bg-gray-50 transition-all shadow-sm w-fit"
+                                >
+                                    See All Colleges
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                {colleges.length === 0 ? (
+                {filteredColleges.length === 0 ? (
                     <div className="text-center py-24 bg-white rounded-[2rem] border border-black/5 text-charcoal/30 font-bold uppercase tracking-widest">
-                        No colleges listed yet.
+                        No colleges found for the selected location.
                     </div>
                 ) : (
                     <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 -mx-6 px-6 [-ms-overflow-style:'none'] [scrollbar-width:'none'] [&::-webkit-scrollbar]:hidden">
-                        {colleges.map((college) => (
+                        {filteredColleges.map((college) => (
                             <div
                                 key={college.id}
                                 className="group relative min-w-[85vw] md:min-w-[400px] snap-start"

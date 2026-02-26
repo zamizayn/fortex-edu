@@ -24,3 +24,25 @@ export const uploadStudentDocument = async (file: File, studentId: string, docTy
         throw error;
     }
 };
+
+/**
+ * Uploads a hero banner image to Firebase Storage.
+ * @param file The file to upload.
+ * @param bannerNumber The slide number (1, 2, or 3).
+ * @returns The download URL of the uploaded image.
+ */
+export const uploadBannerImage = async (file: File, bannerNumber: number): Promise<string> => {
+    try {
+        const fileExtension = file.name.split('.').pop();
+        const fileName = `banner${bannerNumber}_${Date.now()}.${fileExtension}`;
+        const storageRef = ref(storage, `banners/${fileName}`);
+
+        const snapshot = await uploadBytes(storageRef, file);
+        const downloadURL = await getDownloadURL(snapshot.ref);
+
+        return downloadURL;
+    } catch (error) {
+        console.error(`Error uploading banner ${bannerNumber}:`, error);
+        throw error;
+    }
+};

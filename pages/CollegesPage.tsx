@@ -24,6 +24,7 @@ const CollegesPage: React.FC<CollegesPageProps> = ({ user, onLogout, onLoginClic
         percentage: '',
         phone: ''
     });
+    const [selectedLocation, setSelectedLocation] = useState<string>('All');
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -112,6 +113,20 @@ const CollegesPage: React.FC<CollegesPageProps> = ({ user, onLogout, onLoginClic
             <main className="py-12 md:py-24">
                 <div className="max-w-7xl mx-auto px-6 lg:px-12">
 
+                    {!loading && colleges.length > 0 && (
+                        <div className="flex justify-end mb-8">
+                            <select
+                                value={selectedLocation}
+                                onChange={(e) => setSelectedLocation(e.target.value)}
+                                className="px-4 py-3 bg-white border border-black/5 rounded-full text-sm font-semibold text-charcoal outline-none focus:ring-2 focus:ring-accent transition-all cursor-pointer shadow-sm w-full sm:w-auto"
+                            >
+                                {['All', ...Array.from(new Set(colleges.map(c => c.location).filter(Boolean)))].map(loc => (
+                                    <option key={loc} value={loc}>{loc}</option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
+
                     {loading ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                             {[1, 2, 3, 4, 5, 6].map(i => (
@@ -120,11 +135,11 @@ const CollegesPage: React.FC<CollegesPageProps> = ({ user, onLogout, onLoginClic
                         </div>
                     ) : colleges.length === 0 ? (
                         <div className="text-center py-24 bg-gray-50 rounded-[2.5rem] border border-black/5 text-charcoal/30 font-bold uppercase tracking-widest">
-                            No colleges listed yet.
+                            No colleges found for the selected location.
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                            {colleges.map((college, idx) => (
+                            {(selectedLocation === 'All' ? colleges : colleges.filter(c => c.location === selectedLocation)).map((college, idx) => (
                                 <motion.div
                                     key={college.id}
                                     initial={{ opacity: 0, y: 20 }}
@@ -149,23 +164,11 @@ const CollegesPage: React.FC<CollegesPageProps> = ({ user, onLogout, onLoginClic
 
                                         <div className="pt-6 border-t border-slate-50 mt-auto">
                                             <div className="flex gap-3">
-                                                {college.websiteUrl ? (
-                                                    <a
-                                                        href={college.websiteUrl}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="inline-flex items-center justify-center gap-2 px-4 py-3 border border-charcoal/10 text-charcoal font-medium rounded-xl hover:bg-gray-50 transition-all text-xs flex-1"
-                                                    >
-                                                        Visit Website
-                                                    </a>
-                                                ) : (
-                                                    <span className="text-[10px] font-medium text-charcoal/30 uppercase tracking-widest flex-1 flex items-center justify-center border border-transparent">Contact for Details</span>
-                                                )}
                                                 <a
                                                     href={`https://wa.me/${siteSettings?.whatsappNumber?.replace(/\D/g, '') || ''}?text=${encodeURIComponent(`Hello, I am interested in ${college.name}.`)}`}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="inline-flex items-center justify-center gap-2 px-4 py-3 bg-[#25D366] text-white font-medium rounded-xl hover:bg-[#20bd5a] shadow-lg shadow-[#25D366]/20 transition-all text-xs flex-1"
+                                                    className="inline-flex flex-1 items-center justify-center gap-2 px-4 py-3 bg-[#25D366] text-white font-medium rounded-xl hover:bg-[#20bd5a] shadow-lg shadow-[#25D366]/20 transition-all text-xs"
                                                 >
                                                     Enquire
                                                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">

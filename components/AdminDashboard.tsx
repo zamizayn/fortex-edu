@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { User, Service, College, University, Lead, SiteSettings, Consultation, EducationInsight, Inquiry, Event, Review } from '../types';
 import { db, collection, getDocs, addDoc, deleteDoc, updateDoc, doc, query, orderBy, limit, startAfter, getCountFromServer, QueryDocumentSnapshot, DocumentData } from '../firebase';
 import { getSiteSettings, saveSiteSettings } from '../services/db';
+import { uploadBannerImage } from '../services/storage';
 import { seedCourses } from '../seedCourses';
 import * as XLSX from 'xlsx';
 import ApplicationForm from './ApplicationForm';
@@ -400,7 +401,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
         }
     };
 
-    const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, imageType: 'logo' | 'hero1' | 'hero2' | 'hero3') => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
 
@@ -420,9 +421,20 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
             try {
                 // Convert to base64
                 const reader = new FileReader();
-                reader.onloadend = () => {
+                reader.onloadend = async () => { // Made onloadend async
                     const base64String = reader.result as string;
-                    setSiteSettings(prev => ({ ...prev, logoUrl: base64String }));
+                    if (imageType === 'logo') {
+                        setSiteSettings(prev => ({ ...prev, logoUrl: base64String }));
+                    } else if (imageType === 'hero1') {
+                        const url = await uploadBannerImage(file, 1); // Assuming uploadBannerImage is defined elsewhere
+                        setSiteSettings(prev => prev ? ({ ...prev, heroBanner1Image: url }) : null);
+                    } else if (imageType === 'hero2') {
+                        const url = await uploadBannerImage(file, 2);
+                        setSiteSettings(prev => prev ? ({ ...prev, heroBanner2Image: url }) : null);
+                    } else if (imageType === 'hero3') {
+                        const url = await uploadBannerImage(file, 3);
+                        setSiteSettings(prev => prev ? ({ ...prev, heroBanner3Image: url }) : null);
+                    }
                     setLoading(false);
                 };
                 reader.onerror = () => {
@@ -1594,7 +1606,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                                         <input
                                                             type="file"
                                                             accept="image/*"
-                                                            onChange={handleLogoUpload}
+                                                            onChange={(e) => handleImageUpload(e, 'logo')}
                                                             className="hidden"
                                                         />
                                                         <span className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium">
@@ -1634,6 +1646,104 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                                 value={siteSettings.heroSubtitle}
                                                 onChange={e => setSiteSettings({ ...siteSettings, heroSubtitle: e.target.value })}
                                             />
+                                        </div>
+                                    </div>
+
+                                    {/* Hero Banner Images */}
+                                    <div className="space-y-6 pt-6 border-t border-gray-100">
+                                        <h4 className="text-sm font-semibold text-gray-900">Hero Banners</h4>
+
+                                        {/* Banner 1 */}
+                                        <div className="bg-gray-50/50 p-4 rounded-xl border border-gray-100 space-y-4">
+                                            <label className="block text-sm font-medium text-gray-700">Banner 1 (Slide 1)</label>
+                                            {siteSettings.heroBanner1Image && (
+                                                <img src={siteSettings.heroBanner1Image} alt="Banner 1 Preview" className="w-full max-w-md h-32 object-cover rounded border border-gray-200" />
+                                            )}
+                                            <div className="flex gap-4">
+                                                <input
+                                                    type="url"
+                                                    placeholder="Paste image URL here..."
+                                                    className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                                                    value={siteSettings.heroBanner1Image || ''}
+                                                    onChange={e => setSiteSettings({ ...siteSettings, heroBanner1Image: e.target.value })}
+                                                />
+                                                <label className="cursor-pointer">
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        onChange={(e) => handleImageUpload(e, 'hero1')}
+                                                        className="hidden"
+                                                    />
+                                                    <span className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm">
+                                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                                        </svg>
+                                                        Upload
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        {/* Banner 2 */}
+                                        <div className="bg-gray-50/50 p-4 rounded-xl border border-gray-100 space-y-4">
+                                            <label className="block text-sm font-medium text-gray-700">Banner 2 (Slide 2)</label>
+                                            {siteSettings.heroBanner2Image && (
+                                                <img src={siteSettings.heroBanner2Image} alt="Banner 2 Preview" className="w-full max-w-md h-32 object-cover rounded border border-gray-200" />
+                                            )}
+                                            <div className="flex gap-4">
+                                                <input
+                                                    type="url"
+                                                    placeholder="Paste image URL here..."
+                                                    className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                                                    value={siteSettings.heroBanner2Image || ''}
+                                                    onChange={e => setSiteSettings({ ...siteSettings, heroBanner2Image: e.target.value })}
+                                                />
+                                                <label className="cursor-pointer">
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        onChange={(e) => handleImageUpload(e, 'hero2')}
+                                                        className="hidden"
+                                                    />
+                                                    <span className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm">
+                                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                                        </svg>
+                                                        Upload
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        {/* Banner 3 */}
+                                        <div className="bg-gray-50/50 p-4 rounded-xl border border-gray-100 space-y-4">
+                                            <label className="block text-sm font-medium text-gray-700">Banner 3 (Slide 3)</label>
+                                            {siteSettings.heroBanner3Image && (
+                                                <img src={siteSettings.heroBanner3Image} alt="Banner 3 Preview" className="w-full max-w-md h-32 object-cover rounded border border-gray-200" />
+                                            )}
+                                            <div className="flex gap-4">
+                                                <input
+                                                    type="url"
+                                                    placeholder="Paste image URL here..."
+                                                    className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                                                    value={siteSettings.heroBanner3Image || ''}
+                                                    onChange={e => setSiteSettings({ ...siteSettings, heroBanner3Image: e.target.value })}
+                                                />
+                                                <label className="cursor-pointer">
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        onChange={(e) => handleImageUpload(e, 'hero3')}
+                                                        className="hidden"
+                                                    />
+                                                    <span className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm">
+                                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                                        </svg>
+                                                        Upload
+                                                    </span>
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                 </section>
@@ -1842,8 +1952,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                     </button>
                                 </div>
                             </form>
-                        )}
-                    </div>
+                        )
+                        }
+                    </div >
                 );
 
             case 'universities':

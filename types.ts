@@ -109,6 +109,9 @@ export interface SiteSettings {
   id?: string;
   heroTitle: string;
   heroSubtitle: string;
+  heroBanner1Image?: string;
+  heroBanner2Image?: string;
+  heroBanner3Image?: string;
   aboutTitle: string;
   aboutDescription: string;
   aboutImageUrl?: string;

@@ -58,7 +58,12 @@ const Hero: React.FC<HeroProps> = ({ siteSettings }) => {
             initial={{ scale: 1.1 }}
             animate={{ scale: 1 }}
             transition={{ duration: 10, ease: "linear" }}
-            src={HERO_SLIDES[currentSlide].image}
+            src={
+              (currentSlide === 0 && siteSettings?.heroBanner1Image) ||
+              (currentSlide === 1 && siteSettings?.heroBanner2Image) ||
+              (currentSlide === 2 && siteSettings?.heroBanner3Image) ||
+              HERO_SLIDES[currentSlide].image
+            }
             alt={HERO_SLIDES[currentSlide].title}
             className="w-full h-full object-cover"
           />
