@@ -78,9 +78,59 @@ const UniversitiesPage: React.FC<UniversitiesPageProps> = ({ user, onLogout, onL
 
             <main className="py-12 md:py-24">
                 <div className="max-w-7xl mx-auto px-6 lg:px-12">
+                    <div className="flex flex-col lg:flex-row gap-16">
+                        {/* Sidebar Filters - Desktop Only */}
+                        {!loading && universities.length > 0 && (
+                            <aside className="hidden lg:block lg:w-1/4">
+                                <div className="lg:sticky lg:top-32 space-y-10">
+                                    {/* Locations Filter */}
+                                    <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-xl shadow-black/[0.02]">
+                                        <div className="flex items-center justify-between mb-8">
+                                            <h3 className="text-[10px] font-bold text-charcoal/20 uppercase tracking-[0.3em]">Locations</h3>
+                                            {selectedLocation !== 'All' && (
+                                                <button
+                                                    onClick={() => setSelectedLocation('All')}
+                                                    className="text-[10px] font-bold text-accent hover:underline uppercase tracking-wider"
+                                                >
+                                                    Reset
+                                                </button>
+                                            )}
+                                        </div>
+                                        <div className="space-y-1.5">
+                                            {['All', ...Array.from(new Set(universities.map(u => u.location).filter(Boolean)))].map((loc) => (
+                                                <button
+                                                    key={loc}
+                                                    onClick={() => setSelectedLocation(loc)}
+                                                    className={`w-full px-4 py-3 rounded-lg text-left text-xs font-bold transition-all flex items-center justify-between group ${selectedLocation === loc
+                                                        ? 'bg-charcoal text-white shadow-xl shadow-black/10'
+                                                        : 'text-charcoal/40 hover:text-charcoal hover:bg-slate-50'
+                                                        }`}
+                                                >
+                                                    <span className="truncate pr-2">{loc}</span>
+                                                    <div className={`w-1.5 h-1.5 rounded-full transition-all ${selectedLocation === loc ? 'bg-accent scale-150' : 'bg-transparent scale-0 group-hover:bg-slate-200 group-hover:scale-100'}`} />
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Results Count Card */}
+                                    <div className="p-6 bg-gray-100 rounded-lg text-gray-900 flex flex-col items-center justify-center text-center">
+                                        <p className="text-sm font-medium text-gray-600 mb-2">
+                                            Total Universities
+                                        </p>
+                                        <div className="text-4xl font-bold">
+                                            {selectedLocation === 'All' ? universities.length : universities.filter(u => u.location === selectedLocation).length}
+                                        </div>
+                                    </div>
+                                </div>
+                            </aside>
+                        )}
+
+                        {/* Main Listing Area */}
+                        <div className="lg:w-3/4">
 
                     {!loading && universities.length > 0 && (
-                        <div className="flex justify-end mb-8">
+                        <div className="flex justify-end mb-8 lg:hidden">
                             <select
                                 value={selectedLocation}
                                 onChange={(e) => setSelectedLocation(e.target.value)}
@@ -148,6 +198,9 @@ const UniversitiesPage: React.FC<UniversitiesPageProps> = ({ user, onLogout, onL
                             ))}
                         </div>
                     )}
+
+                        </div>
+                    </div>
                 </div>
             </main>
 

@@ -54,6 +54,7 @@ const Hero: React.FC<HeroProps> = ({ siteSettings }) => {
           className="absolute inset-0 z-0"
         >
           <div className="absolute inset-0 bg-black/50 z-10" />
+          {/* Desktop Image */}
           <motion.img
             initial={{ scale: 1.1 }}
             animate={{ scale: 1 }}
@@ -65,7 +66,21 @@ const Hero: React.FC<HeroProps> = ({ siteSettings }) => {
               HERO_SLIDES[currentSlide].image
             }
             alt={HERO_SLIDES[currentSlide].title}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover hidden md:block"
+          />
+          {/* Mobile Image */}
+          <motion.img
+            initial={{ scale: 1.1 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 10, ease: "linear" }}
+            src={
+              (currentSlide === 0 && (siteSettings?.heroMobileBanner1Image || siteSettings?.heroBanner1Image)) ||
+              (currentSlide === 1 && (siteSettings?.heroMobileBanner2Image || siteSettings?.heroBanner2Image)) ||
+              (currentSlide === 2 && (siteSettings?.heroMobileBanner3Image || siteSettings?.heroBanner3Image)) ||
+              HERO_SLIDES[currentSlide].image
+            }
+            alt={HERO_SLIDES[currentSlide].title}
+            className="w-full h-full object-cover block md:hidden"
           />
         </motion.div>
       </AnimatePresence>

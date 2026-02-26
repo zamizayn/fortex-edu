@@ -112,6 +112,9 @@ export interface SiteSettings {
   heroBanner1Image?: string;
   heroBanner2Image?: string;
   heroBanner3Image?: string;
+  heroMobileBanner1Image?: string;
+  heroMobileBanner2Image?: string;
+  heroMobileBanner3Image?: string;
   aboutTitle: string;
   aboutDescription: string;
   aboutImageUrl?: string;

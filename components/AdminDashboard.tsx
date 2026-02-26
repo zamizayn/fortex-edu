@@ -401,7 +401,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
         }
     };
 
-    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, imageType: 'logo' | 'hero1' | 'hero2' | 'hero3') => {
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, imageType: 'logo' | 'hero1' | 'hero2' | 'hero3' | 'heroMobile1' | 'heroMobile2' | 'heroMobile3') => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
 
@@ -434,6 +434,15 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                     } else if (imageType === 'hero3') {
                         const url = await uploadBannerImage(file, 3);
                         setSiteSettings(prev => prev ? ({ ...prev, heroBanner3Image: url }) : null);
+                    } else if (imageType === 'heroMobile1') {
+                        const url = await uploadBannerImage(file, 1); // Or a specific mobile folder/prefix if needed in storage
+                        setSiteSettings(prev => prev ? ({ ...prev, heroMobileBanner1Image: url }) : null);
+                    } else if (imageType === 'heroMobile2') {
+                        const url = await uploadBannerImage(file, 2);
+                        setSiteSettings(prev => prev ? ({ ...prev, heroMobileBanner2Image: url }) : null);
+                    } else if (imageType === 'heroMobile3') {
+                        const url = await uploadBannerImage(file, 3);
+                        setSiteSettings(prev => prev ? ({ ...prev, heroMobileBanner3Image: url }) : null);
                     }
                     setLoading(false);
                 };
@@ -1655,7 +1664,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
 
                                         {/* Banner 1 */}
                                         <div className="bg-gray-50/50 p-4 rounded-xl border border-gray-100 space-y-4">
-                                            <label className="block text-sm font-medium text-gray-700">Banner 1 (Slide 1)</label>
+                                            <label className="block text-sm font-medium text-gray-700">Banner 1 (Slide 1) - Desktop</label>
                                             {siteSettings.heroBanner1Image && (
                                                 <img src={siteSettings.heroBanner1Image} alt="Banner 1 Preview" className="w-full max-w-md h-32 object-cover rounded border border-gray-200" />
                                             )}
@@ -1686,7 +1695,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
 
                                         {/* Banner 2 */}
                                         <div className="bg-gray-50/50 p-4 rounded-xl border border-gray-100 space-y-4">
-                                            <label className="block text-sm font-medium text-gray-700">Banner 2 (Slide 2)</label>
+                                            <label className="block text-sm font-medium text-gray-700">Banner 2 (Slide 2) - Desktop</label>
                                             {siteSettings.heroBanner2Image && (
                                                 <img src={siteSettings.heroBanner2Image} alt="Banner 2 Preview" className="w-full max-w-md h-32 object-cover rounded border border-gray-200" />
                                             )}
@@ -1717,7 +1726,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
 
                                         {/* Banner 3 */}
                                         <div className="bg-gray-50/50 p-4 rounded-xl border border-gray-100 space-y-4">
-                                            <label className="block text-sm font-medium text-gray-700">Banner 3 (Slide 3)</label>
+                                            <label className="block text-sm font-medium text-gray-700">Banner 3 (Slide 3) - Desktop</label>
                                             {siteSettings.heroBanner3Image && (
                                                 <img src={siteSettings.heroBanner3Image} alt="Banner 3 Preview" className="w-full max-w-md h-32 object-cover rounded border border-gray-200" />
                                             )}
@@ -1734,6 +1743,100 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                                         type="file"
                                                         accept="image/*"
                                                         onChange={(e) => handleImageUpload(e, 'hero3')}
+                                                        className="hidden"
+                                                    />
+                                                    <span className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm">
+                                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                                        </svg>
+                                                        Upload
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        {/* Mobile Banner 1 */}
+                                        <div className="bg-gray-50/50 p-4 rounded-xl border border-gray-100 space-y-4">
+                                            <label className="block text-sm font-medium text-gray-700">Banner 1 (Slide 1) - Mobile</label>
+                                            <p className="text-xs text-gray-500 mb-2">Recommended size: 600x800px or similar vertical aspect ratio (e.g. 3:4 or 9:16).</p>
+                                            {siteSettings.heroMobileBanner1Image && (
+                                                <img src={siteSettings.heroMobileBanner1Image} alt="Mobile Banner 1 Preview" className="w-full max-w-xs h-48 object-cover rounded border border-gray-200" />
+                                            )}
+                                            <div className="flex gap-4">
+                                                <input
+                                                    type="url"
+                                                    placeholder="Paste image URL here..."
+                                                    className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                                                    value={siteSettings.heroMobileBanner1Image || ''}
+                                                    onChange={e => setSiteSettings({ ...siteSettings, heroMobileBanner1Image: e.target.value })}
+                                                />
+                                                <label className="cursor-pointer">
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        onChange={(e) => handleImageUpload(e, 'heroMobile1')}
+                                                        className="hidden"
+                                                    />
+                                                    <span className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm">
+                                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                                        </svg>
+                                                        Upload
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        {/* Mobile Banner 2 */}
+                                        <div className="bg-gray-50/50 p-4 rounded-xl border border-gray-100 space-y-4">
+                                            <label className="block text-sm font-medium text-gray-700">Banner 2 (Slide 2) - Mobile</label>
+                                            {siteSettings.heroMobileBanner2Image && (
+                                                <img src={siteSettings.heroMobileBanner2Image} alt="Mobile Banner 2 Preview" className="w-full max-w-xs h-48 object-cover rounded border border-gray-200" />
+                                            )}
+                                            <div className="flex gap-4">
+                                                <input
+                                                    type="url"
+                                                    placeholder="Paste image URL here..."
+                                                    className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                                                    value={siteSettings.heroMobileBanner2Image || ''}
+                                                    onChange={e => setSiteSettings({ ...siteSettings, heroMobileBanner2Image: e.target.value })}
+                                                />
+                                                <label className="cursor-pointer">
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        onChange={(e) => handleImageUpload(e, 'heroMobile2')}
+                                                        className="hidden"
+                                                    />
+                                                    <span className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm">
+                                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                                        </svg>
+                                                        Upload
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        {/* Mobile Banner 3 */}
+                                        <div className="bg-gray-50/50 p-4 rounded-xl border border-gray-100 space-y-4">
+                                            <label className="block text-sm font-medium text-gray-700">Banner 3 (Slide 3) - Mobile</label>
+                                            {siteSettings.heroMobileBanner3Image && (
+                                                <img src={siteSettings.heroMobileBanner3Image} alt="Mobile Banner 3 Preview" className="w-full max-w-xs h-48 object-cover rounded border border-gray-200" />
+                                            )}
+                                            <div className="flex gap-4">
+                                                <input
+                                                    type="url"
+                                                    placeholder="Paste image URL here..."
+                                                    className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                                                    value={siteSettings.heroMobileBanner3Image || ''}
+                                                    onChange={e => setSiteSettings({ ...siteSettings, heroMobileBanner3Image: e.target.value })}
+                                                />
+                                                <label className="cursor-pointer">
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        onChange={(e) => handleImageUpload(e, 'heroMobile3')}
                                                         className="hidden"
                                                     />
                                                     <span className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm">
