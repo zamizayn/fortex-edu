@@ -78,7 +78,7 @@ const UniversitiesPage: React.FC<UniversitiesPageProps> = ({ user, onLogout, onL
                             Global Partners
                         </span>
                         <h1 className="text-4xl md:text-7xl font-semibold text-white leading-[1.1] tracking-tight text-balance">
-                            World-Class <br /> <span className="text-white/80 italic font-light">Academic Excellence.</span>
+                            Premier <br /> <span className="text-white/80 italic font-light">University Network</span>
                         </h1>
                         <p className="text-sm md:text-xl text-white/70 font-normal max-w-2xl mx-auto text-balance leading-relaxed">
                             Discover prestigious universities offering cutting-edge programs and transformative educational experiences.

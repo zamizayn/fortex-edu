@@ -901,7 +901,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ user, onBack, isAdmin
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Preferred Location (State / City) *</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Enrolled college Location *</label>
                             <input
                                 type="text"
                                 value={formData.coursePreference.preferredLocation}

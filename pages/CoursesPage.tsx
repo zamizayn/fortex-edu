@@ -127,7 +127,7 @@ const CoursesPage: React.FC<CoursesPageProps> = ({ user, onLogout, onLoginClick,
                             ACADEMIC CATALOG
                         </span>
                         <h1 className="text-4xl md:text-7xl font-semibold text-white leading-[1.1] tracking-tight text-balance">
-                            Find Your Future <br /> <span className="text-white/80 italic font-light">International Path.</span>
+                            Pathways <br /> <span className="text-white/80 italic font-light">to your potential</span>
                         </h1>
                         <p className="text-sm md:text-xl text-white/70 font-normal max-w-2xl mx-auto text-balance leading-relaxed">
                             Explore 150+ world-class programs across {services.length} specialized disciplines.

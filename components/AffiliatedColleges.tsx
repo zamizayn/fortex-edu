@@ -85,7 +85,7 @@ const AffiliatedColleges: React.FC<AffiliatedCollegesProps> = ({ user, onLoginCl
                     <p className="text-xs font-medium text-accent uppercase tracking-[0.3em] mb-4">Our Network</p>
                     <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                         <h2 className="text-3xl md:text-5xl font-semibold text-charcoal tracking-tight text-balance">
-                            Excellence in <br /> Affiliate Education.
+                            Explore our <br /> College network
                         </h2>
                         <div className="flex flex-col md:items-end gap-4">
                             <p className="text-base md:text-xl text-charcoal/50 font-normal max-w-md md:text-right">
