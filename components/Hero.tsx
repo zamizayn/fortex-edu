@@ -13,7 +13,7 @@ const HERO_SLIDES = [
   },
   {
     id: 2,
-    title: "Choose the Right Course. Choose the Right College",
+    title: "Choose the Right Course Choose the Right College",
     description: "Fortex Education Consultancy connects students to top colleges across India with expert admission guidance.",
     subtitle: "YOUR CAREER STARTS HERE",
     image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070&auto=format&fit=crop"
@@ -38,7 +38,7 @@ const Hero: React.FC<HeroProps> = ({ siteSettings }) => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
-    }, 6000);
+    }, 10000);
     return () => clearInterval(timer);
   }, []);
 
@@ -121,7 +121,7 @@ const Hero: React.FC<HeroProps> = ({ siteSettings }) => {
                 {/* <div className="w-px h-8 bg-white/10 hidden md:block" /> */}
                 <div className="flex-1 px-4 py-3 md:px-6 md:py-4 text-left w-full">
                   <p className="text-[10px] text-white/50 font-medium uppercase tracking-widest mb-1">WhatsApp</p>
-                  <p className="text-white font-medium text-xs md:text-sm">Stay Updated on the latest career updates - Join our WhatsApp Channel.</p>
+                  <p className="text-white font-medium text-xs md:text-sm">Stay updated on the latest career updates - Join our WhatsApp Channel.</p>
                 </div>
                 <a
                   href={`https://wa.me/${siteSettings?.whatsappNumber || '917025337762'}?text=Hi, I am interested in joining your updates channel.`}

@@ -29,7 +29,7 @@ const Programs: React.FC = () => {
           scrollContainer.scrollBy({ left: itemWidth + gap, behavior: 'smooth' });
         }
       }
-    }, 3000);
+    }, 8000);
 
     return () => clearInterval(scrollInterval);
   }, [loading, services, isPaused]);
