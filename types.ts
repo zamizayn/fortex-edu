@@ -145,6 +145,7 @@ export interface SiteSettings {
   contactPhone: string;
   address: string;
   whatsappNumber: string;
+  whatsappChannelUrl?: string;
   instagram?: string;
   facebook?: string;
   linkedin?: string;

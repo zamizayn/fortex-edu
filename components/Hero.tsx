@@ -124,7 +124,7 @@ const Hero: React.FC<HeroProps> = ({ siteSettings }) => {
                   <p className="text-white font-medium text-xs md:text-sm">Stay updated on the latest career updates - Join our WhatsApp Channel.</p>
                 </div>
                 <a
-                  href={`https://wa.me/${siteSettings?.whatsappNumber || '917025337762'}?text=Hi, I am interested in joining your updates channel.`}
+                  href={siteSettings?.whatsappChannelUrl || `https://wa.me/${siteSettings?.whatsappNumber || '917025337762'}?text=Hi, I am interested in joining your updates channel.`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full md:w-auto px-8 py-4 bg-accent text-white font-semibold text-xs md:text-sm rounded-2xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/40 min-h-[48px] flex items-center justify-center whitespace-nowrap"

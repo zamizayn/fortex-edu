@@ -2407,6 +2407,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                             />
                                         </div>
                                         <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">WhatsApp Channel URL</label>
+                                            <input
+                                                type="text"
+                                                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                                                placeholder="https://whatsapp.com/channel/..."
+                                                value={siteSettings.whatsappChannelUrl || ''}
+                                                onChange={e => setSiteSettings({ ...siteSettings, whatsappChannelUrl: e.target.value })}
+                                            />
+                                        </div>
+                                        <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
                                             <input
                                                 type="text"
