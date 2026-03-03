@@ -86,8 +86,8 @@ export interface College {
   id: string;
   name: string;
   location: string;
-  description: string;
-  websiteUrl: string;
+  description?: string;
+  websiteUrl?: string;
   imageUrl: string;
   createdAt?: any;
   order?: number;
@@ -97,8 +97,8 @@ export interface University {
   id: string;
   name: string;
   location: string;
-  description: string;
-  websiteUrl: string;
+  description?: string;
+  websiteUrl?: string;
   imageUrl: string;
   createdAt?: any;
   order?: number;
