@@ -240,6 +240,62 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
         }
     };
 
+    const downloadIndividualStudentExcel = async (student: User) => {
+        setLoading(true);
+        try {
+            const appDocRef = doc(db, 'applications', student.id);
+            const appSnapshot = await getDocs(query(collection(db, 'applications')));
+            const appDoc = appSnapshot.docs.find(d => d.id === student.id);
+            const app = appDoc ? appDoc.data() : {};
+
+            const data = [{
+                "Student ID": student.id,
+                "Name": student.name,
+                "Email": student.email,
+                "Phone": student.mobile || 'N/A',
+                "Joined Date": student.createdAt?.toDate ? student.createdAt.toDate().toLocaleDateString() : 'N/A',
+
+                // Application Details
+                "App Status": app.status || 'Not Started',
+                "Full Name": app.studentDetails?.fullName || 'N/A',
+                "Gender": app.studentDetails?.gender || 'N/A',
+                "DOB": app.studentDetails?.dob || 'N/A',
+                "Nationality": app.studentDetails?.nationality || 'N/A',
+                "Aadhaar": app.studentDetails?.aadhaarNumber || 'N/A',
+
+                "Father Name": app.parentDetails?.fatherName || 'N/A',
+                "Mother Name": app.parentDetails?.motherName || 'N/A',
+                "Annual Income": app.parentDetails?.annualIncome || 'N/A',
+
+                "District": app.addressDetails?.district || 'N/A',
+                "State": app.addressDetails?.state || 'N/A',
+
+                "10th Board": app.academicDetails?.tenth?.board || 'N/A',
+                "10th %": app.academicDetails?.tenth?.percentage || 'N/A',
+                "12th Board": app.academicDetails?.plusTwo?.board || 'N/A',
+                "12th %": app.academicDetails?.plusTwo?.percentage || 'N/A',
+                "UG Degree": app.academicDetails?.ug?.degreeName || 'N/A',
+                "UG %": app.academicDetails?.ug?.percentage || 'N/A',
+
+                "Course Applied": app.coursePreference?.courseApplyingFor || 'N/A',
+                "Preferred Location": app.coursePreference?.preferredLocation || 'N/A',
+
+                "Declaration": app.declaration?.agreed ? 'Agreed' : 'Not Agreed',
+                "Declaration Date": app.declaration?.date || 'N/A'
+            }];
+
+            const ws = XLSX.utils.json_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Student Details");
+            XLSX.writeFile(wb, `${student.name}_Details.xlsx`);
+        } catch (error) {
+            console.error('Error exporting student details:', error);
+            alert('Failed to export student details.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const downloadConsultationsExcel = () => {
         const data = consultations.map(c => ({
             "Student Name": c.name,
@@ -882,6 +938,15 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                 </button>
                                 <div className="w-px h-6 bg-gray-200" />
                                 <h2 className="text-lg font-semibold text-gray-800">Student Details & Application</h2>
+                                <div className="ml-auto flex gap-2">
+                                    <button
+                                        onClick={() => downloadIndividualStudentExcel(selectedStudent)}
+                                        className="flex items-center gap-2 px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 text-xs font-medium transition-colors"
+                                    >
+                                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                                        Download Excel
+                                    </button>
+                                </div>
                             </div>
                             <div className="p-6 md:p-8 space-y-8">
                                 {/* Profile Header */}
@@ -1277,6 +1342,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                     <div className="flex gap-3">
+                                                        <button
+                                                            onClick={(e) => { e.stopPropagation(); downloadIndividualStudentExcel(student); }}
+                                                            className="text-green-600 hover:text-green-900 font-medium"
+                                                            title="Download Excel Report"
+                                                        >
+                                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                                                        </button>
                                                         <button
                                                             onClick={(e) => { e.stopPropagation(); setSelectedStudent(student); }}
                                                             className="text-blue-600 hover:text-blue-900 font-medium"

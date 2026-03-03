@@ -225,7 +225,7 @@ const CollegesPage: React.FC<CollegesPageProps> = ({ user, onLogout, onLoginClic
                                                 <div className="pt-6 border-t border-slate-50 mt-auto">
                                                     <div className="flex gap-3">
                                                         <a
-                                                            href={`https://wa.me/${siteSettings?.whatsappNumber?.replace(/\D/g, '') || ''}?text=${encodeURIComponent(`Hello, I am interested in ${college.name}.`)}`}
+                                                            href={`https://wa.me/${siteSettings?.whatsappNumber?.replace(/\D/g, '') || ''}?text=${encodeURIComponent(`Hello, I would like admission details for ${college.name}.`)}`}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
                                                             className="inline-flex flex-1 items-center justify-center gap-2 px-4 py-3 bg-[#25D366] text-white font-medium rounded-xl hover:bg-[#20bd5a] shadow-lg shadow-[#25D366]/20 transition-all text-xs"
