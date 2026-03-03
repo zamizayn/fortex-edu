@@ -40,7 +40,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
     const [isAddingDetails, setIsAddingDetails] = useState(false);
 
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(5);
+    const [itemsPerPage] = useState(10);
     const [lastDocs, setLastDocs] = useState<{ [key: string]: QueryDocumentSnapshot<DocumentData>[] }>({}); // Store array of last docs for each page to enable prev/next
     const [totalItems, setTotalItems] = useState<{ [key: string]: number }>({});
     const [pageHistory, setPageHistory] = useState<{ [key: string]: QueryDocumentSnapshot<DocumentData>[] }>({}); // Track history for 'Back' buttons if needed, or just rely on index access into a master list if small enough.
@@ -178,6 +178,68 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
         XLSX.writeFile(wb, "leads_report.xlsx");
     };
 
+    const downloadStudentsExcel = async () => {
+        setLoading(true);
+        try {
+            const studentsSnapshot = await getDocs(collection(db, 'students'));
+            const applicationsSnapshot = await getDocs(collection(db, 'applications'));
+
+            const appsMap = new Map();
+            applicationsSnapshot.docs.forEach(doc => {
+                appsMap.set(doc.id, doc.data());
+            });
+
+            const data = studentsSnapshot.docs.map(doc => {
+                const student = doc.data() as User;
+                const studentId = doc.id;
+                const app = appsMap.get(studentId) || {};
+
+                return {
+                    "Student ID": studentId,
+                    "Name": student.name,
+                    "Email": student.email,
+                    "Phone": student.mobile || 'N/A',
+                    "Joined Date": student.createdAt?.toDate ? student.createdAt.toDate().toLocaleDateString() : 'N/A',
+
+                    // Application Details
+                    "App Status": app.status || 'Not Started',
+                    "Full Name": app.studentDetails?.fullName || 'N/A',
+                    "Gender": app.studentDetails?.gender || 'N/A',
+                    "DOB": app.studentDetails?.dob || 'N/A',
+                    "Nationality": app.studentDetails?.nationality || 'N/A',
+                    "Aadhaar": app.studentDetails?.aadhaarNumber || 'N/A',
+
+                    "Father Name": app.parentDetails?.fatherName || 'N/A',
+                    "Mother Name": app.parentDetails?.motherName || 'N/A',
+                    "Annual Income": app.parentDetails?.annualIncome || 'N/A',
+
+                    "District": app.addressDetails?.district || 'N/A',
+                    "State": app.addressDetails?.state || 'N/A',
+
+                    "10th Board": app.academicDetails?.tenth?.board || 'N/A',
+                    "10th %": app.academicDetails?.tenth?.percentage || 'N/A',
+                    "12th Board": app.academicDetails?.plusTwo?.board || 'N/A',
+                    "12th %": app.academicDetails?.plusTwo?.percentage || 'N/A',
+                    "UG Degree": app.academicDetails?.ug?.degreeName || 'N/A',
+                    "UG %": app.academicDetails?.ug?.percentage || 'N/A',
+
+                    "Course Applied": app.coursePreference?.courseApplyingFor || 'N/A',
+                    "Preferred Location": app.coursePreference?.preferredLocation || 'N/A'
+                };
+            });
+
+            const ws = XLSX.utils.json_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Students");
+            XLSX.writeFile(wb, "students_report.xlsx");
+        } catch (error) {
+            console.error('Error exporting students:', error);
+            alert('Failed to export students data.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     // Fetch Data based on active tab and for sidebar badges
     // Fetch Data based on active tab and for sidebar badges
     useEffect(() => {
@@ -301,6 +363,37 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
             } catch (error) {
                 console.error("Error deleting document:", error);
                 alert("Failed to delete item.");
+            }
+        }
+    };
+
+    const handleDeleteStudent = async (id: string) => {
+        if (confirm('Are you sure you want to delete this student and their application data? This action cannot be undone.')) {
+            setLoading(true);
+            try {
+                // Delete from students collection
+                await deleteDoc(doc(db, 'students', id));
+
+                // Delete from applications collection (if exists)
+                try {
+                    await deleteDoc(doc(db, 'applications', id));
+                } catch (appError) {
+                    console.warn("No application found or failed to delete application for student:", id);
+                }
+
+                // Optimistic update
+                setStudents(prev => prev.filter(student => student.id !== id));
+                setTotalItems(prev => ({
+                    ...prev,
+                    students: Math.max(0, (prev['students'] || 0) - 1)
+                }));
+
+                alert("Student deleted successfully.");
+            } catch (error) {
+                console.error("Error deleting student:", error);
+                alert("Failed to delete student.");
+            } finally {
+                setLoading(false);
             }
         }
     };
@@ -1102,9 +1195,18 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                     <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden animate-in fade-in duration-300">
                         <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
                             <h2 className="text-lg font-semibold text-gray-800">Registered Students</h2>
-                            <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
-                                {totalItems['students'] || students.length} Total
-                            </span>
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={downloadStudentsExcel}
+                                    className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium transition-colors"
+                                >
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                                    Export Excel
+                                </button>
+                                <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-1.5 rounded-full flex items-center">
+                                    {totalItems['students'] || students.length} Total
+                                </span>
+                            </div>
                         </div>
                         {students.length === 0 ? (
                             <div className="p-12 text-center text-gray-500">No students registered yet.</div>
@@ -1145,7 +1247,20 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                                     </span>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    <button onClick={(e) => { e.stopPropagation(); setSelectedStudent(student); }} className="text-blue-600 hover:text-blue-900 font-medium">View Details</button>
+                                                    <div className="flex gap-3">
+                                                        <button
+                                                            onClick={(e) => { e.stopPropagation(); setSelectedStudent(student); }}
+                                                            className="text-blue-600 hover:text-blue-900 font-medium"
+                                                        >
+                                                            View Details
+                                                        </button>
+                                                        <button
+                                                            onClick={(e) => { e.stopPropagation(); handleDeleteStudent(student.id); }}
+                                                            className="text-red-600 hover:text-red-900 font-medium"
+                                                        >
+                                                            Delete
+                                                        </button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         ))}
