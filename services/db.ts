@@ -7,6 +7,7 @@ import { User as FirebaseUser } from 'firebase/auth';
 const USERS_COLLECTION = 'users'; // For Admins
 const STUDENTS_COLLECTION = 'students'; // For Students
 const LEADS_COLLECTION = 'leads'; // For Leads
+const TEAM_COLLECTION = 'team'; // For Team Members
 
 // ... existing code ...
 
@@ -262,4 +263,62 @@ export const seedContent = async () => {
 
     // Seeding disabled for other content for now to preserve state
     return;
+};
+// Team Members
+export const getTeamMembers = async (): Promise<any[]> => {
+    try {
+        const q = query(collection(db, TEAM_COLLECTION));
+        const snapshot = await getDocs(q);
+        const members = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+
+        // Sort by order or name
+        return members.sort((a: any, b: any) => {
+            if (a.order !== undefined && b.order !== undefined) {
+                return a.order - b.order;
+            }
+            return (a.name || '').localeCompare(b.name || '');
+        });
+    } catch (error) {
+        console.error("Error fetching team members:", error);
+        return [];
+    }
+};
+
+export const saveTeamMember = async (member: any) => {
+    try {
+        const { id, ...data } = member;
+        if (id) {
+            await setDoc(doc(db, TEAM_COLLECTION, id), {
+                ...data,
+                updatedAt: serverTimestamp()
+            }, { merge: true });
+            return id;
+        } else {
+            const docRef = await addDoc(collection(db, TEAM_COLLECTION), {
+                ...data,
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp()
+            });
+            return docRef.id;
+        }
+    } catch (error) {
+        console.error("Error saving team member:", error);
+        throw error;
+    }
+};
+
+export const deleteTeamMember = async (id: string) => {
+    try {
+        // We don't have a deleteDoc imported? Let me check.
+        // I'll need to add deleteDoc to the imports from '../firebase'
+        // Actually, I'll use a hack if it's not imported or just import it.
+        const { deleteDoc } = await import('../firebase');
+        await deleteDoc(doc(db, TEAM_COLLECTION, id));
+    } catch (error) {
+        console.error("Error deleting team member:", error);
+        throw error;
+    }
 };

@@ -11,7 +11,8 @@ import Events from '../components/Events';
 import Team from '../components/Team';
 import Services from '../components/Services';
 import Reviews from '../components/Reviews';
-import { User, SiteSettings } from '../types';
+import { User, SiteSettings, TeamMember } from '../types';
+import { getTeamMembers } from '../services/db';
 
 interface HomePageProps {
     user: User | null;
@@ -22,11 +23,18 @@ interface HomePageProps {
 
 const HomePage: React.FC<HomePageProps> = ({ user, onLoginClick, siteSettings, shouldOpenLogin }) => {
     const isVisible = (sectionId: string) => siteSettings?.visibleSections?.[sectionId] !== false;
+    const [teamMembers, setTeamMembers] = React.useState<TeamMember[]>([]);
 
     React.useEffect(() => {
         if (shouldOpenLogin && !user) {
             onLoginClick();
         }
+
+        const fetchTeam = async () => {
+            const data = await getTeamMembers();
+            setTeamMembers(data);
+        };
+        fetchTeam();
     }, [shouldOpenLogin, user, onLoginClick]);
 
     return (
@@ -41,9 +49,9 @@ const HomePage: React.FC<HomePageProps> = ({ user, onLoginClick, siteSettings, s
                 <Services />
             )} */}
 
-            {/* {isVisible('team') && (
-                <Team members={siteSettings?.teamMembers} />
-            )} */}
+            {isVisible('team') && (
+                <Team members={teamMembers} />
+            )}
 
             {isVisible('colleges') && (
                 <>

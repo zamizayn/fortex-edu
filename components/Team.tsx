@@ -32,7 +32,9 @@ const DEFAULT_MEMBERS: TeamMember[] = [
 
 ];
 
-const Team: React.FC<{ members?: TeamMember[] }> = ({ members = DEFAULT_MEMBERS }) => {
+const Team: React.FC<{ members?: TeamMember[] }> = ({ members }) => {
+    const displayMembers = (members && members.length > 0) ? members : DEFAULT_MEMBERS;
+
     return (
         <section id="team" className="py-8 md:py-24 bg-white relative overflow-hidden">
             {/* Decorative Blobs */}
@@ -68,7 +70,7 @@ const Team: React.FC<{ members?: TeamMember[] }> = ({ members = DEFAULT_MEMBERS 
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-12 max-w-6xl mx-auto">
-                    {members.map((member, index) => (
+                    {displayMembers.map((member, index) => (
                         <motion.div
                             key={member.id}
                             initial={{ opacity: 0, y: 30 }}
@@ -86,7 +88,7 @@ const Team: React.FC<{ members?: TeamMember[] }> = ({ members = DEFAULT_MEMBERS 
                                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center gap-4">
-                                        {member.socials.linkedin && (
+                                        {member.socials?.linkedin && (
                                             <motion.a
                                                 whileHover={{ y: -3 }}
                                                 href={member.socials.linkedin}
@@ -95,7 +97,7 @@ const Team: React.FC<{ members?: TeamMember[] }> = ({ members = DEFAULT_MEMBERS 
                                                 <Linkedin size={20} />
                                             </motion.a>
                                         )}
-                                        {member.socials.twitter && (
+                                        {member.socials?.twitter && (
                                             <motion.a
                                                 whileHover={{ y: -3 }}
                                                 href={member.socials.twitter}
@@ -104,7 +106,7 @@ const Team: React.FC<{ members?: TeamMember[] }> = ({ members = DEFAULT_MEMBERS 
                                                 <Twitter size={20} />
                                             </motion.a>
                                         )}
-                                        {member.socials.instagram && (
+                                        {member.socials?.instagram && (
                                             <motion.a
                                                 whileHover={{ y: -3 }}
                                                 href={member.socials.instagram}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { User, Service, College, University, Lead, SiteSettings, Consultation, EducationInsight, Inquiry, Event, Review } from '../types';
+import { User, Service, College, University, Lead, SiteSettings, Consultation, EducationInsight, Inquiry, Event, Review, TeamMember } from '../types';
 import { db, collection, getDocs, addDoc, deleteDoc, updateDoc, doc, query, orderBy, limit, startAfter, getCountFromServer, QueryDocumentSnapshot, DocumentData } from '../firebase';
 import { getSiteSettings, saveSiteSettings } from '../services/db';
 import { uploadBannerImage } from '../services/storage';
@@ -27,6 +27,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
     const [inquiries, setInquiries] = useState<Inquiry[]>([]);
     const [events, setEvents] = useState<Event[]>([]);
     const [reviews, setReviews] = useState<Review[]>([]);
+    const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
 
     // Form State
     const [isAdding, setIsAdding] = useState(false);
@@ -112,6 +113,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                 case 'inquiries': setInquiries(data as Inquiry[]); break;
                 case 'events': setEvents(data as Event[]); break;
                 case 'reviews': setReviews(data.map(d => ({ ...d, createdAt: d.createdAt?.toDate ? d.createdAt.toDate() : new Date() } as Review))); break;
+                case 'team': setTeamMembers(data as TeamMember[]); break;
             }
 
         } catch (error: any) {
@@ -149,7 +151,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
             'consultation': 'consultations',
             'inquiries': 'inquiries',
             'events': 'events',
-            'reviews': 'reviews'
+            'reviews': 'reviews',
+            'team': 'team'
         };
         const collName = collectionMap[activeTab];
         if (collName) {
@@ -435,6 +438,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                 if (collectionName === 'education-insights') setEducationInsights(prev => prev.filter(item => item.id !== id));
                 if (collectionName === 'events') setEvents(prev => prev.filter(item => item.id !== id));
                 if (collectionName === 'reviews') setReviews(prev => prev.filter(item => item.id !== id));
+                if (collectionName === 'team') setTeamMembers(prev => prev.filter(item => item.id !== id));
 
                 // Update total items count for pagination
                 setTotalItems(prev => ({
@@ -567,6 +571,14 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                     const docRef = await addDoc(collection(db, 'reviews'), dataToSave);
                     setReviews(prev => [{ ...dataToSave, id: docRef.id } as Review, ...prev]);
                 }
+            } else if (activeTab === 'team') {
+                if (editingId) {
+                    await updateDoc(doc(db, 'team', editingId), dataToSave);
+                    setTeamMembers(prev => prev.map(item => item.id === editingId ? { ...item, ...dataToSave } : item));
+                } else {
+                    const docRef = await addDoc(collection(db, 'team'), dataToSave);
+                    setTeamMembers(prev => [{ ...dataToSave, id: docRef.id } as TeamMember, ...prev]);
+                }
             }
             setIsAdding(false);
             setEditingId(null);
@@ -579,7 +591,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
         }
     };
 
-    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, imageType: 'logo' | 'hero1' | 'hero2' | 'hero3' | 'heroMobile1' | 'heroMobile2' | 'heroMobile3') => {
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, imageType: 'logo' | 'hero1' | 'hero2' | 'hero3' | 'heroMobile1' | 'heroMobile2' | 'heroMobile3' | 'aboutHero' | 'collegesHero' | 'universitiesHero' | 'coursesHero' | 'contactHero') => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
 
@@ -621,6 +633,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                     } else if (imageType === 'heroMobile3') {
                         const url = await uploadBannerImage(file, 3);
                         setSiteSettings(prev => prev ? ({ ...prev, heroMobileBanner3Image: url }) : null);
+                    } else if (imageType === 'aboutHero') {
+                        setSiteSettings(prev => prev ? ({ ...prev, aboutHeroBanner: base64String }) : null);
+                    } else if (imageType === 'collegesHero') {
+                        setSiteSettings(prev => prev ? ({ ...prev, collegesHeroBanner: base64String }) : null);
+                    } else if (imageType === 'universitiesHero') {
+                        setSiteSettings(prev => prev ? ({ ...prev, universitiesHeroBanner: base64String }) : null);
+                    } else if (imageType === 'coursesHero') {
+                        setSiteSettings(prev => prev ? ({ ...prev, coursesHeroBanner: base64String }) : null);
+                    } else if (imageType === 'contactHero') {
+                        setSiteSettings(prev => prev ? ({ ...prev, contactHeroBanner: base64String }) : null);
                     }
                     setLoading(false);
                 };
@@ -811,6 +833,35 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
         }
     };
 
+    const handleTeamMemberImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            if (file.size > 750 * 1024) {
+                alert('File size should be less than 750KB to ensure storage stability');
+                return;
+            }
+            if (!file.type.startsWith('image/')) {
+                alert('Please upload an image file');
+                return;
+            }
+
+            setLoading(true);
+            try {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const base64String = reader.result as string;
+                    setFormData(prev => ({ ...prev, image: base64String }));
+                    setLoading(false);
+                };
+                reader.readAsDataURL(file);
+            } catch (error) {
+                console.error("Error uploading team image:", error);
+                alert("Failed to upload image.");
+                setLoading(false);
+            }
+        }
+    };
+
     const getYoutubeId = (url: string) => {
         if (!url) return null;
         const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
@@ -828,7 +879,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
             'education-insights': 'education-insights',
             'consultation': 'consultations',
             'inquiries': 'inquiries',
-            'events': 'events'
+            'events': 'events',
+            'team': 'team'
         };
         const currentCollection = collectionMap[activeTab];
         const count = totalItems[currentCollection] || 0;
@@ -2098,6 +2150,171 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                                 </label>
                                             </div>
                                         </div>
+
+                                        {/* Page Hero Banners */}
+                                        <div className="space-y-6 pt-6 border-t border-gray-100">
+                                            <h4 className="text-sm font-semibold text-gray-900 border-b pb-2">Page Hero Banners</h4>
+
+                                            {/* About Us Hero Banner */}
+                                            <div className="bg-gray-50/50 p-4 rounded-xl border border-gray-100 space-y-4">
+                                                <label className="block text-sm font-medium text-gray-700">About Us Page Hero Banner</label>
+                                                <p className="text-xs text-gray-500 mb-2">Banner image for the About Us page.</p>
+                                                {siteSettings.aboutHeroBanner && (
+                                                    <img src={siteSettings.aboutHeroBanner} alt="About Hero Preview" className="w-full max-w-md h-32 object-cover rounded border border-gray-200" />
+                                                )}
+                                                <div className="flex gap-4">
+                                                    <input
+                                                        type="url"
+                                                        placeholder="Paste image URL here..."
+                                                        className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                                                        value={siteSettings.aboutHeroBanner || ''}
+                                                        onChange={e => setSiteSettings({ ...siteSettings, aboutHeroBanner: e.target.value })}
+                                                    />
+                                                    <label className="cursor-pointer">
+                                                        <input
+                                                            type="file"
+                                                            accept="image/*"
+                                                            onChange={(e) => handleImageUpload(e, 'aboutHero')}
+                                                            className="hidden"
+                                                        />
+                                                        <span className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm">
+                                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                                            </svg>
+                                                            Upload
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            {/* Colleges Hero Banner */}
+                                            <div className="bg-gray-50/50 p-4 rounded-xl border border-gray-100 space-y-4">
+                                                <label className="block text-sm font-medium text-gray-700">Colleges Page Hero Banner</label>
+                                                <p className="text-xs text-gray-500 mb-2">Banner image for the Colleges listing page.</p>
+                                                {siteSettings.collegesHeroBanner && (
+                                                    <img src={siteSettings.collegesHeroBanner} alt="Colleges Hero Preview" className="w-full max-w-md h-32 object-cover rounded border border-gray-200" />
+                                                )}
+                                                <div className="flex gap-4">
+                                                    <input
+                                                        type="url"
+                                                        placeholder="Paste image URL here..."
+                                                        className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                                                        value={siteSettings.collegesHeroBanner || ''}
+                                                        onChange={e => setSiteSettings({ ...siteSettings, collegesHeroBanner: e.target.value })}
+                                                    />
+                                                    <label className="cursor-pointer">
+                                                        <input
+                                                            type="file"
+                                                            accept="image/*"
+                                                            onChange={(e) => handleImageUpload(e, 'collegesHero')}
+                                                            className="hidden"
+                                                        />
+                                                        <span className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm">
+                                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                                            </svg>
+                                                            Upload
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            {/* Universities Hero Banner */}
+                                            <div className="bg-gray-50/50 p-4 rounded-xl border border-gray-100 space-y-4">
+                                                <label className="block text-sm font-medium text-gray-700">Universities Page Hero Banner</label>
+                                                <p className="text-xs text-gray-500 mb-2">Banner image for the Universities listing page.</p>
+                                                {siteSettings.universitiesHeroBanner && (
+                                                    <img src={siteSettings.universitiesHeroBanner} alt="Universities Hero Preview" className="w-full max-w-md h-32 object-cover rounded border border-gray-200" />
+                                                )}
+                                                <div className="flex gap-4">
+                                                    <input
+                                                        type="url"
+                                                        placeholder="Paste image URL here..."
+                                                        className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                                                        value={siteSettings.universitiesHeroBanner || ''}
+                                                        onChange={e => setSiteSettings({ ...siteSettings, universitiesHeroBanner: e.target.value })}
+                                                    />
+                                                    <label className="cursor-pointer">
+                                                        <input
+                                                            type="file"
+                                                            accept="image/*"
+                                                            onChange={(e) => handleImageUpload(e, 'universitiesHero')}
+                                                            className="hidden"
+                                                        />
+                                                        <span className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm">
+                                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                                            </svg>
+                                                            Upload
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            {/* Courses Hero Banner */}
+                                            <div className="bg-gray-50/50 p-4 rounded-xl border border-gray-100 space-y-4">
+                                                <label className="block text-sm font-medium text-gray-700">Courses Page Hero Banner</label>
+                                                <p className="text-xs text-gray-500 mb-2">Banner image for the Courses/Programs page.</p>
+                                                {siteSettings.coursesHeroBanner && (
+                                                    <img src={siteSettings.coursesHeroBanner} alt="Courses Hero Preview" className="w-full max-w-md h-32 object-cover rounded border border-gray-200" />
+                                                )}
+                                                <div className="flex gap-4">
+                                                    <input
+                                                        type="url"
+                                                        placeholder="Paste image URL here..."
+                                                        className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                                                        value={siteSettings.coursesHeroBanner || ''}
+                                                        onChange={e => setSiteSettings({ ...siteSettings, coursesHeroBanner: e.target.value })}
+                                                    />
+                                                    <label className="cursor-pointer">
+                                                        <input
+                                                            type="file"
+                                                            accept="image/*"
+                                                            onChange={(e) => handleImageUpload(e, 'coursesHero')}
+                                                            className="hidden"
+                                                        />
+                                                        <span className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm">
+                                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                                            </svg>
+                                                            Upload
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            {/* Contact Us Hero Banner */}
+                                            <div className="bg-gray-50/50 p-4 rounded-xl border border-gray-100 space-y-4">
+                                                <label className="block text-sm font-medium text-gray-700">Contact Us Page Hero Banner</label>
+                                                <p className="text-xs text-gray-500 mb-2">Banner image for the Contact Us page.</p>
+                                                {siteSettings.contactHeroBanner && (
+                                                    <img src={siteSettings.contactHeroBanner} alt="Contact Hero Preview" className="w-full max-w-md h-32 object-cover rounded border border-gray-200" />
+                                                )}
+                                                <div className="flex gap-4">
+                                                    <input
+                                                        type="url"
+                                                        placeholder="Paste image URL here..."
+                                                        className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                                                        value={siteSettings.contactHeroBanner || ''}
+                                                        onChange={e => setSiteSettings({ ...siteSettings, contactHeroBanner: e.target.value })}
+                                                    />
+                                                    <label className="cursor-pointer">
+                                                        <input
+                                                            type="file"
+                                                            accept="image/*"
+                                                            onChange={(e) => handleImageUpload(e, 'contactHero')}
+                                                            className="hidden"
+                                                        />
+                                                        <span className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm">
+                                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                                            </svg>
+                                                            Upload
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </section>
 
@@ -3309,6 +3526,158 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                     </div>
                 );
 
+            case 'team':
+                return (
+                    <div className="space-y-6">
+                        <div className="flex justify-between items-center">
+                            <h2 className="text-xl font-semibold text-gray-800">Meet Our Team</h2>
+                            <button
+                                onClick={() => { setIsAdding(!isAdding); setFormData({}); setEditingId(null); }}
+                                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition flex items-center gap-2"
+                            >
+                                {isAdding ? 'Cancel' : '+ Add Team Member'}
+                            </button>
+                        </div>
+
+                        {isAdding && (
+                            <form onSubmit={handleAddSubmit} className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 animate-in slide-in-from-top-4 duration-300">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                                        <input
+                                            required
+                                            type="text"
+                                            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="e.g. John Doe"
+                                            value={formData.name || ''}
+                                            onChange={e => setFormData({ ...formData, name: e.target.value })}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
+                                        <input
+                                            required
+                                            type="text"
+                                            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="e.g. Managing Director"
+                                            value={formData.role || ''}
+                                            onChange={e => setFormData({ ...formData, role: e.target.value })}
+                                        />
+                                    </div>
+                                    <div className="md:col-span-2">
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Bio</label>
+                                        <textarea
+                                            rows={3}
+                                            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Short biography..."
+                                            value={formData.bio || ''}
+                                            onChange={e => setFormData({ ...formData, bio: e.target.value })}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Image (Base64)</label>
+                                        <div className="flex items-center gap-4">
+                                            {formData.image && (
+                                                <img src={formData.image} alt="Preview" className="h-12 w-12 object-cover rounded-full border border-gray-200" />
+                                            )}
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={handleTeamMemberImageUpload}
+                                                className="flex-1 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:col-span-2">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">LinkedIn URL</label>
+                                            <input
+                                                type="url"
+                                                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                                                placeholder="https://linkedin.com/in/..."
+                                                value={formData.socials?.linkedin || ''}
+                                                onChange={e => setFormData({ ...formData, socials: { ...formData.socials, linkedin: e.target.value } })}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Twitter URL</label>
+                                            <input
+                                                type="url"
+                                                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                                                placeholder="https://twitter.com/..."
+                                                value={formData.socials?.twitter || ''}
+                                                onChange={e => setFormData({ ...formData, socials: { ...formData.socials, twitter: e.target.value } })}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Instagram URL</label>
+                                            <input
+                                                type="url"
+                                                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                                                placeholder="https://instagram.com/..."
+                                                value={formData.socials?.instagram || ''}
+                                                onChange={e => setFormData({ ...formData, socials: { ...formData.socials, instagram: e.target.value } })}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="mt-6 flex justify-end">
+                                    <button type="submit" className="bg-green-600 text-white px-8 py-2 rounded-lg hover:bg-green-700 font-semibold shadow-lg shadow-green-600/20 transition-all active:scale-95">
+                                        {editingId ? 'Update Member' : 'Save Member'}
+                                    </button>
+                                </div>
+                            </form>
+                        )}
+
+                        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                            <table className="w-full text-left">
+                                <thead className="bg-gray-50 border-b border-gray-200">
+                                    <tr>
+                                        <th className="px-6 py-4 text-sm font-semibold text-gray-600">Member</th>
+                                        <th className="px-6 py-4 text-sm font-semibold text-gray-600">Role</th>
+                                        <th className="px-6 py-4 text-sm font-semibold text-gray-600 text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-gray-200">
+                                    {teamMembers.map((member) => (
+                                        <tr key={member.id} className="hover:bg-gray-50 transition-colors">
+                                            <td className="px-6 py-4">
+                                                <div className="flex items-center gap-3">
+                                                    <img src={member.image} alt={member.name} className="w-10 h-10 rounded-full object-cover border border-gray-200" />
+                                                    <span className="font-medium text-gray-900">{member.name}</span>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4 text-sm text-gray-600">{member.role}</td>
+                                            <td className="px-6 py-4 text-right">
+                                                <div className="flex justify-end gap-3">
+                                                    <button
+                                                        onClick={() => { setFormData(member); setEditingId(member.id); setIsAdding(true); }}
+                                                        className="text-blue-600 hover:text-blue-900"
+                                                    >
+                                                        Edit
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleDelete('team', member.id!)}
+                                                        className="text-red-600 hover:text-red-900"
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                    {teamMembers.length === 0 && (
+                                        <tr>
+                                            <td colSpan={3} className="px-6 py-8 text-center text-gray-500">No team members added yet.</td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                        <PaginationControls />
+                    </div>
+                );
+
             default:
                 return null;
         }
@@ -3376,6 +3745,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
         {
             id: 'reviews', label: 'Student Reviews', icon: (
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+            )
+        },
+        {
+            id: 'team', label: 'Meet Our Team', icon: (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
             )
         },
         {

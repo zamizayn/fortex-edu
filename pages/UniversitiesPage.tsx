@@ -61,7 +61,7 @@ const UniversitiesPage: React.FC<UniversitiesPageProps> = ({ user, onLogout, onL
                         initial={{ scale: 1.1 }}
                         animate={{ scale: 1 }}
                         transition={{ duration: 10, ease: "linear" }}
-                        src="https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=2086&auto=format&fit=crop"
+                        src={siteSettings?.universitiesHeroBanner || "https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=2086&auto=format&fit=crop"}
                         alt="Universities Hero"
                         className="w-full h-full object-cover"
                     />

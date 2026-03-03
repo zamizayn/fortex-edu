@@ -83,7 +83,7 @@ const Contact: React.FC = () => {
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-black/50 z-10" />
           <img
-            src="https://images.unsplash.com/photo-1423666639041-f56000c27a9a?q=80&w=1200&auto=format&fit=crop"
+            src={settings?.contactHeroBanner || "https://images.unsplash.com/photo-1423666639041-f56000c27a9a?q=80&w=1200&auto=format&fit=crop"}
             alt="Contact Us"
             className="w-full h-full object-cover"
           />

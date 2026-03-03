@@ -7,7 +7,21 @@ export interface Program {
   eligibility: string;
   outcomes: string[];
   careerPaths: string[];
-  icon: string;
+  order?: number;
+}
+
+export interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  image: string;
+  bio: string;
+  socials?: {
+    linkedin?: string;
+    twitter?: string;
+    instagram?: string;
+  };
+  createdAt?: any;
   order?: number;
 }
 
@@ -119,6 +133,11 @@ export interface SiteSettings {
   heroMobileBanner1Image?: string;
   heroMobileBanner2Image?: string;
   heroMobileBanner3Image?: string;
+  aboutHeroBanner?: string;
+  collegesHeroBanner?: string;
+  universitiesHeroBanner?: string;
+  coursesHeroBanner?: string;
+  contactHeroBanner?: string;
   aboutTitle: string;
   aboutDescription: string;
   aboutImageUrl?: string;

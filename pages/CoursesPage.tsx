@@ -110,7 +110,7 @@ const CoursesPage: React.FC<CoursesPageProps> = ({ user, onLogout, onLoginClick,
                         initial={{ scale: 1.1 }}
                         animate={{ scale: 1 }}
                         transition={{ duration: 10, ease: "linear" }}
-                        src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070&auto=format&fit=crop"
+                        src={siteSettings?.coursesHeroBanner || "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070&auto=format&fit=crop"}
                         alt="Courses Hero"
                         className="w-full h-full object-cover"
                     />

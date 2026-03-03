@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { getSiteSettings } from '../services/db';
-import { SiteSettings } from '../types';
+import { getSiteSettings, getTeamMembers } from '../services/db';
+import { SiteSettings, TeamMember } from '../types';
 import { motion } from 'framer-motion';
 import Team from './Team';
 
 const About: React.FC = () => {
   const [settings, setSettings] = useState<SiteSettings | null>(null);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
 
   useEffect(() => {
-    const fetchSettings = async () => {
-      const data = await getSiteSettings();
-      setSettings(data);
+    const fetchData = async () => {
+      const [settingsData, teamData] = await Promise.all([
+        getSiteSettings(),
+        getTeamMembers()
+      ]);
+      setSettings(settingsData);
+      setTeamMembers(teamData);
     };
-    fetchSettings();
+    fetchData();
   }, []);
 
   const defaultContent = [
@@ -54,7 +59,7 @@ const About: React.FC = () => {
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-black/50 z-10" />
           <img
-            src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=1200&auto=format&fit=crop"
+            src={settings?.aboutHeroBanner || "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=1200&auto=format&fit=crop"}
             alt="About Us"
             className="w-full h-full object-cover"
           />
@@ -212,7 +217,7 @@ const About: React.FC = () => {
 
         {/* Meet Our Team */}
         <div className="mb-32">
-          <Team />
+          <Team members={teamMembers} />
         </div>
 
         {/* Stats Section */}
