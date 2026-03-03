@@ -36,7 +36,7 @@ const Footer: React.FC<FooterProps> = ({ siteSettings }) => {
             </div>
           </div>
 
-          <div>
+          {/* <div>
             <h4 className="text-sm font-bold uppercase tracking-widest text-white/50 mb-8">Navigation</h4>
             <ul className="space-y-4 text-sm font-medium">
               <li><a href="/" className="hover:text-accent transition-colors">Home</a></li>
@@ -44,7 +44,7 @@ const Footer: React.FC<FooterProps> = ({ siteSettings }) => {
               <li><a href="/colleges" className="hover:text-accent transition-colors">Colleges</a></li>
               <li><a href="/contact" className="hover:text-accent transition-colors">Contact</a></li>
             </ul>
-          </div>
+          </div> */}
 
           <div className="space-y-4">
             <h4 className="text-sm font-bold uppercase tracking-widest text-white/50 mb-8">Contact</h4>

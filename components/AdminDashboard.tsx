@@ -240,6 +240,24 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
         }
     };
 
+    const downloadConsultationsExcel = () => {
+        const data = consultations.map(c => ({
+            "Student Name": c.name,
+            "Phone": c.phone,
+            "Interest": c.interest,
+            "Program": c.selectedProgram || 'N/A',
+            "Comments": c.comment || 'N/A',
+            "Last Course": c.lastAttendedCourse || 'N/A',
+            "Percentage": c.percentage || 'N/A',
+            "Date": c.createdAt instanceof Date ? c.createdAt.toLocaleDateString() : 'N/A'
+        }));
+
+        const ws = XLSX.utils.json_to_sheet(data);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Consultations");
+        XLSX.writeFile(wb, "consultations_report.xlsx");
+    };
+
     // Fetch Data based on active tab and for sidebar badges
     // Fetch Data based on active tab and for sidebar badges
     useEffect(() => {
@@ -360,6 +378,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                 if (collectionName === 'consultations') setConsultations(prev => prev.filter(item => item.id !== id));
                 if (collectionName === 'education-insights') setEducationInsights(prev => prev.filter(item => item.id !== id));
                 if (collectionName === 'events') setEvents(prev => prev.filter(item => item.id !== id));
+                if (collectionName === 'reviews') setReviews(prev => prev.filter(item => item.id !== id));
+
+                // Update total items count for pagination
+                setTotalItems(prev => ({
+                    ...prev,
+                    [collectionName]: Math.max(0, (prev[collectionName] || 0) - 1)
+                }));
             } catch (error) {
                 console.error("Error deleting document:", error);
                 alert("Failed to delete item.");
@@ -403,6 +428,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
         try {
             await deleteDoc(doc(db, 'inquiries', id));
             setInquiries(prev => prev.filter(i => i.id !== id));
+            setTotalItems(prev => ({
+                ...prev,
+                inquiries: Math.max(0, (prev['inquiries'] || 0) - 1)
+            }));
         } catch (error) {
             console.error(error);
             alert('Failed to delete');
@@ -2600,7 +2629,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
 
                 return (
                     <div className="space-y-6">
-                        <h2 className="text-xl font-bold text-gray-800">Consultation Requests</h2>
+                        <div className="flex justify-between items-center">
+                            <h2 className="text-xl font-bold text-gray-800">Consultation Requests</h2>
+                            <button
+                                onClick={downloadConsultationsExcel}
+                                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition flex items-center gap-2 text-sm font-semibold"
+                            >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                                Export Excel
+                            </button>
+                        </div>
                         <div className="overflow-x-auto bg-white rounded-xl shadow-sm border border-gray-100">
                             <table className="w-full text-left">
                                 <thead className="bg-gray-50 border-b border-gray-100">
@@ -2657,7 +2695,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                                                     onClick={() => handleDelete('consultations', consultation.id!)}
                                                     className="text-red-500 hover:text-red-700 text-xs font-bold uppercase tracking-wider"
                                                 >
-                                                    Archive
+                                                    Delete
                                                 </button>
                                                 {!consultation.read && (
                                                     <button
