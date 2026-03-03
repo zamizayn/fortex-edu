@@ -2867,6 +2867,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                     { id: 'events', name: 'Upcoming Events', description: 'List of upcoming events and webinars.' },
                     { id: 'admissions', name: 'Admissions Process', description: 'Step-by-step guide to applying.' },
                     { id: 'social', name: 'Social Feed', description: 'Latest updates from social media.' },
+                    { id: 'team', name: 'Meet Our Team', description: 'The "Experts Behind Fortex" section.' },
+                    { id: 'reviews', name: 'Student Reviews', description: 'Testimonials from students.' },
                     { id: 'contact', name: 'Contact Us', description: 'Footer contact form and address details.' },
                 ];
 
